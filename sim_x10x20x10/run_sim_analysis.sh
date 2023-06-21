@@ -124,5 +124,5 @@ EOM
 done
 echo "Number of jobs to be run: $counter"
 echo your thingy was $output_file
-###SB##condor_submit $output_file
-#rm $output_file
+condor_submit $output_file
+rm $output_file #SB at one point commented this
