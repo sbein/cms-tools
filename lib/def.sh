@@ -102,9 +102,9 @@ CLONE_SCRIPT="$SCRIPTS_WD/clone_tree_split.py"
 CLONE_SINGLE="$SIM_DIR/clone_sim_file_single.sh"
 CS_SINGLE="$SIM_DIR/calculate_cross_section_single.sh"
 
-OUTPUT_WD="/nfs/dust/cms/user/nissanuv/x1x2x1"
-TWO_LEPTONS_OUTPUT_WD="/nfs/dust/cms/user/nissanuv/2lx1x2x1"
-DY_OUTPUT_WD="/nfs/dust/cms/user/nissanuv/dy_x1x2x1"
+OUTPUT_WD="/nfs/dust/cms/user/beinsam/x1x2x1" #these lines to change to me
+TWO_LEPTONS_OUTPUT_WD="/nfs/dust/cms/user/nissanuv/2lx1x2x1" #these lines to change to me
+DY_OUTPUT_WD="/nfs/dust/cms/user/nissanuv/dy_x1x2x1" #these lines to change to me
 
 DATA_DIR="$CMS_TOOLS/data"
 BG_DIR="$CMS_TOOLS/bg"

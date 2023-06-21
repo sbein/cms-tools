@@ -26,7 +26,8 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 shopt -s expand_aliases
 
 # CMS ENV
-cd ~/CMSSW_11_3_1/src
+#cd ~/CMSSW_11_3_1/src
+cd /nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_11_3_1/src/
 
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
@@ -35,6 +36,8 @@ cmsenv
 
 . "$CMSSW_BASE/src/cms-tools/lib/def.sh"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CMSSW_BASE/src/cms-tools/lib/classes"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_11_3_1/src/cms-tools/lib/classes"
+
 
 SCRIPT_PATH=$ANALYZER_PATH
 if [ -n "$SKIM" ]; then

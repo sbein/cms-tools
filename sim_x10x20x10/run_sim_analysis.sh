@@ -95,6 +95,7 @@ timestamp=$(date +%Y%m%d_%H%M%S%N)
 output_file="${WORK_DIR}/condor_submut.${timestamp}"
 echo "output file: $output_file"
 
+counter=0
 cat << EOM > $output_file
 universe = vanilla
 should_transfer_files = IF_NEEDED
@@ -119,7 +120,9 @@ error = ${OUTPUT_DIR}/stderr/${filename}.err
 output = ${OUTPUT_DIR}/stdout/${filename}.output
 Queue
 EOM
+    ((counter++))
 done
-
-condor_submit $output_file
-rm $output_file
+echo "Number of jobs to be run: $counter"
+echo your thingy was $output_file
+###SB##condor_submit $output_file
+#rm $output_file

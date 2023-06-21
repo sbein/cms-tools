@@ -861,7 +861,7 @@ namespace {
     };
     static const char* includePaths[] = {
 "/cvmfs/cms.cern.ch/slc7_amd64_gcc900/lcg/root/6.22.08-ljfedo/include/",
-"/afs/desy.de/user/n/nissanuv/CMSSW_11_3_1/src/cms-tools/lib/classes/",
+"/nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_11_3_1/src/cms-tools/lib/classes/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(

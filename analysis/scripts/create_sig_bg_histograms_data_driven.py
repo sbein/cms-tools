@@ -34,15 +34,15 @@ args = parser.parse_args()
 
 sam = True
 
-
+#choose one of the two
 wanted_year = "phase1"
 wanted_year = "2016"
 
 
 print("WANTED YEAR " + wanted_year)
 
+#choose one of the three
 required_category = "all"
-
 required_category = "tracks"
 required_category = "leptons"
 
@@ -68,6 +68,7 @@ if final_prediction:
     max_files = -1
 
 partial_unblinding = True
+partial_unblinding = False###
 partial_unblinding_portion = 10
 
 # required_lepton = "Muons"
@@ -86,9 +87,10 @@ else:
 
 print("output_file=" + output_file)
 
+#/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/
 
 signal_dirs = {
-    "2016" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_sam/sum",
+    "2016" : "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum",
     "2017" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/sum",
     "2018" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/sum",
 }
@@ -149,6 +151,7 @@ def main():
     data_files = glob(data_dir + "/" + data_pattern)
     for filename in data_files:
         #continue
+        continue #for now, let's skip the backgrounds, I only need the signals
         print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
@@ -385,6 +388,7 @@ def main():
         print("Getting Mtautau BG...")
         bg_slim_files = glob(bg_dir + "/*")
         for filename in bg_slim_files:
+            continue ##for now, let's not worry about the mtau tau background either
             print("Opening", filename)
             f = TFile(filename)
             c = f.Get('tEvent')
@@ -459,6 +463,8 @@ def main():
     
     print("Getting signals...")
     
+    
+    ###this is the one we care about
     signal_hists = {}
     i = 0
     wanted_years = [wanted_year]
@@ -556,7 +562,13 @@ def main():
                             hist = utils.getHistogramFromTree(histName, c, observable, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                         else:
                             hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
+                            
+                            #probably want to draw stuff here for the different variations modifying drawString (which is conditions)
+                            hist_syst1 = utils.getHistogramFromTreeCutsomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
+                            
                         hist.Sumw2() 
+                        
+                        hist_syst1 = hist.Clone(histName+'_syst1')    
                 
                 
                         #hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)

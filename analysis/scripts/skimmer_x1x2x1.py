@@ -1601,6 +1601,7 @@ def main():
 
     fnew.cd()
     tEvent.Write()
+    print('cwd', os.getcwd())
     print('just created', fnew.GetName())
     print("Total: " + str(nentries))
     print("Right Process: " + str(count))

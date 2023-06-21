@@ -28,8 +28,11 @@ slim = args.slim
 phase1 = args.phase1
 phase1_2018 = args.phase1_2018
 
-skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/single/"
-output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/sum"
+#skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/single/"
+#output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/sum"
+
+skim_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/single/"
+output_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum"
 
 if slim:
     if phase1:
@@ -41,14 +44,15 @@ if slim:
 
 if sam:
     if phase1:
-        skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/single/"
-        output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/sum"
+        skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/single/"##to change
+        output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/sum"##to change
     elif phase1_2018:
-        skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/single/"
-        output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/sum"
+        skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/single/"##to change
+        output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/sum"##to change
     else:
-        skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_sam/single/"
-        output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_sam/sum"
+        skim_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/single/"
+        output_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum"
+        
 
 if two_leptons:
     skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/2lx1x2x1/signal/skim/single/"
