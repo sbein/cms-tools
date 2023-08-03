@@ -550,7 +550,7 @@ class dimuon_background_estimation_non_isolated_and_tautau_2016(BaseParams):
         #{ "obs" : "newest_bin_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT phase1", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.45,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},
         #{ "obs" : "newestest_bin_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT phase1", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.45,1], "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},
         
-        { "obs" : "newestestest_bin_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
+        { "obs" : "newestestest_bin_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .68, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
         #{ "obs" : "fine_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "bins" : 40, "units" : "BDT", "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},
         { "obs" : "fine_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "bins" : 40, "units" : "BDT phase1", "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}}
     ]
@@ -585,7 +585,7 @@ class dimuon_background_estimation_non_isolated_and_tautau_2016(BaseParams):
     }
     bgReTaggingNames = {
         "tautau" : "#tau#tau",
-        "non-iso" : "non-isolated"
+        "non-iso" : "jetty"
     }
     bgReTaggingSources = {
         "tautau" : "bg",
@@ -602,6 +602,9 @@ class dimuon_background_estimation_non_isolated_and_tautau_2016(BaseParams):
         { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle},
         { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },
     ]
+    log_minimum = 0.01
+    
+    label_text = plotutils.StampStr.PRE
 
 class dimuon_background_estimation_non_isolated_and_tautau_2017(dimuon_background_estimation_non_isolated_and_tautau_2016):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_2017.root"
@@ -639,7 +642,7 @@ class dimuon_background_estimation_non_isolated_and_tautau_2017(dimuon_backgroun
         #{ "obs" : "newest_bin_dilepBDTphase1%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT phase1", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.45,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},
         #{ "obs" : "newestest_bin_dilepBDTphase1%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT phase1", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.45,1], "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},
         
-        { "obs" : "newestestest_bin_dilepBDTphase1%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
+        { "obs" : "newestestest_bin_dilepBDTphase1%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .68, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
         
         
         #{ "obs" : "fine_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "bins" : 40, "units" : "BDT", "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},

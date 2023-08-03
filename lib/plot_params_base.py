@@ -8,6 +8,8 @@ import utils
 import plotutils
 import analysis_selections
 
+from ROOT import *
+
 low_3_signals = [
               "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_dilepton_signal_bdt_all/single/higgsino_mu100_dm1p92Chi20Chipm.root",
               "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_dilepton_signal_bdt_all/single/higgsino_mu100_dm3p28Chi20Chipm.root",
@@ -240,6 +242,7 @@ class BaseParams:
     sc_label = "same-sign"
     sc_ratio_label = "sc"
     sc_color = 6
+    sc_marker_style = kFullCircle
     
     plot_custom_types = []
     # used for cleaned-z and cleaned-w. They have different files and conditions attached to them.
@@ -268,4 +271,6 @@ class BaseParams:
     
     padRightMargin = -1
     padLeftMargin = -1
+    
+    log_minimum = 0.0001
     
