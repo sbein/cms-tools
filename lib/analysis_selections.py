@@ -149,7 +149,8 @@ recommended_luminosities = {
     '2016' : 36.31,
     '2017' : 41.48,
     '2018' : 59.83,
-    "phase1" : 101.31
+    "phase1" : 101.31,
+    "run2" : 137
 }
 
 fast_sim_weights = {

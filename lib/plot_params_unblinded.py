@@ -26,6 +26,7 @@ class unblinded_track_muon_sc_comparison(BaseParams):
     histograms_defs = [
         { "obs" : "exTrack_dilepBDT%%%", "units" : "BDT", "minX" : -1, "maxX" : 1, "bins" : 30,  "sc_obs" : "sc_exTrack_dilepBDT%%%", "linearYspace" : 1.9, "lumiStringPrefix" : "Muons Phase 0"},
         { "obs" : "exTrack_dilepBDT_bins%%%", "formula": "exTrack_dilepBDT%%%", "units" : "BDT", "minX" : -1, "maxX" : 1, "bins" : 30,  "sc_obs" : "sc_exTrack_dilepBDT%%%", "linearYspace" : 1.9, "lumiStringPrefix" : "Muons Phase 0", "customBins"  : [-1,0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,1]},
+        #{ "obs" : "exTrack_dilepBDT_bins_no_cr%%%", "formula": "exTrack_dilepBDT%%%", "units" : "BDT", "minX" : -1, "maxX" : 1, "bins" : 30,  "sc_obs" : "sc_exTrack_dilepBDT%%%", "linearYspace" : 1.9, "lumiStringPrefix" : "Muons Phase 0", "customBins"  : [0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,1]},
         { "obs" : "exTrack_dilepBDT_bins_two%%%", "formula": "exTrack_dilepBDT%%%", "units" : "BDT", "minX" : -1, "maxX" : 1, "bins" : 30,  "sc_obs" : "sc_exTrack_dilepBDT%%%", "linearYspace" : 1.9, "lumiStringPrefix" : "Muons Phase 0", "customBins"  : [-1,0,1]},
     ]
     
@@ -36,7 +37,7 @@ class unblinded_track_muon_sc_comparison(BaseParams):
     }
     
     calculatedLumi = {
-        'MET' : analysis_selections.recommended_luminosities["2016"],
+        'MET' : analysis_selections.luminosities["2016"],
     }
     
     plot_data = True
@@ -46,11 +47,16 @@ class unblinded_track_muon_sc_comparison(BaseParams):
     plot_bg = False
     plot_error = True
     sc_color = kOrange + 1
-    label_text = plotutils.StampStr.SIM
-    ratio_label = "oc"
+    label_text = plotutils.StampStr.PRE
+    ratio_label = "data"
+    sc_label = "background"
+    sc_ratio_label = "bg"
     stamp_scale_factor = True
     
     legend_coordinates = {"x1" : .40, "y1" : .60, "x2" : .92, "y2" : .89}
+    
+    log_minimum = 0.01
+    sc_marker_style = kOpenCircle
 
 class partial_unblinded_track_muon_sc_comparison(unblinded_track_muon_sc_comparison):
     histrograms_file = BaseParams.histograms_root_files_dir + "/partial_unblinded_track_muon_sc_comparison.root"
@@ -63,8 +69,12 @@ class partial_unblinded_track_muon_sc_comparison(unblinded_track_muon_sc_compari
         #{"name":"sr", "title": "sr", "condition" : "(MHT >= 220 &&  MET >= 200 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
     ]
     
-    transfer_factor = 0.1
+    transfer_factor = 0.1 * 1.115
     transfer_factor_error = 0
+    calculatedLumi = {
+        'MET' : analysis_selections.luminosities["2016"] * 0.1,
+    }
+    stamp_scale_factor = False
     
 
 class unblinded_track_muon_sc_comparison_phase1(unblinded_track_muon_sc_comparison):
@@ -79,7 +89,7 @@ class unblinded_track_muon_sc_comparison_phase1(unblinded_track_muon_sc_comparis
         #{"name":"sr", "title": "sr", "condition" : "(MHT >= 220 &&  MET >= 200 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
     ]
     calculatedLumi = {
-        'MET' : analysis_selections.recommended_luminosities["phase1"],
+        'MET' : analysis_selections.luminosities["phase1"] * 0.1,
     }
     
     histograms_defs = [
@@ -101,14 +111,15 @@ class partial_unblinded_track_muon_sc_comparison_phase1(unblinded_track_muon_sc_
         #{"name":"sr", "title": "sr", "condition" : "(MHT >= 220 &&  MET >= 200 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
     ]
     
-    transfer_factor = 0.1
+    transfer_factor = 0.1 * 1.096
     transfer_factor_error = 0
+    stamp_scale_factor = False
 
 class unblinded_track_electrons_sc_comparison(unblinded_track_muon_sc_comparison):
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_track_electrons_sc_comparison.root"
 
     save_histrograms_to_file = True
-    load_histrograms_from_file = False 
+    load_histrograms_from_file = True 
     
     baseConditionsArr = [analysis_selections.ex_track_cond, analysis_selections.ex_track_electrons_filter]
     scConditionsArr = [analysis_selections.sc_ex_track_cond, analysis_selections.sc_ex_track_electrons_filter]
@@ -146,8 +157,13 @@ class partial_unblinded_track_electrons_sc_comparison(unblinded_track_electrons_
         #{"name":"sr", "title": "sr", "condition" : "(MHT >= 220 &&  MET >= 200 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
     ]
     
-    transfer_factor = 0.1
+    transfer_factor = 0.1 * 0.954
     transfer_factor_error = 0
+    
+    calculatedLumi = {
+        'MET' : analysis_selections.luminosities["2016"] * 0.1,
+    }
+    stamp_scale_factor = False
 
 class unblinded_track_electrons_sc_comparison_phase1(unblinded_track_electrons_sc_comparison):
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_track_electrons_sc_comparison_phase1.root"
@@ -176,7 +192,7 @@ class unblinded_track_electrons_sc_comparison_phase1(unblinded_track_electrons_s
     
     injectJetIsoToHistograms(histograms_defs, analysis_selections.jetIsos["Electrons"])  
     calculatedLumi = {
-        'MET' : analysis_selections.recommended_luminosities["phase1"],
+        'MET' : analysis_selections.luminosities["phase1"],
     }
 
 class partial_unblinded_track_electrons_sc_comparison_phase1(unblinded_track_electrons_sc_comparison_phase1):
@@ -196,9 +212,12 @@ class partial_unblinded_track_electrons_sc_comparison_phase1(unblinded_track_ele
     ]
     
     #transfer_factor = 0.1 * 1.075
-    transfer_factor = 0.1
+    transfer_factor = 0.1 * 1.075
     transfer_factor_error = 0
-
+    calculatedLumi = {
+        'MET' : analysis_selections.luminosities["phase1"] * 0.1,
+    }
+    stamp_scale_factor = False
 
 class unblinded_dimuon(BaseParams):
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon.root"
@@ -273,7 +292,7 @@ class unblinded_dimuon(BaseParams):
     }
     bgReTaggingNames = {
         "tautau" : "#tau#tau",
-        "non-iso" : "non-isolated"
+        "non-iso" : "jetty"
     }
     bgReTaggingSources = {
         "tautau" : "bg",
@@ -290,6 +309,10 @@ class unblinded_dimuon(BaseParams):
         { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle},
         { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },
     ]
+    
+    label_text = plotutils.StampStr.PRE
+    
+    log_minimum = 0.01
 
 class partial_unblinded_dimuon(unblinded_dimuon):
 
@@ -319,8 +342,13 @@ class partial_unblinded_dimuon(unblinded_dimuon):
         "tautau" : [0.1 * analysis_selections.tautau_factors["2016"]["Muons"][0],analysis_selections.tautau_factors["2016"]["Muons"][1]],
         #"non-iso" : [0.1 * analysis_selections.non_iso_2l_factors["2016"]["Muons"][0], analysis_selections.non_iso_2l_factors["2016"]["Muons"][1]]
         "non-iso" : [0.079,0.037]
-        #"non-iso" : [0.698,0.137]
+       
     }
+    
+    calculatedLumi = {
+        'MET' : analysis_selections.luminosities["2016"] * 0.1,
+    }
+    stamp_scale_factor = False
 
 class unblinded_dimuon_phase1(unblinded_dimuon):
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_phase1.root"
@@ -401,9 +429,13 @@ class partial_unblinded_dimuon_phase1(unblinded_dimuon_phase1):
     ]
     injectJetIsoToCuts(cuts, jetIso)
     
+    calculatedLumi = {
+        'MET' : analysis_selections.luminosities["phase1"] * 0.1
+    }
     
     bgReTaggingFactors = {
         "tautau" : [0.1 * analysis_selections.tautau_factors["phase1"]["Muons"][0],analysis_selections.tautau_factors["phase1"]["Muons"][1]],
-        #"non-iso" : [0.1 * analysis_selections.non_iso_2l_factors["phase1"]["Muons"][0], analysis_selections.non_iso_2l_factors["phase1"]["Muons"][1]]
-        "non-iso" : [0.077,0.017]
+        "non-iso" : [0.1 * analysis_selections.non_iso_2l_factors["phase1"]["Muons"][0], analysis_selections.non_iso_2l_factors["phase1"]["Muons"][1]]
+        #"non-iso" : [0.077,0.017]
     }
+    stamp_scale_factor = False

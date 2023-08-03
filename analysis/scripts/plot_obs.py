@@ -1425,7 +1425,7 @@ def main():
                 if plot_par.normalise and dataHist.Integral() > 0:
                     dataHist.Scale(1./dataHist.Integral())
                 if not (linear and plot_single):
-                    dataHist.SetMinimum(0.0001)
+                    dataHist.SetMinimum(plot_par.log_minimum)
                 else:
                     dataHist.SetMinimum(0)
                 dataHist.SetMarkerStyle(kFullCircle)
@@ -1443,7 +1443,7 @@ def main():
                     plotutils.setHistColorFillLine(hist, plotutils.signalCp[i], 0.8)
                     hist.SetLineWidth(plot_par.sig_line_width)
                     if not (linear and plot_single):
-                        hist.SetMinimum(0.0001)
+                        hist.SetMinimum(plot_par.log_minimum)
                     else:
                         hist.SetMinimum(0)
                     maximum = max(hist.GetMaximum(), maximum)
@@ -1565,7 +1565,7 @@ def main():
                         linearYspace = maximum * hist_def["linearYspace"]
                     newBgHist.SetMaximum(linearYspace)
                 if not (linear and plot_single):
-                    newBgHist.SetMinimum(0.0001)
+                    newBgHist.SetMinimum(plot_par.log_minimum)
                 else:
                     newBgHist.SetMinimum(0)
                 
@@ -1651,9 +1651,9 @@ def main():
                         histToStyle.SetMaximum(linearYspace)
                 if not (linear and plot_single):
                     print("NOT LINER!")
-                    print("dataHist.SetMinimum(0.0001)")
+                    print("dataHist.SetMinimum(plot_par.log_minimum)")
                     if not (hist_def.get("2D") is not None and hist_def.get("2D")):
-                        histToStyle.SetMinimum(0.0001)
+                        histToStyle.SetMinimum(plot_par.log_minimum)
                 else:
                     print(" LINER!")
                     print("dataHist.SetMinimum(0)")
@@ -1673,7 +1673,7 @@ def main():
                 for i in range(len(sigHists)):
                     if not (hist_def.get("2D") is not None and hist_def.get("2D")):
                         if not (linear and plot_single):
-                            sigHists[i].SetMinimum(0.0001)
+                            sigHists[i].SetMinimum(plot_par.log_minimum)
                         else:
                             sigHists[i].SetMinimum(0)
                     sigHists[i].SetLineWidth(plot_par.sig_line_width)
@@ -1769,10 +1769,10 @@ def main():
                         print("Applying transfer factor", plot_par.transfer_factor, plot_par.transfer_factor_error)
                         utils.scaleHistogram(scDataHist, plot_par.transfer_factor, plot_par.transfer_factor_error)
                     if not (linear and plot_single):
-                        scDataHist.SetMinimum(0.0001)
+                        scDataHist.SetMinimum(plot_par.log_minimum)
                     else:
                         scDataHist.SetMinimum(0)
-                    scDataHist.SetMarkerStyle(kFullCircle)
+                    scDataHist.SetMarkerStyle(plot_par.sc_marker_style)
                     if large_version:
                         scDataHist.SetMarkerSize(1)
                     else:
@@ -1812,7 +1812,7 @@ def main():
                         tf = bg_count / sc_bg_count if sc_bg_count != 0 else 0
                         print("***tf***", tf, "bg_count", bg_count, "sc_bg_count", sc_bg_count, scBgHist.GetBinLowEdge(7))
                     if not (linear and plot_single):
-                        scBgHist.SetMinimum(0.0001)
+                        scBgHist.SetMinimum(plot_par.log_minimum)
                     else:
                         scBgHist.SetMinimum(0)
                     scBgHist.SetLineWidth(2)
@@ -1827,7 +1827,7 @@ def main():
                     histName = cut["name"] + "_" + hist_def["obs"] + "_" + plot_par.plot_custom_types[i]
                     hist = histograms[histName]
                     if not (linear and plot_single):
-                        hist.SetMinimum(0.0001)
+                        hist.SetMinimum(plot_par.log_minimum)
                     hist.Draw("HIST SAME " + errorStr)
                     if legend is not None:
                         legend.AddEntry(hist, plot_par.custom_types_label[i], 'l')
