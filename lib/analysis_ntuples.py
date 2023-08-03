@@ -45,7 +45,7 @@ def getTrigEffGraph(file, name):
     ttrig = file.Get(name)
     hpass = ttrig.GetPassedHistogram().Clone('hpass')
     htotal = ttrig.GetTotalHistogram().Clone('htotal')
-    gtrig = TGraphAsymmErrors(hpass, htotal)
+    gtrig = TEfficiency(hpass, htotal)
     return gtrig
 
 def minMaxCsv(jets, jets_bDiscriminatorCSV, pt):

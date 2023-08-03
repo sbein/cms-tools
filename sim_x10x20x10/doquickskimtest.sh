@@ -1,0 +1,1 @@
+./run_sim_analysis_single.sh -i /pnfs/desy.de/cms/tier2/store/user/sbein/CommonSamples/RadiativeMu_2016Fast/ntuple_sidecarv2//higgsino94x_susyall_mChipm180GeV_dm0p19GeV_pu35_part14of25_RA2AnalysisTree.root -o smalltest.root --skim --sam --signal

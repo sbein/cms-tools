@@ -5,6 +5,7 @@ commonFlatObs = {
     "LumiBlockNum" : "int",
     "EvtNum" : "float",
     "MT2" : "float",
+    "NVtx" : "float",
 }
 
 commonRecalcFlatObs = {
