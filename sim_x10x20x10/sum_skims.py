@@ -44,11 +44,11 @@ if slim:
 
 if sam:
     if phase1:
-        skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/single/"##to change
-        output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/sum"##to change
+        skim_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1/single/"##to change
+        output_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1/sum"##to change
     elif phase1_2018:
-        skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/single/"##to change
-        output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/sum"##to change
+        skim_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1_2018/single/"##to change
+        output_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1_2018/sum"##to change
     else:
         skim_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/single/"
         output_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum"
@@ -112,7 +112,7 @@ for point in points:
             break
         else:
             files_list = " ".join([f for f in chunk if f is not None])
-            command = "hadd -f " + output_file + " " + files_list
+            command = "python ahadd.py -f " + output_file + " " + files_list
             print("Running cmd: " + command)
             i += 1
             system(command)

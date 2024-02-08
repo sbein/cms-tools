@@ -72,7 +72,6 @@ if [ -n "$NLP" ]; then
     OUTPUT_DIR=$SKIM_SIG_NLP_OUTPUT_DIR
 fi
 
-
 #check output directory
 if [ ! -d "$OUTPUT_DIR" ]; then
   mkdir $OUTPUT_DIR
@@ -92,10 +91,14 @@ if [ ! -d "$OUTPUT_DIR/stderr" ]; then
 fi
 
 timestamp=$(date +%Y%m%d_%H%M%S%N)
-output_file="${WORK_DIR}/condor_submut.${timestamp}"
+output_file="${WORK_DIR}/condor_submit.${timestamp}"
 echo "output file: $output_file"
 
 counter=0
+files_per_job=5 # Set number of files per job
+input_files=""
+job_count=0
+
 cat << EOM > $output_file
 universe = vanilla
 should_transfer_files = IF_NEEDED
@@ -104,25 +107,48 @@ notification = Never
 request_memory = 16 GB
 EOM
 
-#for sim in ${SIG_DUP_OUTPUT_DIR}/single/*; do
 for sim in ${INPUT_DIR}/*higgsino*; do
     filename=$(basename $sim .root)
     if [ -f "${OUTPUT_DIR}/single/${filename}.root" ]; then
         echo "${OUTPUT_DIR}/single/${filename}.root exist. Skipping..."
         continue
     fi
-    echo "Will run:"
-    cmd="$SIM_DIR/run_sim_analysis_single.sh -i $sim -o ${OUTPUT_DIR}/single/${filename}.root ${POSITIONAL[@]} --signal" 
-    echo $cmd
-cat << EOM >> $output_file
-arguments = $cmd
-error = ${OUTPUT_DIR}/stderr/${filename}.err
-output = ${OUTPUT_DIR}/stdout/${filename}.output
+
+    input_files="$sim,$input_files"
+    ((counter++))
+
+    if [ $(($counter % $files_per_job)) == 0 ]; then
+        ((job_count++))
+        cmd="$SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/ ${POSITIONAL[@]} --signal" 
+        echo "Will run batch $job_count:"
+        echo $cmd
+        cat << EOM >> $output_file
+arguments = $SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/ ${POSITIONAL[@]} --signal
+error = ${OUTPUT_DIR}/stderr/${filename}_${job_count}.err
+output = ${OUTPUT_DIR}/stdout/${filename}_${job_count}.output
 Queue
 EOM
-    ((counter++))
+        input_files=""
+    fi
 done
-echo "Number of jobs to be run: $counter"
-echo your thingy was $output_file
+
+# Handle remaining files
+if [ $(($counter % $files_per_job)) != 0 ]; then
+    ((job_count++))
+    cmd="$SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/ ${POSITIONAL[@]} --signal" 
+    echo "Will run batch $job_count:"
+    echo $cmd
+    cat << EOM >> $output_file
+arguments = $SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/${filename}.root ${POSITIONAL[@]} --signal
+error = ${OUTPUT_DIR}/stderr/${filename}_${job_count}.err
+output = ${OUTPUT_DIR}/stdout/${filename}_${job_count}.output
+Queue
+EOM
+fi
+
+echo "Number of jobs to be run: $job_count"
+echo "Your Condor submission file is: $output_file"
+
+echo $output_file
 condor_submit $output_file
-rm $output_file #SB at one point commented this
+#rm $output_file

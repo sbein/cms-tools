@@ -22,7 +22,22 @@ parser = argparse.ArgumentParser(description='Add observables to trees.')
 args = parser.parse_args()
 
 WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim"
-SINGLE_OUTPUT = WORK_DIR + "/single"
+
+WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/"
+
+parser = argparse.ArgumentParser(description='Add observables to trees.')
+parser.add_argument('-phase1', '--phase1', dest='phase1', help='Phase 1', action='store_true')
+parser.add_argument('-phase1_2018', '--phase1_2018', dest='phase1_2018', help='Phase 1 2018', action='store_true')
+args = parser.parse_args()
+
+phase1 = args.phase1
+phase1_2018 = args.phase1_2018
+
+if phase1:
+    WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1"
+elif phase1_2018:
+    WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1_2018"
+SINGLE_OUTPUT = WORK_DIR + "/sum"
 OUTPUT_SUM = WORK_DIR 
 
 

@@ -75,28 +75,6 @@ elif [ -n "$PHASE1_2018" ]; then
     INPUT_DIR=$SKIM_SIG_PHASE1_2018_OUTPUT_DIR
     TRACK_SPLIT_DIR=$LEPTON_TRACK_PHASE1_SPLIT_DIR
 fi
-# if [ -z "$SAM" ]; then
-#     #check output directory
-#     if [ ! -d "$OUTPUT_DIR" ]; then
-#       mkdir $OUTPUT_DIR
-#     else
-#        rm -rf $OUTPUT_DIR
-#        mkdir $OUTPUT_DIR
-#     fi
-# 
-#     #check output directory
-#     if [ ! -d "$OUTPUT_DIR/single" ]; then
-#         mkdir "$OUTPUT_DIR/single"
-#     fi
-# 
-#     if [ ! -d "$OUTPUT_DIR/stdout" ]; then
-#         mkdir "$OUTPUT_DIR/stdout"
-#     fi
-# 
-#     if [ ! -d "$OUTPUT_DIR/stderr" ]; then
-#         mkdir "$OUTPUT_DIR/stderr"
-#     fi
-# fi
 
 timestamp=$(date +%Y%m%d_%H%M%S%N)
 output_file="${WORK_DIR}/condor_submut.${timestamp}"
@@ -112,82 +90,8 @@ request_memory = 16 GB
 EOM
 
 
-# if [ -z "$SAM" ]; then
-#     for sim in ${INPUT_DIR}/sum/*; do
-#         filename=`echo $(basename $sim .root) | awk -F"_" '{print $1"_"$2"_"$3}'`
-#         echo $filename
-#         tb=$filename
-#         for group in "${!SIM_GROUP[@]}"; do
-#             if [[ $group == "all" ]]; then
-#                 echo "Skipping ALL!!!!!"
-#                 continue
-#             fi
-#             echo checking group $group
-#             value=${SIM_GROUP[$group]}
-#             found=false
-#             for pattern in $value; do
-#                 echo checking pattern $pattern
-#                 if [[ $filename == *"$pattern"* ]]; then
-#                     echo Found!
-#                     tb=$group
-#                     found=true
-#                     break
-#                 fi
-#             done
-#             if [[ "$found" = "true" ]]; then
-#                 break
-#             fi
-#         done
-#         echo "Will run:"
-#         #echo $CONDOR_WRAPPER $SCRIPTS_WD/skimmer_x1x2x1_univ_bdt_track_bdt.py -i $sim -o ${OUTPUT_DIR}/single/${filename}.root -tb $LEPTON_TRACK_SPLIT_DIR/cut_optimisation/tmva/$tb  -ub $OUTPUT_WD/cut_optimisation/tmva/total_bdt $@
-#         echo $CONDOR_WRAPPER $SCRIPTS_WD/skimmer_x1x2x1_univ_bdt_track_bdt.py -i $sim -tb $LEPTON_TRACK_SPLIT_DIR/cut_optimisation/tmva/$tb $@
-#     cat << EOM >> $output_file
-# arguments = $CONDOR_WRAPPER $SCRIPTS_WD/skimmer_x1x2x1_univ_bdt_track_bdt.py -i $sim -tb $LEPTON_TRACK_SPLIT_DIR/cut_optimisation/tmva/$tb $@
-# error = ${OUTPUT_DIR}/stderr/${filename}.err
-# output = ${OUTPUT_DIR}/stdout/${filename}.output
-# Queue
-# EOM
-#     done
-# fi
-
-## ALL GROUP
-
 echo -e "\n\nRUNNING ALL GROUP\n\n"
 
-# OUTPUT_DIR=${SKIM_SIG_BDT_OUTPUT_DIR}_all
-# 
-# if [ -n "$SC" ]; then
-#     echo "GOT SC"
-#     echo "HERE: $@"
-#     OUTPUT_DIR=${SKIM_SIG_BDT_SC_OUTPUT_DIR}_all
-# fi
-# 
-# if [ -n "$SAM" ]; then
-#     echo "GOT SAM"
-#     echo "HERE: $@"
-#     OUTPUT_DIR=${SKIM_SAM_SIG_BDT_OUTPUT_DIR}_all
-# fi
-# 
-# #check output directory
-# if [ ! -d "$OUTPUT_DIR" ]; then
-#   mkdir $OUTPUT_DIR
-# else
-#    rm -rf $OUTPUT_DIR
-#    mkdir $OUTPUT_DIR
-# fi
-# 
-# #check output directory
-# if [ ! -d "$OUTPUT_DIR/single" ]; then
-#     mkdir "$OUTPUT_DIR/single"
-# fi
-# 
-# if [ ! -d "$OUTPUT_DIR/stdout" ]; then
-#     mkdir "$OUTPUT_DIR/stdout"
-# fi
-# 
-# if [ ! -d "$OUTPUT_DIR/stderr" ]; then
-#     mkdir "$OUTPUT_DIR/stderr"
-# fi
 
 if [ -n "$SAM" ] || [ -n "$PHASE1" ] || [ -n "$PHASE1_2018" ]; then
     FILES=${INPUT_DIR}/sum/*

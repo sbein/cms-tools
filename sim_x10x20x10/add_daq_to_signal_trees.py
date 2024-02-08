@@ -30,11 +30,12 @@ phase1_2018 = args.phase1_2018
 
 # 2016 version
 WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim"
+WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/"
 
 if phase1:
-    WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1"
+    WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1"
 elif phase1_2018:
-    WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018"
+    WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1_2018"
 
 SINGLE_OUTPUT = WORK_DIR + "/single"
 OUTPUT_SUM = WORK_DIR + "/sum"
