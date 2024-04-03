@@ -1,4 +1,4 @@
-xx#!/usr/bin/env python
+#!/usr/bin/env python
 
 from ROOT import *
 from glob import glob
@@ -9,6 +9,8 @@ import os
 import re
 from datetime import datetime
 import math
+
+#this script had trouble because the names of variables like MHT were different (Mht)
 
 sys.path.append(os.path.expandvars("$CMSSW_BASE/src/cms-tools/lib"))
 sys.path.append(os.path.expandvars("$CMSSW_BASE/src/cms-tools/"))
@@ -45,10 +47,7 @@ bg_retag = args.bg_retag
 bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/type_sum/"
 
 signal_dir = [
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/sum/higgsino_mu100_dm1p92Chi20Chipm.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/sum/higgsino_mu100_dm3p28Chi20Chipm.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/sum/higgsino_mu100_dm4p30Chi20Chipm.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/sum/higgsino_mu100_dm9p73Chi20Chipm.root"
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum/mChipm100GeV_dm1p76GeV_1.root"
               ]
 
 calculatedLumi = None
@@ -604,6 +603,7 @@ def createPlotsFast(rootfiles, type, histograms, weight=1, prefix=""):
             continue
         rootFile = TFile(f)
         c = rootFile.Get('tEvent')
+        c.Show(0)
         if type == "data":
             lumis = rootFile.Get('lumiSecs')
             col = TList()

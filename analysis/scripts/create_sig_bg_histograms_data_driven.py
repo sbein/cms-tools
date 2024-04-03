@@ -30,21 +30,20 @@ from ROOT import LumiSectMap
 
 parser = argparse.ArgumentParser(description='Creates root files for limits and significance.')
 parser.add_argument('-o', '--output_file', nargs=1, help='Output Filename', required=False)
+parser.add_argument('-phase0', '--phase0', help='Phase 0', action='store_true')
+parser.add_argument('-phase1', '--phase1', help='Phase 1', action='store_true')
+parser.add_argument('-channel', '--channel')# 'leptons', tracks, all
 args = parser.parse_args()
-
+phase1 = args.phase1
+phase0 = args.phase0
+channel = args.channel
 sam = True
 
+print('phase0', phase0)
+print('phase1', phase1)
 #choose one of the two
-wanted_year = "phase1"
-wanted_year = "2016"
-
-
-print("WANTED YEAR " + wanted_year)
-
-#choose one of the three
-required_category = "all"
-required_category = "tracks"
-required_category = "leptons"
+if phase0: wanted_year = "2016"
+elif phase1: wanted_year = "phase1"
 
 skip_electrons = True
 
@@ -67,8 +66,7 @@ if final_prediction:
     no_track_tf = True
     max_files = -1
 
-partial_unblinding = True
-partial_unblinding = False###
+partial_unblinding = False
 partial_unblinding_portion = 10
 
 # required_lepton = "Muons"
@@ -83,36 +81,35 @@ output_file = None
 if args.output_file:
     output_file = args.output_file[0]
 else:
-    output_file = "sig_bg_histograms_data_driven_" + wanted_year + "_" + required_category + ("_uniform_binning" if use_uniform_binning else "") + ("_partial_unblinding" if partial_unblinding else "") + ".root"
+    output_file = "sig_bg_histograms_data_driven_" + wanted_year + "_" + channel + ("_uniform_binning" if use_uniform_binning else "") + ("_partial_unblinding" if partial_unblinding else "") + ".root"
 
 print("output_file=" + output_file)
 
-#/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/
-
 signal_dirs = {
-    "2016" : "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum",
+    "2016" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_sam/sum",
     "2017" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/sum",
     "2018" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/sum",
 }
 
-if required_category == "leptons":
+if channel == "leptons":
     signal_dirs = {
-        "2016" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_sam/slim_sum",
-        "2017" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/slim_sum",
-        "2018" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/slim_sum",
+        "2016" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_sam/sum",
+        "2017" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1/sum",
+        "2018" : "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim_phase1_2018/sum",
     }
 
 bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/slim_sum_total"
 data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/slim_sum"
 
-if required_category != "leptons":
+if channel != "leptons":
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/type_sum"
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/sum"
+    
 
 data_pattern = "*"
 
 if wanted_year != "2016":
-    if required_category != "leptons":
+    if channel != "leptons":
         bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"
         data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/sum"
         if wanted_year == "2017":
@@ -127,6 +124,7 @@ if wanted_year != "2016":
             data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_2018"
         elif wanted_year == "phase1":
             data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_sum"
+
 
 ######## END OF CMDLINE ARGUMENTS ########
 
@@ -150,8 +148,7 @@ def main():
     print("Getting DATA DRIVEN BG...")
     data_files = glob(data_dir + "/" + data_pattern)
     for filename in data_files:
-        #continue
-        continue #for now, let's skip the backgrounds, I only need the signals
+        continue##xxx
         print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
@@ -160,7 +157,7 @@ def main():
         
             c1.cd()
             
-            if required_category != "leptons":
+            if channel != "leptons":
             
                 histName = "bg1t" + lep + "ChargeSymmetric"
             
@@ -173,7 +170,7 @@ def main():
                 if use_uniform_binning:
                     hist = utils.getHistogramFromTree(histName, c, obs, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                 else:
-                    hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, obs, analysis_selections.binning["1t"][wanted_year][lep], drawString, False)
+                    hist = utils.getHistogramFromTreeCustomBinsX(histName, c, obs, analysis_selections.binning["1t"][wanted_year][lep], drawString, False)
                 new_sum = hist.Integral()
                 print("new number", new_sum)
                 #print("dif", new_sum-old_sum)
@@ -209,7 +206,9 @@ def main():
                         bg_1t_hist[tfHistName].Add(tfHist)
                 
                 
-                ########### GET UNBLINDED RESULTS ################
+                ########### GET UNBLINDED RESULTS ################                
+                
+                
                 
                 if not partial_unblinding:
                     continue
@@ -228,7 +227,7 @@ def main():
                 if use_uniform_binning:
                     hist = utils.getHistogramFromTree(dataHistName, c, obs, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                 else:
-                    hist = utils.getHistogramFromTreeCutsomBinsX(dataHistName, c, obs, analysis_selections.binning["1t"][wanted_year][lep], drawString, False)
+                    hist = utils.getHistogramFromTreeCustomBinsX(dataHistName, c, obs, analysis_selections.binning["1t"][wanted_year][lep], drawString, False)
                 
                 if data_1t_hist.get(dataHistName) is None:
                     data_1t_hist[dataHistName] = hist
@@ -237,12 +236,13 @@ def main():
                 
                 
             
-            if required_category != "tracks":
+            if channel != "tracks":
                 if skip_electrons:
                     if lep == "Electrons":
                         continue
                 orthOpt = [True, False] if lep == "Muons" else [False]
                 #orth_cond = " && (leptons" + analysis_selections.jetIsos[lep] + "[1].Pt() <= 3.5 || deltaR" + analysis_selections.jetIsos[lep] + " <= 0.3)"
+                print('orthOpt, lep', orthOpt, lep)
                 for orth in orthOpt:
                     sigmaOpt = [True, False] if lep == "Muons" and add_systematics else [False]
                     for sigma in sigmaOpt:
@@ -256,7 +256,7 @@ def main():
                         #print("old drawString="+drawString)
                 
                 
-                        #hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
+                        #hist = utils.getHistogramFromTreeCustomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
                         #hist.Sumw2()
                         #hist.Scale(lumi_weight_for_data)
                         #old_sum = hist.Integral()
@@ -282,7 +282,7 @@ def main():
                         if use_uniform_binning:
                             hist = utils.getHistogramFromTree(histName, c, observable, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                         else:
-                            hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
+                            hist = utils.getHistogramFromTreeCustomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
                         hist.Sumw2() 
                         
                         if partial_unblinding:
@@ -290,7 +290,7 @@ def main():
                         
                         
                         #print("\n\nnew drawString="+drawString)
-                        #hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
+                        #hist = utils.getHistogramFromTreeCustomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
                         #hist.Sumw2()
                         new_sum = hist.Integral()
                         print("\n\nnew number", new_sum)
@@ -341,9 +341,13 @@ def main():
                                 bg_2l_hist[tfHistName] = tfHist
                             else:
                                 bg_2l_hist[tfHistName].Add(tfHist)
+                    #bg_2l_hist[histName].Draw('hist e')
+                    #c1.Update()
+                    #pause()            
+                    #print('went beyond pause') 
                     
-                    ########### GET UNBLINDED RESULTS ################
-                
+                    ########### GET UNBLINDED RESULTS ################                    
+
                     if not partial_unblinding:
                         continue
                     
@@ -368,7 +372,7 @@ def main():
                     if use_uniform_binning:
                         hist = utils.getHistogramFromTree(histName, c, observable, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                     else:
-                        hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
+                        hist = utils.getHistogramFromTreeCustomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
                     hist.Sumw2() 
                     
                     if data_2l_hist.get(histName) is None:
@@ -383,12 +387,12 @@ def main():
     
     print("bg_2l_hist", bg_2l_hist)
     
-    if required_category != "tracks":
+    if channel != "tracks":
     
         print("Getting Mtautau BG...")
         bg_slim_files = glob(bg_dir + "/*")
         for filename in bg_slim_files:
-            continue ##for now, let's not worry about the mtau tau background either
+            continue##xxx
             print("Opening", filename)
             f = TFile(filename)
             c = f.Get('tEvent')
@@ -409,7 +413,7 @@ def main():
                     histName = "bg2l" + lep + ("Orth" if orth else "")
                     if seperate_bg_methods:
                         histName += "Tautau"
-                    #hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
+                    #hist = utils.getHistogramFromTreeCustomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
                     #hist.Sumw2()
                     
                     #old_sum = hist.Integral()
@@ -427,7 +431,7 @@ def main():
                     if use_uniform_binning:
                         hist = utils.getHistogramFromTree(histName, c, observable, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                     else:
-                        hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
+                        hist = utils.getHistogramFromTreeCustomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
                     hist.Sumw2() 
                     
                     if partial_unblinding:
@@ -459,12 +463,10 @@ def main():
                             bg_2l_hist[tfHistName] = tfHist
                         else:
                             bg_2l_hist[tfHistName].Add(tfHist)
+                    print('gonna draw', tfHistName)
             f.Close()
-    
     print("Getting signals...")
     
-    
-    ###this is the one we care about
     signal_hists = {}
     i = 0
     wanted_years = [wanted_year]
@@ -477,6 +479,8 @@ def main():
         print("\nNow for year", wanted_year, "signal_dir", signal_dir)
         for filename in glob(signal_dir + "/*"):
             #continue
+            if not 'mChipm160GeV_dm2p287GeV' in filename: continue ###xxx
+            if 'JecUp' in filename or 'JecDown' in filename: continue
             print("Opening", filename)
             if sam:
                 deltaM = utils.getPointFromSamFileName(filename)
@@ -491,13 +495,13 @@ def main():
             for lep in ["Muons", "Electrons"]:
                 c1.cd()
             
-                if required_category != "leptons":
+                if channel != "leptons":
             
                     histName = deltaM + "1t" + lep
                     #drawString = str(utils.LUMINOSITY) + " * passedMhtMet6pack * tEffhMetMhtRealXMht2016 *  Weight * BranchingRatio * (exclusiveTrack" + analysis_selections.jetIsos[lep] + " == 1 && MET >= 140 && MHT >= 220 && exTrack_invMass" + analysis_selections.jetIsos[lep] + " < 12 && BTagsDeepMedium == 0 && exclusiveTrackLeptonFlavour" + analysis_selections.jetIsos[lep] + " == \"" + lep + "\")"
                 
                     # drawString = "{:.2f}".format(analysis_selections.luminosities[wanted_year]*1000) + " * FastSimWeightPR31285To36122 * passesUniversalSelection * passedMhtMet6pack * tEffhMetMhtRealXMht2016 * Weight * BranchingRatio * (MinDeltaPhiMhtJets > 0.4 && MHT >= 220 &&  MET >= 140 && BTagsDeepMedium == 0 && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && exclusiveTrack" + analysis_selections.jetIsos[lep] + " == 1 && exTrack_invMass" + analysis_selections.jetIsos[lep] + " < 12 && exclusiveTrackLeptonFlavour" + analysis_selections.jetIsos[lep] + " == \"" + lep + "\"" + (" && exTrack_deltaR" + analysis_selections.jetIsos[lep] + " > 0.05" if lep == "Electrons" else "") +  " && trackBDT" + analysis_selections.jetIsos[lep] + " > 0)"
-    #                 hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, "exTrack_dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["1t"][lep], drawString, False)
+    #                 hist = utils.getHistogramFromTreeCustomBinsX(histName, c, "exTrack_dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["1t"][lep], drawString, False)
     #                 #hist = utils.getHistogramFromTree(, c, , bins, -1, 1, , True)
     #                 #hist = utils.getHistogramFromTree(deltaM + "_1t_" + lep, c, "MET", bins, 0, 500, str(utils.LUMINOSITY) + "* passedMhtMet6pack * tEffhMetMhtRealXMht2016 *  Weight * BranchingRatio * (exclusiveTrack" + analysis_selections.jetIsos[lep] + " == 1 && MHT >= 220 && exTrack_invMass" + analysis_selections.jetIsos[lep] + " < 12 && BTagsDeepMedium == 0 && exclusiveTrackLeptonFlavour" + analysis_selections.jetIsos[lep] + " == \"" + lep + "\")", True)
     #                 hist.Sumw2()
@@ -514,7 +518,7 @@ def main():
                     if use_uniform_binning:
                         hist = utils.getHistogramFromTree(histName, c, obs, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                     else:
-                        hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, obs, analysis_selections.binning["1t"][binning_phase][lep], drawString, False)
+                        hist = utils.getHistogramFromTreeCustomBinsX(histName, c, obs, analysis_selections.binning["1t"][binning_phase][lep], drawString, False)
                     new_sum = hist.Integral()
                     print("new_sum", new_sum)
                     if partial_unblinding:
@@ -525,7 +529,7 @@ def main():
                     else:
                         signal_hists[histName].Add(hist)
             
-                if required_category != "tracks":
+                if channel != "tracks":
                     
                     if skip_electrons and lep == "Electrons":
                         continue
@@ -544,7 +548,7 @@ def main():
                         #print("old drawString="+drawString)
                 
 
-                        #hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
+                        #hist = utils.getHistogramFromTreeCustomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
                         #hist.Sumw2()
                         #hist.Scale(lumi_weight_for_data)
                         #old_sum = hist.Integral()
@@ -561,17 +565,11 @@ def main():
                         if use_uniform_binning:
                             hist = utils.getHistogramFromTree(histName, c, observable, analysis_selections.uniform_binning_number, -1, 1, drawString, False)
                         else:
-                            hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
-                            
-                            #probably want to draw stuff here for the different variations modifying drawString (which is conditions)
-                            hist_syst1 = utils.getHistogramFromTreeCutsomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
-                            
+                            hist = utils.getHistogramFromTreeCustomBinsX(histName, c, observable, analysis_selections.binning["2l"][lep], drawString, False)
                         hist.Sumw2() 
-                        
-                        hist_syst1 = hist.Clone(histName+'_syst1')    
                 
                 
-                        #hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
+                        #hist = utils.getHistogramFromTreeCustomBinsX(histName, c, "dilepBDT" + analysis_selections.jetIsos[lep], analysis_selections.binning["2l"][lep], drawString, False)
                         #hist.Sumw2() 
 
                         new_sum = hist.Integral()
@@ -620,3 +618,5 @@ def main():
     exit(0)
     
 main()
+
+

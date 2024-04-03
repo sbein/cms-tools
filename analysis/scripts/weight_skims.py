@@ -20,6 +20,8 @@ parser.add_argument('-f', '--force', dest='force', help='Force Update', action='
 parser.add_argument('-data', '--data', dest='data', help='data', action='store_true')
 parser.add_argument('-sam', '--sam', dest='sam', help='Sam Samples', action='store_true')
 parser.add_argument('-phase1', '--phase1', dest='phase1', help='Sam Samples', action='store_true')
+parser.add_argument('-jecup', '--jecup', dest='jecup', help='jec-up variation', action='store_true')
+parser.add_argument('-jecdown', '--jecdown', dest='jecdown', help='jec-down variation', action='store_true')
 args = parser.parse_args()
 
 input_dir = args.input_dir[0]
@@ -27,21 +29,25 @@ force = args.force
 sam = args.sam
 data = args.data
 phase1 = args.phase1
+jecup = args.jecup; jecdown = args.jecdown
 ######## END OF CMDLINE ARGUMENTS ########
 
-fileList = glob(input_dir + "/*");
+if jecup: thing2grab = 'JecUp'
+elif jecdown: thing2grab = 'JecDown'
+else: 
+    if phase1: thing2grab = '1.roo'
+    else: thing2grab = 'Tree.roo'
+
+fileList = glob(input_dir + "/*"+thing2grab+"*");
+print('fileList', input_dir + "/*"+thing2grab+"*", len(fileList))
 for filename in fileList:
     if os.path.isdir(filename): continue
     print "processing file " + filename
     f = TFile(filename, "update")
     numOfEvents = 0
-    if sam:
-        point = ""
-        if phase1:
-            point = "_".join(os.path.basename(filename).split("_")[3:5])
-        else:
-            point = "_".join(os.path.basename(filename).split("_")[2:4])
-        point_files = glob(input_dir + "/*" + point + "*")
+    if sam and (not phase1):
+        point = "_".join(os.path.basename(filename).split("_")[2:4])
+        point_files = glob(input_dir + "/*" + point + "*"+thing2grab+"*")
         print "point", point, "has", len(point_files), "files"
         numOfEvents = 20000 * len(point_files)
     else:

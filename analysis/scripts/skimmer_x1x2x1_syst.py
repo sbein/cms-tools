@@ -32,7 +32,7 @@ with open(os.environ['CMSSW_BASE']+'/src/cms-tools/analysis/tools/lib_systematic
 
 parser = argparse.ArgumentParser(description='Create skims for x1x2x1 process.')
 parser.add_argument('-i', '--input_file', nargs=1, help='Input Filename', required=False)
-parser.add_argument('-o', '--output_file', nargs=1, help='Output Filename', required=False)
+parser.add_argument('-o', '--output_dir', nargs=1, help='Output directory', required=False)
 parser.add_argument('-madHTgt', '--madHTgt', nargs=1, help='madHT lower bound', required=False)
 parser.add_argument('-madHTlt', '--madHTlt', nargs=1, help='madHT uppper bound', required=False)
 
@@ -48,6 +48,8 @@ parser.add_argument('-jpsi_electrons', '--jpsi_electrons', dest='jpsi_electrons'
 parser.add_argument('-testing', '--testing', dest='testing', help='testing', action='store_true')
 parser.add_argument('-phase1', '--phase1', dest='phase1', help='phase1', action='store_true')
 parser.add_argument('-phase1_2018', '--phase1_2018', dest='phase1_2018', help='phase1_2018', action='store_true')
+parser.add_argument('-jecup', '--jecup', dest='jecup', help='jec-up variation', action='store_true')
+parser.add_argument('-jecdown', '--jecdown', dest='jecdown', help='jec-down variation', action='store_true')
 
 args = parser.parse_args()
 
@@ -122,6 +124,7 @@ def main():
     jpsi = False
     testing = args.testing
     phase1 = args.phase1 or args.phase1_2018
+    jecup = args.jecup; jecdown = args.jecdown
     
     if signal and phase1:
         sam = True
@@ -146,9 +149,9 @@ def main():
     input_file = None
     if args.input_file:
         input_file = args.input_file[0].strip()
-    output_file = None
-    if args.output_file:
-        output_file = args.output_file[0].strip()
+    output_dir = None
+    if args.output_dir:
+        output_dir = args.output_dir[0].strip()
 
     if (bg and signal):
         signal = True
@@ -198,7 +201,9 @@ def main():
         htotal.Add(htotal18)        
         tetrig = TEfficiency(hpass, htotal)
     else:
-        tetrig = analysis_ntuples.getTrigEffGraph(triggerFile, 'tEffhMetMhtRealXMht;1')        
+        te16 = triggerFile.Get('tEffhMetMhtRealXMht;1')
+        tetrig = te16
+        #tetrig = analysis_ntuples.getTrigEffGraph(triggerFile, 'tEffhMetMhtRealXMht;1')        
     
     triggerFile.Close()
     
@@ -495,11 +500,15 @@ def main():
     
     chain = TChain('TreeMaker2/PreSelection')
     print("Opening", input_file)
+    lil_input = input_file.split('/')[-1]
     chain.Add(input_file)
     c = chain.CloneTree()
     chain = None
-    print("Creating " + output_file)
-    fnew = TFile(output_file,'recreate')
+    fname = output_dir+lil_input
+    if jecup: fname = fname.replace('.root','_JecUp.root')
+    if jecdown: fname = fname.replace('.root','_JecDown.root') 
+    print("Creating " + fname)
+    fnew = TFile(fname,'recreate')
     print("Created.")
 
     hHt = TH1F('hHt','hHt',100,0,3000)
@@ -653,15 +662,32 @@ def main():
         for jetsOb in analysis_observables.jetsObs:
             jetsObs[jetsOb] = getattr(c, jetsOb)
         
+        HT=0
+        MHTvec = TLorentzVector()
+        if len(jetsObs["Jets"])>3:
+            if not jetsObs["Jets"][3].Pt()==c.Jets[3].Pt():
+                print(ientry, 'different jets', jetsObs["Jets"][3].Pt(), c.Jets[3].Pt())
+        for ijet, jet in enumerate(jetsObs["Jets"]):
+            if jecup:  jet*=1.0/(1-c.Jets_jecUnc[ijet])
+            if jecdown: jet*=1.0/(1+c.Jets_jecUnc[ijet])
+            if not jet.Pt()>30: continue
+            if not abs(jet.Eta())<5.0: continue
+            MHTvec-=jet
+            if not abs(jet.Eta())<2.4: continue
+            HT+=jet.Pt()
+        
         MET = c.MET
         METPhi = c.METPhi
-        MHT = c.MHT
-        HT = c.HT
-        MHTPhi = c.MHTPhi
-        
+        MHT = MHTvec.Pt()
+        MHTPhi = MHTvec.Phi()        
+        #HT = c.HT
+
         for flatOb in commonRecalcFlatObs:
             commonRecalcFlatObs[flatOb][0] = getattr(c, flatOb)
             commonOrigRecalcFlatObs[flatOb][0] = getattr(c, flatOb)
+        commonRecalcFlatObs['MHT'][0] = MHT
+        commonRecalcFlatObs['MHTPhi'][0] = MHTPhi
+        commonRecalcFlatObs['HT'][0] = HT        
         
         muons = []
         if dy:
@@ -682,19 +708,23 @@ def main():
             MET = abs(metVector.Pt())    
             METPhi = metVector.Phi()
             
-            jetsHt = [i for i in range(len(c.Jets)) if c.Jets[i].Pt() >= 30 and abs(c.Jets[i].Eta()) <= 2.4 and all(abs(c.Muons[j].DeltaR(c.Jets[i])) > 0.1 for j in muons)]
-            jetsMht = [i for i in range(len(c.Jets)) if c.Jets[i].Pt() >= 30 and abs(c.Jets[i].Eta()) <= 5 and all(abs(c.Muons[j].DeltaR(c.Jets[i])) > 0.1 for j in muons)]
+            thejets = c.Jets
+            for ijet, jet in enumerate(thejets):
+                if jecup: jet*=1.0/(1-c.Jets_jecUnc[ijet])
+                if jecdown: jet*=1.0/(1+c.Jets_jecUnc[ijet])
+            jetsHt = [i for i in range(len(thejets)) if thejets[i].Pt() >= 30 and abs(thejets[i].Eta()) <= 2.4 and all(abs(c.Muons[j].DeltaR(thejets[i])) > 0.1 for j in muons)]
+            jetsMht = [i for i in range(len(thejets)) if thejets[i].Pt() >= 30 and abs(thejets[i].Eta()) <= 5 and all(abs(c.Muons[j].DeltaR(thejets[i])) > 0.1 for j in muons)]
     
-            #print "jetsHt=", jetsHt, "len(c.Jets)", len(c.Jets)
+            #print "jetsHt=", jetsHt, "len(thejets)", len(thejets)
             #print "jetsMht=", jetsMht
             
             HT = 0
             for i in jetsHt:
-                HT += c.Jets[i].Pt()
+                HT += thejets[i].Pt()
             MhtVec = TLorentzVector()
             MhtVec.SetPtEtaPhiE(0,0,0,0)
             for i in jetsMht:
-                MhtVec -= c.Jets[i]
+                MhtVec -= thejets[i]
             MHT = MhtVec.Pt()
             MHTPhi = MhtVec.Phi()
            
@@ -702,12 +732,11 @@ def main():
                 commonRecalcFlatObs[flatOb][0] = eval(flatOb)
         
             # CLEAN JETS FROM THE DY MUONS
-        
             for jetsOb in analysis_observables.jetsObs:
                 jetsObs[jetsOb] = cppyy.gbl.std.vector(eval(analysis_observables.jetsObs[jetsOb]))()
 
-            for i in range(c.Jets.size()):
-                if all(abs(c.Muons[j].DeltaR(c.Jets[i])) > 0.1 for j in muons):
+            for i in range(thejets.size()):
+                if all(abs(c.Muons[j].DeltaR(thejets[i])) > 0.1 for j in muons):
                     for jetsOb in analysis_observables.jetsObs:
                         jetsObs[jetsOb].push_back(getattr(c, jetsOb)[i])
         
@@ -1568,7 +1597,7 @@ def main():
             vars["passedMhtMet6pack"][0] = True
             vars["passedSingleMuPack"][0] = True
             vars["passesUniversalSelection"][0] = True
-            tbin = tetrig.FindFixBin(c.MHT)
+            tbin = tetrig.FindFixBin(MHT)
             vars["TrgEffNom"][0] = tetrig.GetEfficiency(tbin)
             vars["TrgEffUp"][0] = vars["TrgEffNom"][0]+tetrig.GetEfficiencyErrorUp(tbin)
             vars["TrgEffDown"][0] = vars["TrgEffNom"][0]-tetrig.GetEfficiencyErrorLow(tbin)
@@ -1597,7 +1626,8 @@ def main():
     
     if data:
         lumiSecs.Write("lumiSecs") 
-    
+    print('we are here', os.getcwd())
+    print('just created', fnew.GetName())
     fnew.Close()
 
 main()

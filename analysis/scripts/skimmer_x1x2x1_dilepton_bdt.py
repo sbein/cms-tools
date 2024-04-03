@@ -181,6 +181,7 @@ def main():
                         
                         for prefix in prefixes:
                             for lep in ["Muons", "Electrons"]:
+                                print('lep', lep, 'having a look at', iso + cuts + cat, analysis_selections.jetIsos[lep])
                                 if no_scan and iso + cuts + cat != analysis_selections.jetIsos[lep]:
                                     continue
                                 dirname = prefix + lep + iso + cat + cuts
@@ -316,6 +317,7 @@ def main():
                                             else:
                                                 v[0] = getattr(tree, k)
                                         
+                                        print('we are here', sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix)
                                         vars[sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix][0] = bdt_readers[prefix + leptonFlavour+ iso + cuts + cat].EvaluateMVA("BDT")
                                         #if vars[sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix][0] == -1:
                                         #    print "Got a BDT score of -1...", 

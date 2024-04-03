@@ -257,6 +257,7 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
         else:
             rootFile = TFile(f)
             c = rootFile.Get('tEvent')
+            c.Show(0)
         #print("After block", c.GetEntries())
         if plot_par.turnOnOnlyUsedObsInTree:
             c.SetBranchStatus("*",0);
@@ -1403,7 +1404,8 @@ def main():
                         sigHists.append(sigHist)
                         
                         if len(object_retag_name) > 0:
-                            plotutils.setHistColorFillLine(sigHist, plot_par.colorPalette[cP], 0.35)
+                            try: plotutils.setHistColorFillLine(sigHist, plot_par.colorPalette[cP], 0.35)#SB set up the try catch
+                            except: sigHist.SetFillColor(kViolet); sigHist.SetFillStyle(1001)#SB
                             cP += 1
                         else:
                             plotutils.setHistColorFillLine(sigHist, plot_par.signalCp[i], 1)
