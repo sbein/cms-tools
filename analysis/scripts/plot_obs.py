@@ -257,7 +257,7 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
         else:
             rootFile = TFile(f)
             c = rootFile.Get('tEvent')
-            c.Show(0)
+            ###c.Show(0)
         #print("After block", c.GetEntries())
         if plot_par.turnOnOnlyUsedObsInTree:
             c.SetBranchStatus("*",0);
@@ -368,7 +368,7 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
                                 #exit(0)
                                 hist = utils.getRealLogxHistogramFromTree(histName, c, formula, hist_def.get("bins"), hist_def.get("minX"), hist_def.get("maxX"), drawString, False)
                             elif hist_def.get("customBins") is not None:
-                                hist = utils.getHistogramFromTreeCutsomBinsX(histName, c, formula, hist_def.get("customBins"), drawString, False)
+                                hist = utils.getHistogramFromTreeCustomBinsX(histName, c, formula, hist_def.get("customBins"), drawString, False)
                             elif hist_def.get("2D") is not None and hist_def["2D"]:
                                              #getHistogramFromTree(name, tree, obs, bins, minX, maxX, condition, overflow=True, tmpName="hsqrt", predefBins = False, twoD = False, binsY = None, minBinsY = None, maxBinsY = None):
                                 hist = utils.getHistogramFromTree(histName, c, formula, hist_def.get("bins"), hist_def.get("minX"), hist_def.get("maxX"), drawString, False, "hsqrt", False, True, hist_def.get("binsY"), hist_def.get("minY"), hist_def.get("maxY"))
@@ -1282,36 +1282,6 @@ def main():
             i = 0
             foundBg = False
             
-            # normalise BG histograms:
-            if plot_par.normalise:
-                bgSum = 0
-                for type in types:
-                    hname = cut["name"] + "_" + hist_def["obs"] + "_" + type
-                    if histograms.get(hname) is not None:
-                        if plot_par.normalise_integral_positive_only:
-                            for binIdx in range(1,histograms[hname].GetNbinsX() + 1):
-                                content = histograms[hname].GetBinContent(binIdx)
-                                print(("histogram", hname, "bin", binIdx, "content", content))
-                                if content > 0:
-                                    bgSum += content
-                        else:
-                            bgSum += histograms[hname].Integral()
-                print("Normalising BG sum", bgSum)
-                if bgSum > 0:
-                    for type in types:
-                        hname = cut["name"] + "_" + hist_def["obs"] + "_" + type
-                        if histograms.get(hname) is not None and bgSum > 0:
-                            histograms[hname].Scale(1./bgSum)
-            print("types", types)
-            for type in types:
-                hname = cut["name"] + "_" + hist_def["obs"] + "_" + type
-                if plot_par.plot_rand:
-                    histograms[hname] = createRandomHist(hname)
-                if histograms.get(hname) is not None:
-                    hs.Add(histograms[hname])
-                    typesInx.append(i)
-                    foundBg = True
-                i += 1
             
             efficiencies = {}
             
@@ -1411,21 +1381,19 @@ def main():
                             plotutils.setHistColorFillLine(sigHist, plot_par.signalCp[i], 1)
                         sigMax = max(sigHist.GetMaximum(), sigMax)
             maximum = sigMax
-        
-            
+                            
             
             if foundBg:
                 tmpbgHists = hs.GetHists()
 
-                for i, hist in enumerate(tmpbgHists):
-                    print(hist, hist.GetMaximum())
                 bgMax = hs.GetMaximum()
                 print("Bg max:", hist_def["obs"], bgMax)
                 maximum = max(bgMax, sigMax)
             if plot_par.plot_data:
                 dataHist = histograms[dataHistName]
                 if plot_par.normalise and dataHist.Integral() > 0:
-                    dataHist.Scale(1./dataHist.Integral())
+                    ##Sam turn this off#dataHist.Scale(1./dataHist.Integral())
+                    a = 1
                 if not (linear and plot_single):
                     dataHist.SetMinimum(plot_par.log_minimum)
                 else:
@@ -1438,6 +1406,40 @@ def main():
                 dataMax = dataHist.GetMaximum()
                 maximum = max(dataMax, maximum)
             
+            # normalise BG histograms:
+            if plot_par.normalise:
+                bgSum = 0
+                for type in types:
+                    hname = cut["name"] + "_" + hist_def["obs"] + "_" + type
+                    if histograms.get(hname) is not None:
+                        if plot_par.normalise_integral_positive_only:
+                            for binIdx in range(1,histograms[hname].GetNbinsX() + 1):
+                                content = histograms[hname].GetBinContent(binIdx)
+                                print(("histogram", hname, "bin", binIdx, "content", content))
+                                if content > 0:
+                                    bgSum += content
+                        else:
+                            bgSum += histograms[hname].Integral()
+                print("Normalising BG sum", bgSum)
+                if bgSum > 0:
+                    for type in types:
+                        hname = cut["name"] + "_" + hist_def["obs"] + "_" + type
+                        print("Normalising bg hist", hname)                        
+                        if histograms.get(hname) is not None and bgSum > 0:
+                            #histograms[hname].Scale(1./bgSum)
+                            ##sam change
+                            histograms[hname].Scale(dataHist.Integral()/bgSum)
+            print("types", types)
+            for type in types:
+                hname = cut["name"] + "_" + hist_def["obs"] + "_" + type
+                if plot_par.plot_rand:
+                    histograms[hname] = createRandomHist(hname)
+                if histograms.get(hname) is not None:
+                    hs.Add(histograms[hname])
+                    typesInx.append(i)
+                    foundBg = True
+                i += 1
+                            
             if len(plot_par.plot_custom_types) > 0:
                 for i in range(len(plot_par.plot_custom_types)):
                     histName = cut["name"] + "_" + hist_def["obs"] + "_" + plot_par.plot_custom_types[i]
@@ -1588,6 +1590,7 @@ def main():
                     utils.setOverflowBinsStack(newBgHist)
                 
                 if newBgHist is not None and (plot_par.solid_bg or newBgHist.GetNhists() > 0):
+                    print('newBgHist', newBgHist, bool(newBgHist is None))
                     if not plot_par.plot_ratio:
                         newBgHist.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else hist_def["obs"])
                         if hist_def.get("Ndivisions") is not None:
@@ -1830,7 +1833,8 @@ def main():
                     hist = histograms[histName]
                     if not (linear and plot_single):
                         hist.SetMinimum(plot_par.log_minimum)
-                    hist.Draw("HIST SAME " + errorStr)
+                    if i==0: hist.Draw("HIST SAME " + errorStr)
+                    else: hist.Draw("HIST SAME")
                     if legend is not None:
                         legend.AddEntry(hist, plot_par.custom_types_label[i], 'l')
             
@@ -2659,7 +2663,8 @@ def main():
                     memory.append(linhist)
                     linhist.SetMaximum(maximum*1.1)
                     linhist.SetMinimum(0)
-                    linhist.Draw("HIST SAME " + errorStr)
+                    if i==0: linhist.Draw("HIST SAME " + errorStr)
+                    else: linhist.Draw("HIST SAME")
             
             if plot_par.fit_inv_mass_jpsi and plot_par.fit_inv_mass_cut_jpsi == cut["name"] and plot_par.fit_inv_mass_obs_jpsi in hist_def["obs"]:
                 if fit_funcs.get("fSignalOnly" + hist_def["obs"]) is None:
