@@ -599,12 +599,16 @@ class dimuon_background_estimation_non_isolated_and_tautau_2016(BaseParams):
     y_title_offset = 0.8
     
     colorPalette = [
-        { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle},
-        { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },
+        { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle, "name" : "darkgreen", "fillColor" : kGreen+1},
+        { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross, "name" : "green", "fillColor" : kGreen },
     ]
     log_minimum = 0.01
     
     label_text = plotutils.StampStr.PRE
+    
+    
+
+    
 
 class dimuon_background_estimation_non_isolated_and_tautau_2017(dimuon_background_estimation_non_isolated_and_tautau_2016):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_2017.root"
@@ -1000,7 +1004,74 @@ class dimuon_simulation_non_iso_and_tau_tau_training_scan_2017(dimuon_simulation
 
 
 
-
+class dimuon_background_non_isolated_and_tautau_lowbdt_2016(BaseParams):#copy of dimuon_background_estimation_non_isolated_and_tautau_2016
+    histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_2016.root"
+    save_histrograms_to_file = True
+    load_histrograms_from_file = False
+    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/slim_sum_total"
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/slim_sum/"
+    plot_error = True
+    plot_data = True
+    plot_data_for_bg_estimation = True
+    
+    plot_signal = False
+    blind_data = False
+    bg_retag = True
+    plot_overflow = False
+    
+    jetIsoStr = ""
+    jetIso = analysis_selections.jetIsos["Muons"]
+    cuts = [
+        {"name":"none", "title": "None",  "condition" : "(dilepBDTphase1%%% < 0 && passedMhtMet6pack == 1 && passesUniversalSelection == 1 && MinDeltaPhiMhtJets > 0.4 && BTagsDeepMedium == 0 && twoLeptons%%% == 1 && MHT >= 220 &&  MET >= 140 && leptonFlavour%%% == \"Muons\" && invMass%%% < 12  && invMass%%% > 0.4 && !(invMass%%% > 3 && invMass%%% < 3.2) && !(invMass%%% > 0.75 && invMass%%% < 0.81) && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && sameSign%%% == 0)"},# && mtautau%%% < 200
+    ]
+    injectJetIsoToCuts(cuts, jetIso)
+    histograms_defs = [
+        { "obs" : "dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .68, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },    
+        { "obs" : "nmtautau%%%", "linearYspace" : 1.3, "ratio1max" : 10, "minX" : 30, "maxX" : 230, "bins" : 10}
+    ]
+        
+    injectJetIsoToHistograms(histograms_defs, jetIso)
+    
+    weightString = {
+        #'MET' : "Weight * passedMhtMet6pack * tEffhMetMhtRealXMht2016 * puWeight * BranchingRatio",
+        'MET' : "Weight * tEffhMetMhtRealXMht2016 * BranchingRatio",
+    }
+    calculatedLumi = {
+        'MET' : analysis_selections.luminosities["2016"]
+    }
+    bgReTaggingFactors = {
+        "tautau" : analysis_selections.tautau_factors["2016"]["Muons"],
+        "non-iso" : analysis_selections.non_iso_2l_factors["2016"]["Muons"]
+    }
+    bgReTagging = {
+        "tautau" : "tautau%%% && isoCr%%% == 0",
+        "non-iso" : "isoCr%%% >= 1"
+    }
+    injectJetIsoToMapValues(bgReTagging, jetIso)
+    
+    bgReTaggingUseSources = True
+    
+    bgReTaggingOrder = {
+        "tautau" : 1,
+        "non-iso" : 2
+    }
+    bgReTaggingNames = {
+        "tautau" : "#tau#tau",
+        "non-iso" : "jetty"
+    }
+    bgReTaggingSources = {
+        "tautau" : "bg",
+        "non-iso" : "data"
+    }
+    y_title_offset = 0.8
+    
+    colorPalette = [
+        { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle, "name" : "darkgreen", "fillColor" : kYellow},
+        { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross, "name" : "green", "fillColor" : kBlue },
+    ]
+    log_minimum = 0.01
+    label_text = plotutils.StampStr.PRE
+    
 
 
 
@@ -1014,7 +1085,7 @@ class dimuon_simulation_non_iso_and_tau_tau_training_scan_2017(dimuon_simulation
 ###############################################################
 
 
-class dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau(BaseParams):
+class dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau(BaseParams):##thing we copy
     histrograms_file = BaseParams.histograms_root_files_dir + "/dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau.root"
     save_histrograms_to_file = True
     load_histrograms_from_file = True 
@@ -1135,12 +1206,13 @@ class dilepton_electrons_bg_isocr_tautau_vs_no_tautau(dilepton_muons_bg_isocr_sc
 class dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau_phase1(dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau_phase1.root"
     save_histrograms_to_file = True
-    load_histrograms_from_file = True 
+    load_histrograms_from_file = True
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum"
     #signal_dir = signals
     #signal_names = signalNames
     #signal_dir =  "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim"
     plot_signal = False
+    plot_data = False 
     
     weightString = {
         #'MET' : "Weight * passedMhtMet6pack * tEffhMetMhtRealXMht2016 * puWeight * BranchingRatio",
@@ -1163,6 +1235,12 @@ class dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau_phase1(dilepton_muons_bg_
     ]
     jetIso = "CorrJetNoMultIso10Dr0.6"
     injectJetIsoToCuts(cuts, jetIso)
+    
+    
+    
+    
+    
+
 
 class dilepton_electrons_bg_isocr_tautau_vs_no_tautau_phase1(dilepton_electrons_bg_isocr_tautau_vs_no_tautau):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dilepton_electrons_bg_isocr_tautau_vs_no_tautau_phase1.root"
@@ -1177,7 +1255,7 @@ class dilepton_electrons_bg_isocr_tautau_vs_no_tautau_phase1(dilepton_electrons_
 class dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau_data(dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dilepton_muons_bg_isocr_scan_tautau_vs_no_tautau_data.root"
     save_histrograms_to_file = True
-    load_histrograms_from_file = True 
+    load_histrograms_from_file = False 
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/slim_sum"
     plot_data = True
     plot_bg = False

@@ -19,6 +19,8 @@ parser.add_argument('-slim', '--slim', dest='slim', help='Slim Skims', action='s
 parser.add_argument('-phase1', '--phase1', dest='phase1', help='Phase 1', action='store_true')
 parser.add_argument('-phase1_2018', '--phase1_2018', dest='phase1_2018', help='Phase 1 2018', action='store_true')
 parser.add_argument('-nlp', '--no_lepton_selection', dest='no_lepton_selection', help='No Lepton Selection Skim', action='store_true')
+parser.add_argument('-jecup', '--jecup', dest='jecup', help='jec-up variation', action='store_true')
+parser.add_argument('-jecdown', '--jecdown', dest='jecdown', help='jec-down variation', action='store_true')
 args = parser.parse_args()
 
 two_leptons = args.two_leptons
@@ -27,6 +29,7 @@ no_lepton_selection = args.no_lepton_selection
 slim = args.slim
 phase1 = args.phase1
 phase1_2018 = args.phase1_2018
+jecup = args.jecup; jecdown = args.jecdown
 
 #skim_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/single/"
 #output_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/sum"
@@ -69,6 +72,10 @@ if not os.path.exists(output_dir):
 
 files = glob(skim_dir + "/*higgsino*");
 
+if jecup: thing2grab = 'JecUp'
+elif jecdown: thing2grab = 'JecDown'
+else: thing2grab = 'Tree.roo'
+
 points = {}
 
 def chunker_longest(iterable, chunksize):
@@ -98,7 +105,9 @@ if slim or sam:
     chunk_size = 10000
 
 for point in points:
-    point_files = sorted(glob(skim_dir + "/*" + point + "*"))
+    #print('point', point)
+    #if not 'mChipm100GeV_dm6p26GeV' in point: continue
+    point_files = sorted(glob(skim_dir + "/*" + point + "*"+thing2grab+"*"))
     print("\n\n\n\npoint=" + point)
     print("size=" + str(len(point_files)))
     
@@ -106,6 +115,8 @@ for point in points:
     
     for chunk in chunker_longest(point_files, chunk_size):
         output_file = output_dir + "/" + point + "_" + str(i) + ".root"
+        if jecup: output_file = output_file.replace('.root','_JecUp.root')
+        if jecdown: output_file = output_file.replace('.root','_JecDown.root') 
     
         if os.path.exists(output_file):
             print("File", output_file, " exists. Skipping")

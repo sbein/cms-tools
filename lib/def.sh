@@ -34,8 +34,8 @@ SAM_NEW_SIM_NTUPLES_DIR="/pnfs/desy.de/cms/tier2/store/user/sbein/CommonSamples/
 
 
 SAM_NEW_SIM_NTUPLES_DIR="/pnfs/desy.de/cms/tier2/store/user/sbein/CommonSamples/RadiativeMu_2016Fast/ntuple_sidecarv2/"
-SAM_SIM_NTUPLES_17_DIR="/pnfs/desy.de/cms/tier2/store/user/sbein/CommonSamples/RadiativeMu_2017Fast/ntuple_sidecarv3/"
-SAM_SIM_NTUPLES_18_DIR="/pnfs/desy.de/cms/tier2/store/user/sbein/CommonSamples/RadiativeMu_2018Fast/ntuple_sidecarv3/"
+SAM_SIM_NTUPLES_17_DIR="/pnfs/desy.de/cms/tier2/store/user/sbein/CommonSamples/RadiativeMu_2017Fast/ntuple_sidecarv3c/"
+SAM_SIM_NTUPLES_18_DIR="/pnfs/desy.de/cms/tier2/store/user/sbein/CommonSamples/RadiativeMu_2018Fast/ntuple_sidecarv3c/"
 
 #SAM_NEW_SIM_NTUPLES_DIR="/nfs/dust/cms/user/beinsam/CommonSamples/NtupleMaker/3March2020/CMSSW_9_4_11/src/TreeMaker/Production/test"
 DATA_NTUPLES_DIR="/pnfs/desy.de/cms/tier2/store/user/*/NtupleHub/ProductionRun2v3*"
@@ -104,6 +104,7 @@ CLONE_SINGLE="$SIM_DIR/clone_sim_file_single.sh"
 CS_SINGLE="$SIM_DIR/calculate_cross_section_single.sh"
 
 OUTPUT_WD="/nfs/dust/cms/user/beinsam/x1x2x1" #these lines to change to me
+YUVAL_OUTPUT_WD="/nfs/dust/cms/user/nissanuv/x1x2x1"
 TWO_LEPTONS_OUTPUT_WD="/nfs/dust/cms/user/nissanuv/2lx1x2x1" #these lines to change to me
 DY_OUTPUT_WD="/nfs/dust/cms/user/nissanuv/dy_x1x2x1" #these lines to change to me
 
@@ -167,17 +168,21 @@ SKIM_DATA_JPSI_SINGLE_ELECTRON_OUTPUT_DIR="$OUTPUT_WD/data/skim_jpsi_single_elec
 SKIM_DATA_Z_PEAK_OUTPUT_DIR="$OUTPUT_WD/data/skim_z"
 
 SIG_DUP_OUTPUT_DIR="$OUTPUT_WD/signal/dup"
-LEPTON_TRACK_SPLIT_DIR="$OUTPUT_WD/signal/lepton_track"
-LEPTON_TRACK_PHASE1_SPLIT_DIR="$OUTPUT_WD/signal/lepton_track_phase1"
-
+#LEPTON_TRACK_SPLIT_DIR="$OUTPUT_WD/signal/lepton_track"
+#LEPTON_TRACK_PHASE1_SPLIT_DIR="$OUTPUT_WD/signal/lepton_track_phase1"
+LEPTON_TRACK_SPLIT_DIR="$YUVAL_OUTPUT_WD/signal/lepton_track"
+LEPTON_TRACK_PHASE1_SPLIT_DIR="$YUVAL_OUTPUT_WD/signal/lepton_track_phase1"
 
 SPLIT_JPSI_MASTER_OUTPUT_DIR="$SKIM_MASTER_OUTPUT_DIR/split"
 
 RGS_DIR="/afs/desy.de/user/n/nissanuv/cms-tools/analysis/cut_optimisation/rgs"
 RESUMMINO_BIN="/afs/desy.de/user/n/nissanuv/local/bin/resummino"
-DILEPTON_BDT_DIR="$OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt"
-DILEPTON_BDT_PHASE1_DIR="$OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt_phase1"
-DILEPTON_TWO_LEPTONS_BDT_DIR="$TWO_LEPTONS_OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt"
+#DILEPTON_BDT_DIR="$OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt"
+#DILEPTON_BDT_PHASE1_DIR="$OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt_phase1"
+#DILEPTON_TWO_LEPTONS_BDT_DIR="$TWO_LEPTONS_OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt"
+DILEPTON_BDT_DIR="$YUVAL_OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt"
+DILEPTON_BDT_PHASE1_DIR="$YUVAL_OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt_phase1"
+DILEPTON_TWO_LEPTONS_BDT_DIR="$YUVAL_OUTPUT_WD/cut_optimisation/tmva/dilepton_bdt"
 
 if [[ `hostname` == *".desy.de"* ]]; then
     echo Running in DESY

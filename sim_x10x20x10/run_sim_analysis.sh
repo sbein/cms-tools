@@ -37,6 +37,16 @@ do
         POSITIONAL+=("$1")
         shift
         ;;
+        --jecup)
+        JECUP=true
+        POSITIONAL+=("$1") # Add this line to include --jecup in POSITIONAL
+        shift # past argument
+        ;;
+        --jecdown)
+        JECDOWN=true
+        POSITIONAL+=("$1") # Add this line to include --jecdown in POSITIONAL
+        shift # past argument
+        ;;
         *)    # unknown option
         POSITIONAL+=("$1") # save it in an array for later
         shift # past argument
@@ -107,39 +117,59 @@ notification = Never
 request_memory = 16 GB
 EOM
 
+suffix="" # Initialize the suffix variable
+
+if [ "$JECUP" = true ]; then
+    suffix="_JecUp"
+elif [ "$JECDOWN" = true ]; then
+    suffix="_JecDown"
+fi
+
 for sim in ${INPUT_DIR}/*higgsino*; do
     filename=$(basename $sim .root)
-    if [ -f "${OUTPUT_DIR}/single/${filename}.root" ]; then
-        echo "${OUTPUT_DIR}/single/${filename}.root exist. Skipping..."
+    modified_filename="${filename}${suffix}" # Apply suffix based on JEC option
+
+    # Check if the modified output file already exists
+    if [ -f "${OUTPUT_DIR}/single/${modified_filename}.root" ]; then
+        echo "${OUTPUT_DIR}/single/${modified_filename}.root exists. Skipping..."
         continue
     fi
-
-    input_files="$sim,$input_files"
+    
+    # Accumulate input files for batching
+    if [ -z "$input_files" ]; then
+        # If input_files is empty, just add the first file without a leading comma
+        input_files="$sim"
+    else
+        # If input_files is not empty, prepend the new file with a comma
+        input_files="$sim,$input_files"
+    fi
     ((counter++))
 
-    if [ $(($counter % $files_per_job)) == 0 ]; then
+    # Submit a batch of jobs once the desired number of files per job is reached
+    if [ $((counter % files_per_job)) == 0 ]; then
         ((job_count++))
+        # Adjust the command to reflect batching; here, assuming input_files needs to be space-separated
         cmd="$SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/ ${POSITIONAL[@]} --signal" 
         echo "Will run batch $job_count:"
         echo $cmd
         cat << EOM >> $output_file
-arguments = $SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/ ${POSITIONAL[@]} --signal
+arguments = $cmd
 error = ${OUTPUT_DIR}/stderr/${filename}_${job_count}.err
 output = ${OUTPUT_DIR}/stdout/${filename}_${job_count}.output
 Queue
 EOM
-        input_files=""
+        input_files="" # Reset input files for the next batch
     fi
 done
 
-# Handle remaining files
-if [ $(($counter % $files_per_job)) != 0 ]; then
+# Handle remaining files for the last batch if it does not fill up completely
+if [ $((counter % files_per_job)) != 0 ]; then
     ((job_count++))
     cmd="$SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/ ${POSITIONAL[@]} --signal" 
     echo "Will run batch $job_count:"
     echo $cmd
     cat << EOM >> $output_file
-arguments = $SIM_DIR/run_sim_analysis_single.sh -i $input_files -o ${OUTPUT_DIR}/single/${filename}.root ${POSITIONAL[@]} --signal
+arguments = $cmd
 error = ${OUTPUT_DIR}/stderr/${filename}_${job_count}.err
 output = ${OUTPUT_DIR}/stdout/${filename}_${job_count}.output
 Queue
@@ -148,6 +178,7 @@ fi
 
 echo "Number of jobs to be run: $job_count"
 echo "Your Condor submission file is: $output_file"
+
 
 echo $output_file
 condor_submit $output_file

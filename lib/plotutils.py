@@ -63,9 +63,9 @@ defaultColorPalette = [
 
 defaultOrigColorPalette = [
     { "name" : "Rare", "fillColor" : kYellow-4, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle},
-    { "name" : "DiBoson", "fillColor" : kRed-4, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },
-    { "name" : "DYJetsToLL", "fillColor" : kAzure-4, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 4,  "markerStyle" : kOpenTriangleUp },
     { "name" : "TTJets", "fillColor" : kCyan-7, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 3,  "markerStyle" : kOpenSquare },
+    { "name" : "DiBoson", "fillColor" : kRed-4, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },    
+    { "name" : "DYJetsToLL", "fillColor" : kAzure-4, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 4,  "markerStyle" : kOpenTriangleUp },
     { "name" : "ZJetsToNuNu", "fillColor" : kSpring-1, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 3,  "markerStyle" : kOpenSquare },
     { "name" : "QCD", "fillColor" : kGray+1, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 6,  "markerStyle" : kOpenDiamond },
     { "name" : "WJetsToLNu", "fillColor" : kTeal-9, "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },

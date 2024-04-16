@@ -41,8 +41,8 @@ SINGLE_OUTPUT = WORK_DIR + "/single"
 OUTPUT_SUM = WORK_DIR + "/sum"
 
 # 2016 version
-if not phase1 and not phase1_2018:
-    OUTPUT_SUM = SINGLE_OUTPUT
+##if not phase1 and not phase1_2018:#sam commented these out because the branches were being added to the single files
+##    OUTPUT_SUM = SINGLE_OUTPUT
 
 
 OUTPUT_SUM_OUTPUT = WORK_DIR + "/stdout"

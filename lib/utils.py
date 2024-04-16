@@ -55,7 +55,13 @@ samCrossSections = {
     'mChipm275GeV' : 0.373229,
     'mChipm300GeV' : 0.284855,
     'mChipm400GeV' : 0.0887325,
-    'mChipm500GeV' : 0.0338387
+    'mChipm500GeV' : 0.0338387,
+    'mChipm600GeV' : 0.0146677,
+    'mChipm700GeV' : 0.00689981,
+    'mChipm800GeV' : 0.0048731,
+    'mChipm900GeV' : 0.00346143,
+    'mChipm1000GeV' : 0.000968853,
+    'mChipm1100GeV' : 0.000731306    
 }
 
 dyCrossSections = {
@@ -335,7 +341,7 @@ def pause(str_='push enter key when ready'):
     import sys
     print(str_)
     sys.stdout.flush() 
-    input('')
+    a = input('')
 
 
 def fillth1(h,x, weight=1):
@@ -546,7 +552,7 @@ def getRealLogxHistogramFromTree(name, tree, obs, bins, minX, maxX, condition, o
     h.Sumw2()
     return getHistogramFromTree(name, tree, obs, bins, minX, maxX, condition, overflow, name + "_logx", True)
 
-def getHistogramFromTreeCutsomBinsX(name, tree, obs, customBinsX, condition, overflow=True):
+def getHistogramFromTreeCustomBinsX(name, tree, obs, customBinsX, condition, overflow=True):
     xbins = array.array('d',[0]*(len(customBinsX)))
     for i in range(len(customBinsX)):
         xbins[i] = customBinsX[i]

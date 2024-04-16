@@ -199,8 +199,6 @@ def classifyGenZLeptons(c):
             else:
                 genNonZL.append(ipart)
     if len(genZL) != 2 or (abs(c.GenParticles_PdgId[genZL[0]]) != abs(c.GenParticles_PdgId[genZL[1]])) or (c.GenParticles_PdgId[genZL[0]] * c.GenParticles_PdgId[genZL[1]] > 0 ):
-        print("****** WOW!") #SB asking: is this an issue?
-        print("genZL=" + str(genZL)) 
         for i in genZL:
             print("PdgId" + str(i) + "=" + str(c.GenParticles_PdgId[i]))
         return None, None

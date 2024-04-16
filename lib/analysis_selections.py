@@ -117,7 +117,7 @@ binning = {
         },
         "phase1":{
             "Electrons" : [0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,1],
-            "Muons" : [0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,1]
+            "Muons" : [0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,1]
         }
     },
     "2l" : {
@@ -153,11 +153,18 @@ recommended_luminosities = {
     "run2" : 137
 }
 
+#fast_sim_weights = {
+#    '2016' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2016 * FastSimWeightPR31285To36122",
+#    '2017' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2017",
+#    '2018' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2018 * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons",
+#    "phase1" : "Weight * BranchingRatio * (("+ "{:.2f}".format(luminosities["2017"] * 1000) +" * tEffhMetMhtRealXMht2017 + "+ "{:.2f}".format(luminosities["2018"] * 1000) +" * tEffhMetMhtRealXMht2018)/" + "{:.2f}".format((luminosities["2017"]+luminosities["2018"]) * 1000)  + ") * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons"
+#}
+
 fast_sim_weights = {
-    '2016' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2016 * FastSimWeightPR31285To36122",
-    '2017' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2017",
-    '2018' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2018 * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons",
-    "phase1" : "Weight * BranchingRatio * (("+ "{:.2f}".format(luminosities["2017"] * 1000) +" * tEffhMetMhtRealXMht2017 + "+ "{:.2f}".format(luminosities["2018"] * 1000) +" * tEffhMetMhtRealXMht2018)/" + "{:.2f}".format((luminosities["2017"]+luminosities["2018"]) * 1000)  + ") * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons"
+    '2016' : "Weight * BranchingRatio",# * FastSimWeightPR31285To36122 #only if we want to try to run the pMSSM
+    '2017' : "Weight * BranchingRatio",
+    '2018' : "Weight * BranchingRatio  * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons",
+    "phase1" : "Weight * BranchingRatio * (("+ "{:.2f}".format(luminosities["2017"] * 1000) +" + "+ "{:.2f}".format(luminosities["2018"] * 1000) +" /" + "{:.2f}".format((luminosities["2017"]+luminosities["2018"]) * 1000)  + ") * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons"
 }
 
 full_sim_weights  = {
