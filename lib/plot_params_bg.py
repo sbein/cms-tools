@@ -632,8 +632,8 @@ class dimuon_background_estimation_non_isolated_and_tautau_2017(dimuon_backgroun
     }
     
     bgReTaggingFactors = {
-        "tautau" : analysis_selections.tautau_factors["2017"]["Muons"],
-        "non-iso" : analysis_selections.non_iso_2l_factors["2017"]["Muons"]
+        "tautau" : analysis_selections.tautau_factors["phase1"]["Muons"],
+        "non-iso" : analysis_selections.non_iso_2l_factors["phase1"]["Muons"]
     }
     
     jetIso = analysis_selections.jetIsos["Muons"]
@@ -684,8 +684,8 @@ class dimuon_background_estimation_non_isolated_and_tautau_2018(dimuon_backgroun
     }
     
     bgReTaggingFactors = {
-        "tautau" : analysis_selections.tautau_factors["2018"]["Muons"],
-        "non-iso" : analysis_selections.non_iso_2l_factors["2018"]["Muons"]
+        "tautau" : analysis_selections.tautau_factors["phase1"]["Muons"],
+        "non-iso" : analysis_selections.non_iso_2l_factors["phase1"]["Muons"]
     }
     
     jetIso = analysis_selections.jetIsos["Muons"]
@@ -1022,10 +1022,6 @@ class dimuon_simulation_non_iso_and_tau_tau_training_scan_2017(dimuon_simulation
 
 
 
-
-
-
-
 class dimuon_background_non_isolated_and_tautau_lowbdt_2016(BaseParams):#copy of dimuon_background_estimation_non_isolated_and_tautau_2016
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_2016.root"
     save_histrograms_to_file = True
@@ -1061,10 +1057,10 @@ class dimuon_background_non_isolated_and_tautau_lowbdt_2016(BaseParams):#copy of
     calculatedLumi = {
         'MET' : analysis_selections.luminosities["2016"]
     }
-    bgReTaggingFactors = {
-        "tautau" : analysis_selections.tautau_factors["2016"]["Muons"],
-        "non-iso" : analysis_selections.non_iso_2l_factors["2016"]["Muons"]
-    }
+    #bgReTaggingFactors = {
+    #    "tautau" : analysis_selections.tautau_factors["2016"]["Muons"],
+    #    "non-iso" : analysis_selections.non_iso_2l_factors["2016"]["Muons"]
+    #}
     bgReTagging = {
         "tautau" : "tautau%%% && isoCr%%% == 0",
         "non-iso" : "isoCr%%% >= 1"
