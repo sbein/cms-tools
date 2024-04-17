@@ -162,14 +162,19 @@ for fullname in ${INPUT_DIR}/${YEAR_PATTERN}*${DATA_PATTERN}*; do
         #echo "$name exist. Skipping..."
         continue
     fi
-    input_files="$input_files $fullname"
+    if [ -z "$input_files" ]; then
+        input_files="$fullname"
+    else
+        input_files="$input_files $fullname"
+    fi
+    #input_files="$input_files $fullname"
     ((count+=1))
     if [ $(($count % $files_per_job)) == 0 ]; then
         ((job_num+=1))
         echo Job Num $job_num
         echo $DATA_DIR/run_skim_data_analysis_single.sh -i \"$input_files\" --data ${POSITIONAL[@]}
 cat << EOM >> $output_file
-arguments = $DATA_DIR/run_skim_data_analysis_single.sh -i \"$input_files\" --data ${POSITIONAL[@]}
+arguments = $DATA_DIR/run_skim_data_analysis_single.sh -i $input_files --data ${POSITIONAL[@]}
 error = ${OUTPUT_DIR}/stderr/$(basename $fullname .root).err
 log = ${OUTPUT_DIR}/stdout/$(basename $fullname .root).log
 output = ${OUTPUT_DIR}/stdout/$(basename $fullname .root).output
@@ -190,7 +195,7 @@ done
 if [ $(($count % $files_per_job)) != 0 ]; then
     echo $DATA_DIR/run_skim_data_analysis_single.sh -i \"$input_files\" --data ${POSITIONAL[@]}
 cat << EOM >> $output_file
-arguments = $DATA_DIR/run_skim_data_analysis_single.sh -i \"$input_files\" --data ${POSITIONAL[@]}
+arguments = $DATA_DIR/run_skim_data_analysis_single.sh -i $input_files --data ${POSITIONAL[@]}
 error = ${OUTPUT_DIR}/stderr/$(basename $fullname .root).err
 output = ${OUTPUT_DIR}/stdout/$(basename $fullname .root).output
 Queue
@@ -212,5 +217,8 @@ fi
 # done
 
 condor_submit $output_file
-#echo $output_file
-rm $output_file
+echo $output_file
+#rm $output_file
+
+#/tmp/condor_submut.20240328_012620878706385
+#/tmp/condor_submut.20240328_013519377611143

@@ -41,7 +41,9 @@ output_file = None
 signal_dir = None
 bg_dir = None
 
-wanted_year = "phase1"
+wanted_year = "2016"
+
+print "Wanted year: " + wanted_year
 
 required_lepton = "Electrons"
 jetiso = "CorrJetNoMultIso10Dr0.5"

@@ -565,6 +565,11 @@ class dimuon_background_estimation_non_isolated_and_tautau_2016(BaseParams):
         'MET' : analysis_selections.luminosities["2016"]
     }
     
+    
+    labelLumi = {
+        'MET' : analysis_selections.luminosities_labels["2016"]
+    }
+    
     bgReTaggingFactors = {
         "tautau" : analysis_selections.tautau_factors["2016"]["Muons"],
         "non-iso" : analysis_selections.non_iso_2l_factors["2016"]["Muons"]
@@ -654,6 +659,14 @@ class dimuon_background_estimation_non_isolated_and_tautau_2017(dimuon_backgroun
     ]
     injectJetIsoToHistograms(histograms_defs, jetIso)
 
+class dimuon_background_estimation_non_isolated_and_tautau_2016_after_topup(dimuon_background_estimation_non_isolated_and_tautau_2016):
+    histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_2016_after_topup.root"
+    save_histrograms_to_file = True
+    load_histrograms_from_file = True
+    
+    
+
+
 class dimuon_background_estimation_non_isolated_and_tautau_2018(dimuon_background_estimation_non_isolated_and_tautau_2017):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_2018.root"
     save_histrograms_to_file = True
@@ -702,12 +715,21 @@ class dimuon_background_estimation_non_isolated_and_tautau_phase1(dimuon_backgro
     
     weightString = {
         #'MET' : "Weight * passedMhtMet6pack * tEffhMetMhtRealXMht2016 * puWeight * BranchingRatio",
-        'MET' : "((41.15 * tEffhMetMhtRealXMht2017 + 58.09 * tEffhMetMhtRealXMht2018)/99.23) * Weight * passedMhtMet6pack * BranchingRatio * passesUniversalSelection",
+        'MET' : "(("+ "{:.2f}".format(analysis_selections.luminosities["2017"] * 1000) +" * tEffhMetMhtRealXMht2017 + "+ "{:.2f}".format(analysis_selections.luminosities["2018"] * 1000) +" * tEffhMetMhtRealXMht2018)/" + "{:.2f}".format((analysis_selections.luminosities["2017"]+analysis_selections.luminosities["2018"]) * 1000)  + ") * Weight * passedMhtMet6pack * BranchingRatio * passesUniversalSelection",
+    }
+    
+    labelLumi = {
+        'MET' : analysis_selections.luminosities_labels["phase1"]
     }
     
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum_total"
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_sum"
-    
+
+class dimuon_background_estimation_non_isolated_and_tautau_phase1_after_topup(dimuon_background_estimation_non_isolated_and_tautau_phase1):
+    histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_phase1_after_topup.root"
+    save_histrograms_to_file = True
+    load_histrograms_from_file = True
+
 class dimuon_background_estimation_non_isolated_and_tautau_run2(dimuon_background_estimation_non_isolated_and_tautau_2016):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_run2.root"
     run2lumi = utils.LUMINOSITY/1000

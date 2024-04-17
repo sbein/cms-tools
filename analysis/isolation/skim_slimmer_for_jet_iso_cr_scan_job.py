@@ -67,7 +67,7 @@ variablesUsed.append("hemFailureVetoJets")
 variablesUsed.append("hemFailureVetoMuons")
 variablesUsed.append("hemFailureVetoTracks")
 
-variablesUsed.append("FastSimWeightPR31285To36122")
+#variablesUsed.append("FastSimWeightPR31285To36122")
 
 
 variablesUsed.append("passesUniversalSelection")
@@ -104,7 +104,8 @@ variablesUsed.append("passesUniversalSelection")
 preselection = "MinDeltaPhiMhtJets > 0.4 && MET >= 140 && MHT >= 220 && BTagsDeepMedium == 0 && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && "
 twoLeptonsConds = []
 
-for iso in utils.leptonIsolationList:
+for iso in ["CorrJetNoMultIso"]:
+    #for iso in utils.leptonIsolationList:
     for cat in utils.leptonIsolationCategories:
         ptRanges = [""]
         drCuts = [""]
@@ -137,7 +138,7 @@ for iso in utils.leptonIsolationList:
                 variablesUsed.append("twoLeptons" + jetiso)
                 variablesUsed.append("dilepBDT" + jetiso)
                 
-                variablesUsed.append("dilepBDTphase1" + jetiso)
+                #variablesUsed.append("dilepBDTphase1" + jetiso)
                 
                 variablesUsed.append("leptonFlavour" + jetiso)
                 variablesUsed.append("sameSign" + jetiso)

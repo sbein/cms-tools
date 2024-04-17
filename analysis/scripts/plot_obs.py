@@ -2472,7 +2472,7 @@ def main():
             
             #print "***", ratioPads
             print(calculated_lumi)
-            lumiStr = "{:.1f}".format(calculated_lumi)
+            lumiStr = "{:.1f}".format(calculated_lumi) if plot_par.labelLumi.get(plot_par.plot_kind) is None else "{:.1f}".format(plot_par.labelLumi[plot_par.plot_kind])
             
             labelText = plot_par.label_text
             cmsLocation = plot_par.cms_location
@@ -2796,7 +2796,7 @@ def main():
                             plotRatio(c1, histRPad, memory, dataHist, stackSum, hist_def)
             
             print(calculated_lumi)
-            lumiStr = "{:.1f}".format(calculated_lumi)
+            lumiStr = "{:.1f}".format(calculated_lumi) if plot_par.labelLumi.get(plot_par.plot_kind) is None else "{:.1f}".format(plot_par.labelLumi[plot_par.plot_kind])
             
             labelText = plot_par.label_text
             cmsLocation = plot_par.cms_location

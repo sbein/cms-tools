@@ -126,6 +126,8 @@ class BaseParams:
         'MET' : analysis_selections.recommended_luminosities["2016"],
     }
     
+    labelLumi = {}
+    
     dataWeights = {}
     
     applyWeightsToData = False

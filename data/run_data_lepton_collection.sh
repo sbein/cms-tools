@@ -38,7 +38,7 @@ LC_INTPUT="/pnfs/desy.de/cms/tier2/store/user/ynissan/NtupleHub/LeptonCollection
 #files=(${LC_INTPUT}/Run2016*.MET*)
 #files=(${LC_INTPUT}/Run2016*.SingleMuon*)
 #files=(${LC_INTPUT}/Run2016*.SingleElectron*)
-files=(${LC_INTPUT}/Run201[78]*.MET*)
+files=(${LC_INTPUT}/Run201[678]*.MET*)
 
 
 timestamp=$(date +%Y%m%d_%H%M%S%N)

@@ -2,22 +2,29 @@ import copy
 
 non_iso_2l_factors = {
     '2016' : {
-        "Electrons" : [0.214285716414,0.136330502203],
-        "Muons" : [0.535714268684,0.0766580571496],
+        "Muons" : [0.73,0.14],
     },
     '2017' : {
-        "Electrons" : [0.333333343267,0.2222222222222],
         "Muons" : [0.577319562435,0.0685120763638],
     },
     '2018' : {
-        "Electrons" : [0.318181812763,0.138074664848],
         "Muons" : [0.506097555161,0.0482066278651],
     },
     "phase1" : {
-        "Electrons" : [0.322580635548,0.117313876994],
-        "Muons" : [0.532567024231,0.0395422736191],
+        "Muons" : [0.615,0.057],
     }
 }
+
+
+non_iso_2l_non_sos_factors = {
+    '2016' : {
+        "Muons" : [0.538,0.076],
+    },
+    "phase1" : {
+        "Muons" : [0.528,0.039],
+    }
+}
+
 
 non_iso_2l_factors_closure_line_fit = {
     '2016' : {
@@ -63,8 +70,8 @@ non_iso_2l_factors_sigma['phase1']['Muons'] = non_iso_2l_factors_closure_line_fi
 
 non_iso_1t_factors = {
     '2016' : {
-        "Electrons" : [1.037,0.05],
-        "Muons" : [1.12, 0.044],
+        "Electrons" : [1.039,0.05],
+        "Muons" : [1.11, 0.043],
     },
     '2017' : {
         "Electrons" : [1.06451618671,0.119074677517],
@@ -87,19 +94,10 @@ sfs = {
 
 tautau_factors = {
     "2016" : {
-        "Electrons" : [0.518392205238,0.411471282416],
-        "Muons" : [1.19318771362,0.457118010794],
-    },
-    "2017" : {
-        "Electrons" : [1.4467600584,0.838945836228],
-        "Muons" : [0.552942574024,0.434856996417],
-    },
-    "2018" : {
-        "Electrons" : [0.710534274578,0.549813163105],
-        "Muons" : [0.0870423987508,0.317163025325],
+        "Muons" : [1.178,0.45],
     },
     "phase1" : {
-        "Muons" : [0.283469319344,0.259255921768],
+        "Muons" : [0.28,0.26],
     },
 }
 
@@ -138,27 +136,36 @@ track_mva_cut = {
 
 uniform_binning_number = 40
 
-luminosities = {
+luminosities_before_topup = {
     '2016' : 35.7389543,
     '2017' : 41.14712197,
     '2018' : 58.090723828,
     "phase1" : 99.226209715
 }
 
+luminosities = {
+    '2016' : 36.2,
+    '2017' : 41.4,
+    '2018' : 58.92,
+    "phase1" : 100.32
+}
+
+luminosities_labels = {
+    '2016' : 36,
+    '2017' : 41,
+    '2018' : 60,
+    "phase1" : 101,
+    "run2" : 137
+}
+
 recommended_luminosities = {
     '2016' : 36.31,
     '2017' : 41.48,
     '2018' : 59.83,
-    "phase1" : 101.31,
+    "phase1" : 101.3,
     "run2" : 137
 }
 
-#fast_sim_weights = {
-#    '2016' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2016 * FastSimWeightPR31285To36122",
-#    '2017' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2017",
-#    '2018' : "Weight * BranchingRatio * tEffhMetMhtRealXMht2018 * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons",
-#    "phase1" : "Weight * BranchingRatio * (("+ "{:.2f}".format(luminosities["2017"] * 1000) +" * tEffhMetMhtRealXMht2017 + "+ "{:.2f}".format(luminosities["2018"] * 1000) +" * tEffhMetMhtRealXMht2018)/" + "{:.2f}".format((luminosities["2017"]+luminosities["2018"]) * 1000)  + ") * hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons"
-#}
 
 fast_sim_weights = {
     '2016' : "Weight * BranchingRatio",# * FastSimWeightPR31285To36122 #only if we want to try to run the pMSSM

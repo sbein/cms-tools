@@ -146,6 +146,8 @@ def setHistColorFillLine(hist, cP, alpha=0.35, lineWidth = 1):
     #    hist.SetLineStyle(cP["lineStyle"])
     if "lineWidth" in cP:
         lineWidth = cP["lineWidth"]
+    #print("line width is", lineWidth)
+    #exit(0)
     hist.SetLineWidth(lineWidth)
     hist.SetOption("HIST")
 

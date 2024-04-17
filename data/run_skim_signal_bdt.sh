@@ -120,7 +120,7 @@ EOM
 #     fi
 
     #for bg_file in $SKIM_OUTPUT_DIR/sum/type_sum/*ZJetsToNuNu_HT-100To200*; do
-for data_file in $INPUT_DIR/sum/*; do
+for data_file in $INPUT_DIR/sum/*_topup_*; do
     data_file_name=$(basename $data_file .root)
         # out_file=${OUTPUT_DIR}/$filename/single/${data_file_name}.root
 #         if [ -f "$out_file" ]; then

@@ -23,18 +23,18 @@ common_histograms = [
     #{ "obs" : "int(genFlavour == \"Muons\")", "minX" : 0, "maxX" : 2, "bins" : 2, "usedObs" : ["genFlavour"] },
     #{ "obs" : "int(genFlavour == \"Electrons\")", "minX" : 0, "maxX" : 2, "bins" : 2, "usedObs" : ["genFlavour"] },
     
-    { "obs" : "NJets", "minX" : 0, "maxX" : 7, "bins" : 7, "linearYspace" : 1.6 },
+    { "obs" : "NJets", "minX" : 0, "maxX" : 7, "bins" : 7, "linearYspace" : 1.6,  "logYspace" : 20000 },
     #{ "obs" : "BTagsLoose", "minX" : 0, "maxX" : 7, "bins" : 7 },
     #{ "obs" : "BTagsMedium", "minX" : 0, "maxX" : 7, "bins" : 7 },
     #{ "obs" : "BTagsDeepLoose", "minX" : 0, "maxX" : 7, "bins" : 7 },
     #{ "obs" : "BTagsDeepMedium", "minX" : 0, "maxX" : 7, "bins" : 7 },
     
     #{ "obs" : "LeadingJetQgLikelihood", "minX" : 0, "maxX" : 1, "bins" : 30 },
-    { "obs" : "MinDeltaPhiMhtJets", "minX" : 0, "maxX" : 3.2, "bins" : 20, "units" : "Min\Delta_{}\phi(H_{T}^{Miss}, Jets)", "linearYspace" : 1.7 },
+    { "obs" : "MinDeltaPhiMhtJets", "minX" : 0, "maxX" : 3.2, "bins" : 20, "units" : "Min\Delta_{}\phi(H_{T}^{Miss}, Jets)", "linearYspace" : 1.7,  "logYspace" : 20000 },
     #{ "obs" : "MinDeltaPhiMetJets", "minX" : 0, "maxX" : 3.2, "bins" : 20, "units" : "Min\Delta_{}\phi(E_{T}^{Miss}, Jets)" },
     
-    { "obs" : "LeadingJetPt", "minX" : 0, "maxX" : 800, "bins" : 30, "units" : "p_{T}(j_{1}) [GeV]", "linearYspace" : 1.5 },
-    { "obs" : "abs(LeadingJet.Eta())", "minX" : 0, "maxX" : 2.5, "bins" : 30, "usedObs" : ["LeadingJet"], "units" : "|\eta_{j_{1}}|", "linearYspace" : 1.8 },
+    { "obs" : "LeadingJetPt", "minX" : 0, "maxX" : 800, "bins" : 30, "units" : "p_{T}(j_{1}) [GeV]", "linearYspace" : 1.5,  "logYspace" : 200000 },
+    { "obs" : "abs(LeadingJet.Eta())", "minX" : 0, "maxX" : 2.5, "bins" : 30, "usedObs" : ["LeadingJet"], "units" : "|\eta_{j_{1}}|", "linearYspace" : 1.8,  "logYspace" : 200000 },
     #{ "obs" : "MaxCsv25", "minX" : 0, "maxX" : 1, "bins" : 30 },
     #{ "obs" : "MaxDeepCsv25", "minX" : 0, "maxX" : 1, "bins" : 30 },
     #{ "obs" : "LeadingJetMinDeltaRElectrons", "minX" : 0, "maxX" : 5, "bins" : 30 },
@@ -400,6 +400,7 @@ class dilepton_muons_CorrJetIso10Dr0_6_phase1_2017(dilepton_muons_CorrJetIso10Dr
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum"
     signal_dir = signals_2017
     signal_names = signalNames_2017
+    sig_line_width = 6
     calculatedLumi = {
         'MET' : 41,
     }
@@ -514,6 +515,8 @@ class track_muon_bg_signal(track_electron):
     histograms_defs.extend(common_histograms)
     histograms_defs.extend(ex_track_histograms)
     injectJetIsoToHistograms(histograms_defs, analysis_selections.jetIsos["Muons"])
+    
+    sig_line_width = 6
     
     
     y_title_offset = 1.0

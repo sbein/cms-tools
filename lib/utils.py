@@ -457,6 +457,42 @@ def getCrossSection(filename):
         return cs
     return None
 
+def insertToPythonLumiSection(lumiSecs, RunNum, LumiBlockNum):
+    if lumiSecs.get(RunNum) is None:
+        lumiSecs[RunNum] = []
+    if LumiBlockNum not in lumiSecs[RunNum]:
+        lumiSecs[RunNum].append(LumiBlockNum)
+
+def deleteFromPythonLumiSection(lumiSecs, RunNum, LumiBlockNum):
+    if lumiSecs.get(RunNum) is not None:
+        lumiSecs[RunNum].remove(LumiBlockNum)
+        if len(lumiSecs[RunNum]) == 0:
+            del lumiSecs[RunNum]
+
+def subtractPythonLumiSections(toSubtractLumiSecs, fromLumiSecs):
+    for k, v in fromLumiSecs.items():
+        for a in v:
+            deleteFromPythonLumiSection(toSubtractLumiSecs, k, a)
+
+def existsInPythonLumiSection(lumiSecs, RunNum, LumiBlockNum):
+    return lumiSecs.get(RunNum) is not None and LumiBlockNum in lumiSecs[RunNum]
+
+def pythonLumiSectionToObject(pythonLumiSecs, objectLumiSecs):
+    for k, v in pythonLumiSecs.items():
+        for a in v:
+            objectLumiSecs.insert(k, a)
+
+def printPythonLumiSection(lumiSecs):
+    print("-----")
+    for k, v in lumiSecs.items():
+        print(str(k) + ":", ",".join([str(a) for a in v]))
+
+def printLumiSection(lumiSecs):
+    lumiMap = lumiSecs.getMap()
+    print("-----")
+    for k, v in lumiMap:
+        print(str(k) + ":", ",".join([str(a) for a in v]))
+
 def getJsonLumiSection(lumiSecs):
     lumiSecsDict = {}
     lumiMap = lumiSecs.getMap()
@@ -690,6 +726,9 @@ def madHtCheck(current_file_name, madHT):
     else:
         return True
 
+    #elif "Run2018D" in baseFileName and ".MET" in baseFileName:
+    #    mapNameFile = "Run2018D_MET.root"
+
 def getLeptonCollectionFileMapFile(baseFileName):
     currLeptonCollectionFileMapFile, currLeptonCollectionFileMap = None, None
     mapNameFile = ""
@@ -701,8 +740,6 @@ def getLeptonCollectionFileMapFile(baseFileName):
         mapNameFile = "Run2016_SingleElectron.root"
     elif "Run2017" in baseFileName and ".MET" in baseFileName:
         mapNameFile = "Run2017_MET.root"
-    elif "Run2018D" in baseFileName and ".MET" in baseFileName:
-        mapNameFile = "Run2018D_MET.root"
     elif "Run2018" in baseFileName and ".MET" in baseFileName:
         mapNameFile = "Run2018_MET.root"
     elif "RunIIFall17MiniAODv2" in baseFileName:

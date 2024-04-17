@@ -7,6 +7,7 @@ import numpy as np
 import argparse
 import sys
 import os
+import time
 
 sys.path.append(os.path.expandvars("$CMSSW_BASE/src/cms-tools"))
 sys.path.append(os.path.expandvars("$CMSSW_BASE/src/cms-tools/lib/classes"))
@@ -42,6 +43,10 @@ fileList = glob(input_dir + "/*"+thing2grab+"*");
 print('fileList', input_dir + "/*"+thing2grab+"*", len(fileList))
 for filename in fileList:
     if os.path.isdir(filename): continue
+    #tstruct = time.localtime(os.path.getmtime(filename))
+    #if tstruct.tm_year != 2024:
+    #    print "old file... skipping... " + filename
+    #    continue
     print "processing file " + filename
     f = TFile(filename, "update")
     numOfEvents = 0

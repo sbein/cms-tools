@@ -100,19 +100,22 @@ run_sums=""
 
 if [ -n "$PHASE1" ]; then
     files_per_job=25
-    run_sums=`ls -1 $INPUT_DIR/ | awk -F"-" '{print $1}' | sort | uniq`
+    #run_sums=`ls -1 $INPUT_DIR/ | awk -F"-" '{print $1}' | sort | uniq`
+    run_sums=`ls -l $INPUT_DIR/ | grep -v '  2022 ' | awk -F" " '{print $9}' | grep -v "^$" | awk -F"-" '{print $1}' | sort | uniq`
 fi
 
-mkdir $OUTPUT_DIR
+#mkdir $OUTPUT_DIR
 
-for run in $run_sums; do
+#for run in $run_sums; do
+for run in "$run_sums"; do
     echo Running for run $run
-    for fullname in $INPUT_DIR/${run}*; do
+    #for fullname in $INPUT_DIR/${run}*; do
+    for fullname in `ls -l $INPUT_DIR/ | grep -v '  2022 ' | grep "$run" | awk -F" " '{print $9}' | grep -v "^$"`; do
         lastfile=$fullname
-        input_files="$input_files $fullname"
+        input_files="$input_files $INPUT_DIR/$fullname"
         ((count+=1))
         if [ $(($count % $files_per_job)) == 0 ]; then
-            output_name=`echo $(basename $fullname .root) | awk -F"$pattern" "{print \\$1\"${pattern}_${output_count}.root\"}"`
+            output_name=`echo $(basename $fullname .root) | awk -F"$pattern" "{print \\$1\"${pattern}_topup_${output_count}.root\"}"`
             ((output_count+=1))
             echo hadd -f $OUTPUT_DIR/$output_name $input_files
             hadd -f $OUTPUT_DIR/$output_name $input_files
@@ -125,7 +128,7 @@ for run in $run_sums; do
     done
 
     if [ $(($count % $files_per_job)) != 0 ]; then
-        output_name=`echo $(basename $lastfile .root) | awk -F"$pattern" "{print \\$1\"${pattern}_${output_count}.root\"}"`
+        output_name=`echo $(basename $lastfile .root) | awk -F"$pattern" "{print \\$1\"${pattern}_topup_${output_count}.root\"}"`
         ((output_count+=1))
         echo hadd -f $OUTPUT_DIR/$output_name $input_files
         hadd -f $OUTPUT_DIR/$output_name $input_files

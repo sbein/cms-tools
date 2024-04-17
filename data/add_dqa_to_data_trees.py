@@ -21,6 +21,8 @@ from lib import analysis_observables
 parser = argparse.ArgumentParser(description='Add observables to trees.')
 args = parser.parse_args()
 
+
+
 WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1"
 WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim"
 OUTPUT_SUM = WORK_DIR + "/sum"
@@ -53,7 +55,8 @@ notification = Never
 ''')
     
     print("Adding histograms.")
-    fileList = glob(OUTPUT_SUM + "/*");
+    fileList = glob(OUTPUT_SUM + "/*_topup_*");
+    
     
     for f in fileList:
         filename = ".".join(os.path.basename(f).split(".")[0:2])

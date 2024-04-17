@@ -167,7 +167,7 @@ EOM
 
 echo $INPUT_DIR/sum/
 
-FILES=$INPUT_DIR/sum/*
+FILES=$INPUT_DIR/sum/*_topup_*
 #FILES=(Run2018A-17Sep2018-v1.METAOD_1843.root)
 #FILES=(Run2018D-PromptReco-v2.METAOD_2235.root Run2018D-PromptReco-v2.METAOD_2236.root)
 

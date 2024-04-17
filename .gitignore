@@ -20,3 +20,5 @@ Production/test/condorSub/checkVomsTar.sh
 Production/test/condorSub/jobExecCondor.jdl
 Production/test/condorSub/jobExecCondor.sh
 Production/test/condorSub/step1.sh
+!lib/L1prefiring_jet_2017BtoF.root
+!lib/susy-trig-plots.root

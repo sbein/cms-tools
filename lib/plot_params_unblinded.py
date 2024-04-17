@@ -220,7 +220,7 @@ class partial_unblinded_track_electrons_sc_comparison_phase1(unblinded_track_ele
     stamp_scale_factor = False
 
 class unblinded_dimuon(BaseParams):
-    histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon.root"
+    histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_topup.root"
     
     save_histrograms_to_file = True
     load_histrograms_from_file = True
@@ -272,7 +272,8 @@ class unblinded_dimuon(BaseParams):
     bgReTaggingFactors = {
         "tautau" : analysis_selections.tautau_factors["2016"]["Muons"],
         #"non-iso" : analysis_selections.non_iso_2l_factors["2016"]["Muons"]
-        "non-iso" : [0.698,0.137]
+        #"non-iso" : [0.698,0.137]
+        "non-iso" : [0.73,0.14]
     }
     
     bgReTagging = {
@@ -351,13 +352,13 @@ class partial_unblinded_dimuon(unblinded_dimuon):
     stamp_scale_factor = False
 
 class unblinded_dimuon_phase1(unblinded_dimuon):
-    histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_phase1.root"
+    histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_phase1_topup.root"
     
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum_total"
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_sum/"
     
     save_histrograms_to_file = True
-    load_histrograms_from_file = False
+    load_histrograms_from_file = True
     
     jetIso = analysis_selections.jetIsos["Muons"]
     
@@ -381,9 +382,12 @@ class unblinded_dimuon_phase1(unblinded_dimuon):
     
     bgReTaggingFactors = {
         "tautau" : analysis_selections.tautau_factors["phase1"]["Muons"],
-        "non-iso" : analysis_selections.non_iso_2l_factors["phase1"]["Muons"]
+        #"non-iso" : analysis_selections.non_iso_2l_factors["phase1"]["Muons"]
         
         #"non-iso" : [0.622,0.058]
+        #"non-iso" : [0.615,0.057]
+        "non-iso" : [0.615,0.057]
+        
     }
     
     histograms_defs = [     

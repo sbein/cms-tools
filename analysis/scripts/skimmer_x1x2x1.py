@@ -490,6 +490,9 @@ def main():
     hHt.Sumw2()
     
     lumiSecs = LumiSectMap()
+    seenLumiSecs = {}
+    failedLumiSecs = {}
+    
     
     nentries = c.GetEntries()
     print('Analysing', nentries, "entries")
@@ -550,7 +553,7 @@ def main():
                 crossSection = c.CrossSection
             rightProcess = utils.madHtCheck(baseFileName, c.madHT)
         elif data:
-            lumiSecs.insert(c.RunNum, c.LumiBlockNum)
+            utils.insertToPythonLumiSection(seenLumiSecs, c.RunNum, c.LumiBlockNum)
 
         hHt.Fill(c.HT)
         #print "crossSection=" + str(crossSection)
@@ -785,6 +788,11 @@ def main():
         
         if replace_lepton_collection:
             if currLeptonCollectionMap is None or not currLeptonCollectionMap.contains(c.RunNum, c.LumiBlockNum, c.EvtNum):
+                
+                if utils.existsInPythonLumiSection(failedLumiSecs, c.RunNum ,c.LumiBlockNum):
+                    print(c.RunNum, c.LumiBlockNum, " are in failedLumiSecs. Skipping these ones")
+                    continue
+                
                 print("NEED NEW LEPTON COLLECTION...")
                 if currLeptonCollectionMap is not None:
                     currLeptonCollectionMap.Delete()
@@ -796,10 +804,13 @@ def main():
                     exit(1)
                 print("currLeptonCollectionFileMapFile", currLeptonCollectionFileMapFile)
                 currLeptonCollectionFileMap = utils.getLeptonCollectionFileMap(currLeptonCollectionFileMapFile, c.RunNum, c.LumiBlockNum, c.EvtNum)
+                #currLeptonCollectionFileMap = None
                 print("Got currLeptonCollectionFileMap")
                 if currLeptonCollectionFileMap is None:
                     print("FATAL: could not find file map. continuing...")
-                    exit(1) 
+                    utils.insertToPythonLumiSection(failedLumiSecs, c.RunNum, c.LumiBlockNum)
+                    #utils.deleteFromPythonLumiSection(seenLumiSecs, c.RunNum, c.LumiBlockNum)
+                    continue 
                 currLeptonCollectionFileName = currLeptonCollectionFileMap.get(c.RunNum, c.LumiBlockNum, c.EvtNum)
                 currLeptonCollectionFileMap.Delete()
                 currLeptonCollectionFileMap = None
@@ -1621,6 +1632,16 @@ def main():
     hHtAfterMadHt.Write('hHtAfterMadHt')
     
     if data:
+        print("seen lumi secs:")
+        utils.printPythonLumiSection(seenLumiSecs)
+        print("failed lumi secs:")
+        utils.printPythonLumiSection(failedLumiSecs)
+        print("subtracting failed from seen")
+        utils.subtractPythonLumiSections(seenLumiSecs, failedLumiSecs)
+        utils.printPythonLumiSection(seenLumiSecs)
+        print("lumi secs to write:")
+        utils.pythonLumiSectionToObject(seenLumiSecs, lumiSecs)
+        utils.printLumiSection(lumiSecs)
         lumiSecs.Write("lumiSecs") 
     
     fnew.Close()

@@ -55,7 +55,8 @@ if json_file is not None:
 else:
     lumiSecs = LumiSectMap()
 
-    data_files = glob(input_dir + "/Run2018*")
+    #data_files = glob(input_dir + "/Run201[678]*MET*")
+    data_files = glob(input_dir + "/Run201[8]*MET*")
     
     for f in data_files: 
         print(f)
@@ -67,7 +68,7 @@ else:
             lumiSecs.Merge(col)
         else:
             print("Bad file", f)
-            os.remove(f)
+            #os.remove(f)
         rootFile.Close()
 
     lumi = utils.calculateLumiFromLumiSecs(lumiSecs)
