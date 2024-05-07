@@ -27,6 +27,7 @@ from ROOT import LeptonCollection
 #for systematics:
 with open(os.environ['CMSSW_BASE']+'/src/cms-tools/analysis/tools/lib_systematics.py') as f:
     exec(f.read())
+readerBtag = prepareReaderBtagSF()
 
 ####### CMDLINE ARGUMENTS #########
 
@@ -96,9 +97,14 @@ commonBranches = {
         "IsrNom" : "float",
         "IsrUp" : "float",
         "IsrDown" : "float",
+        "BTagNom" : "float",
+        "BTagUp" : "float",
+        "BTagDown" : "float",                
         "PuNom" : "float",
         "PuUp" : "float",
-        "PuDown" : "float",        
+        "PuDown" : "float",
+        "EleSf" : "float",
+        "MuSf" : "float"               
 }
 
 def main():
@@ -125,6 +131,11 @@ def main():
     testing = args.testing
     phase1 = args.phase1 or args.phase1_2018
     jecup = args.jecup; jecdown = args.jecdown
+    
+    if args.phase1: year=='2017'
+    elif args.phase1_2018: year = '2018'
+    else: year = '2016'
+    eleReco, eleIdiso, eleIdFastFull, muIdiso, muIdFastFull = getRecoIdisoFastfullLeptonSFhistos(year)
     
     if signal and phase1:
         sam = True
@@ -498,12 +509,12 @@ def main():
         tEvent.Branch(commonBranch, vars[commonBranch], commonBranch + "/" + utils.typeTranslation[commonBranches[commonBranch]])
     
     
-    chain = TChain('TreeMaker2/PreSelection')
+    c = TChain('TreeMaker2/PreSelection')
     print("Opening", input_file)
     lil_input = input_file.split('/')[-1]
-    chain.Add(input_file)
-    c = chain.CloneTree()
-    chain = None
+    c.Add(input_file)
+    #c = c.CloneTree()
+    #chain = None
     fname = output_dir+lil_input
     if jecup: fname = fname.replace('.root','_JecUp.root')
     if jecdown: fname = fname.replace('.root','_JecDown.root') 
@@ -1602,7 +1613,47 @@ def main():
             vars["TrgEffUp"][0] = vars["TrgEffNom"][0]+tetrig.GetEfficiencyErrorUp(tbin)
             vars["TrgEffDown"][0] = vars["TrgEffNom"][0]-tetrig.GetEfficiencyErrorLow(tbin)
             vars["IsrNom"][0], vars["IsrUp"][0], vars["IsrDown"][0] =  get_isr_weight(c)#SB
+            sfbtagnom = get_btag_weight(c,nSigmaBtagSF=0,nSigmaBtagFastSimSF=0,isFastSim=1,readerBtag=readerBtag)#SB
+            sfbtagup = get_btag_weight(c,nSigmaBtagSF=1,nSigmaBtagFastSimSF=0,isFastSim=1,readerBtag=readerBtag)#SB
+            sfbtagdown = get_btag_weight(c,nSigmaBtagSF=-1,nSigmaBtagFastSimSF=0,isFastSim=1,readerBtag=readerBtag)#SB
+            vars["BTagNom"][0], vars["BTagUp"][0], vars["BTagDown"][0] =  sfbtagnom, sfbtagup, sfbtagdown#SB
             vars["PuNom"][0], vars["PuUp"][0], vars["PuDown"][0] =  c.puWeight, c.puSysUp, c.puSysDown#SB
+            
+            if ELECTRON_MODE: 
+                leppt, lepeta = RecoElectrons[0][0].Pt(), RecoElectrons[0][0].Eta()
+                yax = eleReco.GetYaxis()
+                binpt = min(yax.FindBin(leppt), yax.GetNbins())
+                xax = eleReco.GetXaxis()
+                bineta = min(xax.FindBin(lepeta), xax.GetNbins())
+                lepsf*=eleReco.GetBinContent(bineta, binpt)
+                yax = eleIdiso.GetYaxis()
+                binpt = min(yax.FindBin(leppt), yax.GetNbins())
+                xax = eleIdiso.GetXaxis()
+                bineta = min(xax.FindBin(lepeta), xax.GetNbins())
+                lepsf*=eleIdiso.GetBinContent(bineta, binpt)    
+                yax = eleIdFastFull.GetYaxis()
+                binpt = min(yax.FindBin(leppt), yax.GetNbins())
+                xax = eleIdFastFull.GetXaxis()
+                bineta = min(xax.FindBin(lepeta), xax.GetNbins())
+                lepsf*=eleIdFastFull.GetBinContent(bineta, binpt)
+                vars["EleSf"][0] = lepsf
+                vars["MuSf"][0]  = 1
+                print('harnassing an electron with pt', leppt, 'sf=', lepsf)
+            elif MUON_MODE:
+                leppt, lepeta = RecoMuons[0][0].Pt(), RecoMuons[0][0].Eta()                
+                xax = muIdiso.GetXaxis()
+                binpt = min(xax.FindBin(leppt), xax.GetNbins())
+                yax = muIdiso.GetYaxis()
+                bineta = min(yax.FindBin(lepeta), yax.GetNbins())
+                lepsf*=muIdiso.GetBinContent(binpt, bineta)    
+                xax = muIdFastFull.GetXaxis()
+                binpt = min(xax.FindBin(leppt), xax.GetNbins())
+                yax = muIdFastFull.GetYaxis()
+                bineta = min(yax.FindBin(lepeta), yax.GetNbins())
+                lepsf*=muIdFastFull.GetBinContent(binpt, bineta)
+                vars["EleSf"][0] = 1
+                vars["MuSf"][0]  = lepsf
+                print('harnassing a muon with pt', leppt, 'sf=', lepsf)                
             
         else:
             vars["FastSimWeightPR31285To36122"][0] = 1
@@ -1611,7 +1662,9 @@ def main():
             vars["passesUniversalSelection"][0] = analysis_ntuples.passesUniversalSelection(c, MET, METPhi)
             vars["TrgEffNom"][0], vars["TrgEffUp"][0], vars["TrgEffDown"][0] = 1, 1, 1#SB
             vars["IsrNom"][0], vars["IsrUp"][0], vars["IsrDown"][0] = 1, 1, 1#SB
+            vars["BTagNom"][0], vars["BTagUp"][0], vars["BTagDown"][0] = 1, 1, 1#SB            
             vars["PuNom"][0], vars["PuUp"][0], vars["PuDown"][0] = 1, 1, 1#SB
+            vars["EleSf"][0], vars["MuSf"][0] = 1, 1#SB
             
         #print("tEvent.Fill()")
         #print("c.RunNum,", c.RunNum,"c.LumiBlockNum,", c.LumiBlockNum, "c.EvtNum", c.EvtNum)

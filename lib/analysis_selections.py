@@ -332,7 +332,7 @@ two_leptons_sr_conditions_not_tautau = two_leptons_sr_conditions + [not_tautau_m
 two_leptons_sr_conditions_sos_not_tautau = two_leptons_sr_conditions_not_tautau + [sos_orth_condition]
 
 ###### INSIDE ######
-two_leptons_bdt_cr_not_tautau_inside_mtautau_window  = [common_preselection, two_leptons_condition, two_leptons_iso_condition, two_leptons_opposite_sign, two_leptons_bdt_cr, inside_mtautau_window, not_tautau_mc]
+two_leptons_bdt_cr_not_tautau_inside_mtautau_window  = [common_preselection, two_leptons_condition, two_leptons_iso_condition, two_leptons_opposite_sign, two_leptons_bdt_cr, inside_mtautau_window, not_tautau_mc] ##sam suggested
 two_leptons_bdt_cr_not_tautau_inside_mtautau_window_sos = two_leptons_bdt_cr_not_tautau_inside_mtautau_window + [sos_orth_condition]
 two_leptons_bdt_cr_not_tautau_inside_mtautau_window_iso_sb = [common_preselection, two_leptons_condition, two_leptons_iso_sb_condition, two_leptons_opposite_sign, two_leptons_bdt_cr, inside_mtautau_window, not_tautau_mc]
 two_leptons_bdt_cr_not_tautau_inside_mtautau_window_iso_sb_sos = two_leptons_bdt_cr_not_tautau_inside_mtautau_window_iso_sb + [sos_orth_condition]

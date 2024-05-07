@@ -315,20 +315,19 @@ class unblinded_dimuon(BaseParams):
     
     log_minimum = 0.01
 
-class tautau_unblinded_dimuon(unblinded_dimuon):
+class tautau_unblinded_dimuon_phase0(unblinded_dimuon):
     histrograms_file = BaseParams.histograms_root_files_dir + "/tautau_unblinded_dimuon_topup.root"
     
     save_histrograms_to_file = True
-    load_histrograms_from_file = True
+    load_histrograms_from_file = False
     
     plot_overflow = False
+    stamp_scale_factor = False
     
     baseConditionsArr = [analysis_selections.two_leptons_bdt_cr, analysis_selections.common_preselection, analysis_selections.two_leptons_condition, analysis_selections.two_leptons_condition_zoo_removal, analysis_selections.two_leptons_opposite_sign]
-    
     baseConditions = analysis_selections.injectValues(analysis_selections.andStringSelections(baseConditionsArr), "2016", "Muons")
     baseConditionsSos = analysis_selections.injectValues(analysis_selections.andStringSelections(baseConditionsArr + [analysis_selections.sos_orth_condition]), "2016", "Muons")
     baseConditionsIso = analysis_selections.injectValues(analysis_selections.andStringSelections([analysis_selections.two_leptons_iso_condition]), "2016", "Muons")
-    
     
     cuts = [
         {"name":"none", "title": "None", "condition" : baseConditions, "data_only" : baseConditionsIso},
@@ -337,22 +336,21 @@ class tautau_unblinded_dimuon(unblinded_dimuon):
     
     histograms_defs = [     
         { "obs" : "full_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
-        { "obs" : "final_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,0,0.1,0.2,0.3,0.4,0.5,1] , "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
-        { "obs" : "fine_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "bins" : 40, "units" : "BDT phase1", "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},
-        { "obs" : "nmtautau%%%", "linearYspace" : 1.3, "ratio1max" : 10, "minX" : 30, "maxX" : 230, "bins" : 10}
+        { "obs" : "nmtautau%%%", "linearYspace" : 1.3, "logYspace" : 100, "ratio1max" : 3, "minX" : 30, "maxX" : 230, "bins" : 10},
+        { "obs" : "nmtautau%%%", "linearYspace" : 1.3, "logYspace" : 100, "ratio1max" : 3, "minX" : 30, "maxX" : 230, "customBins"  : [30,40,130,230]}
     ]
     jetIso = analysis_selections.jetIsos["Muons"]
     injectJetIsoToHistograms(histograms_defs, jetIso)
     injectJetIsoToCuts(cuts, jetIso)
     
-    
     bgReTaggingFactors = {
         "tautau" : analysis_selections.tautau_factors["2016"]["Muons"],
-        #"non-iso" : analysis_selections.non_iso_2l_factors["2016"]["Muons"]
-        "non-iso" : [0.547,0.48]
+        "non-iso" : analysis_selections.non_iso_2l_factors["2016"]["Muons"]
+        #"non-iso" : [0.5,0]
         #"non-iso" : [0.73,0.14]
     }
-
+    
+        
 class partial_unblinded_dimuon(unblinded_dimuon):
 
     histrograms_file = BaseParams.histograms_root_files_dir + "/partial_unblinded_dimuon.root"
@@ -481,3 +479,34 @@ class partial_unblinded_dimuon_phase1(unblinded_dimuon_phase1):
         #"non-iso" : [0.077,0.017]
     }
     stamp_scale_factor = False
+
+class tautau_unblinded_dimuon_phase1(unblinded_dimuon_phase1):
+    histrograms_file = BaseParams.histograms_root_files_dir + "/tautau_unblinded_dimuon_topup.root"
+    
+    save_histrograms_to_file = True
+    load_histrograms_from_file = False    
+    plot_overflow = False
+    stamp_scale_factor = False
+        
+    baseConditionsArr = [analysis_selections.two_leptons_bdt_cr, analysis_selections.common_preselection, analysis_selections.two_leptons_condition, analysis_selections.two_leptons_condition_zoo_removal, analysis_selections.two_leptons_opposite_sign]
+    baseConditions = analysis_selections.injectValues(analysis_selections.andStringSelections(baseConditionsArr), "phase1", "Muons")
+    baseConditionsSos = analysis_selections.injectValues(analysis_selections.andStringSelections(baseConditionsArr + [analysis_selections.sos_orth_condition]), "phase1", "Muons")
+    baseConditionsIso = analysis_selections.injectValues(analysis_selections.andStringSelections([analysis_selections.two_leptons_iso_condition]), "phase1", "Muons")
+    cuts = [
+        {"name":"none", "title": "None", "condition" : baseConditions, "data_only" : baseConditionsIso},
+        {"name":"sos", "title": "SOS", "condition" : baseConditionsSos, "data_only" : baseConditionsIso},
+    ]
+    histograms_defs = [     
+        { "obs" : "full_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
+        { "obs" : "nmtautau%%%", "linearYspace" : 1.3, "ratio1max" : 3, "minX" : 30, "maxX" : 230, "bins" : 10, "units": "m_{#tau#tau} [GeV]"},
+        { "obs" : "nmtautau%%%_sf","formula" : "nmtautau%%%", "linearYspace" : 1.3, "ratio1max" : 3, "minX" : 30, "maxX" : 230, "customBins"  : [30,40,130,230], "units": "m_{#tau#tau} [GeV]"}
+    ]
+    jetIso = analysis_selections.jetIsos["Muons"]
+    injectJetIsoToHistograms(histograms_defs, jetIso)
+    injectJetIsoToCuts(cuts, jetIso)
+    print('analysis_selections.tautau_factors["phase1"]["Muons"]', analysis_selections.tautau_factors["phase1"]["Muons"])
+    bgReTaggingFactors = {
+        "tautau" : analysis_selections.tautau_factors["phase1"]["Muons"],
+        #"tautau" : [1.0,0.0],
+        "non-iso" : analysis_selections.non_iso_2l_factors["phase1"]["Muons"] #yuval ays this may work perfectly if you remove the Zoo and use the non-orthogonal version
+    }

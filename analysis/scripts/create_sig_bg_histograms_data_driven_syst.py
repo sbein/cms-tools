@@ -206,7 +206,7 @@ def main():
             if channel != "leptons":
             
                 histName = "bg1t" + lep + "ChargeSymmetric"
-            
+                if c.GetEntries()==0: continue
                 obs = analysis_selections.exTrackSameSignDilepBDTString[wanted_year] + analysis_selections.jetIsos[lep]
                 conditions = analysis_selections.sc_ex_track_full_range_selections
                 if lep == "Electrons":
