@@ -15,7 +15,6 @@ non_iso_2l_factors = {
     }
 }
 
-
 non_iso_2l_non_sos_factors = {
     '2016' : {
         "Muons" : [0.538,0.076],
@@ -97,7 +96,7 @@ tautau_factors = {
         "Muons" : [1.178,0.45],
     },
     "phase1" : {
-        "Muons" : [0.28,0.26],
+        "Muons" : [0.29,0.26],
     },
 }
 
