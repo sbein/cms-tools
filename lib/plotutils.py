@@ -5,6 +5,7 @@ class StampStr:
     WIP = "Work in Progress"
     SIM = "Simulation"
     PRE = "Preliminary"
+    INT = "Internal"
     SIMWIP = "#splitline{Simulation}{Work in Progress}"
 
 class Plotting():

@@ -440,32 +440,7 @@ class track_muon_bg_signal(track_electron):
     plot_error = False
     log_minimum = 0.4
     
-    
-    
-class track_muon_bdtsideband(track_electron):
-
-    save_histrograms_to_file = True
-    load_histrograms_from_file = False
-    baseConitions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "2017", "Muons")+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.6<0'
-    cuts = [
-        {"name":"none", "title": "None", "condition" : analysis_selections.common_preselection, "baseline" : baseConitions, "sc" : "1" },
-        #{"name":"sr", "title": "sr", "condition" : "(MinDeltaPhiMhtJets > 0.4 && MHT >= 220 &&  MET >= 140 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
-    ]
-    histrograms_file = BaseParams.histograms_root_files_dir + "/track_muon_bdtsideband.root"
-    signal_dir = signals_2017_full
-    histograms_defs = []
-    histograms_defs.extend(copy.deepcopy(common_histograms))
-    histograms_defs.extend(copy.deepcopy(ex_track_histograms))
-    injectJetIsoToHistograms(histograms_defs, analysis_selections.jetIsos["Muons"])
-    y_title_offset = 1.0
-    plot_error = False
-    calculatedLumi = {
-            'MET' : analysis_selections.recommended_luminosities["phase1"],
-        }
-    log_minimum = 0.4
-    plot_signal = False
-    plot_data = True   
-    normalise = True  
+      
     
 
 class track_electron_bg_signal(track_electron):
@@ -493,27 +468,70 @@ class track_electron_bg_signal(track_electron):
     log_minimum = 0.4
 
 
-class track_electron_bdtsideband(track_electron):
-    save_histrograms_to_file = True
-    load_histrograms_from_file = False
-    signal_dir = signals_2017_full
-    histrograms_file = BaseParams.histograms_root_files_dir + "/track_electron_bdtsideband.root"
+
     
-    baseConitions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "2017", "Electrons")+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.5<0'+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.5>-0.1'
+
+
+class track_muon_bdtsideband(track_electron):
+
+    save_histrograms_to_file = True
+    load_histrograms_from_file = True
+    baseConitions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "2017", "Muons")+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.6<0 && MHT >= 220 &&  MET >= 140 && HT>MHT'
     cuts = [
         {"name":"none", "title": "None", "condition" : analysis_selections.common_preselection, "baseline" : baseConitions, "sc" : "1" },
         #{"name":"sr", "title": "sr", "condition" : "(MinDeltaPhiMhtJets > 0.4 && MHT >= 220 &&  MET >= 140 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
     ]
+    histrograms_file = BaseParams.histograms_root_files_dir + "/track_muon_bdtsideband.root"
+    signal_dir = signals_2017_full
     histograms_defs = []
-    #histograms_defs.extend(copy.deepcopy(common_histograms))
-    #histograms_defs.extend(copy.deepcopy(ex_track_histograms))
-    histograms_defs = [{ "obs" : "exTrack_deltaR%%%", "minX" : 0, "maxX" : 4, "bins" : 40, "linearYspace" : 1.4, "units" : "\Delta_{}R_{ll}", "logYspace" : 20000 }]
+    histograms_defs.extend(copy.deepcopy(common_histograms))
+    histograms_defs.extend(copy.deepcopy(ex_track_histograms))
+    injectJetIsoToHistograms(histograms_defs, analysis_selections.jetIsos["Muons"])
+    y_title_offset = 1.0
+    plot_error = True
+    calculatedLumi = {
+            'MET' : analysis_selections.recommended_luminosities["phase1"],
+        }
+    log_minimum = 0.4
+    plot_signal = False
+    plot_data = True   
+    normalise = True  
+    
+    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"##needed for phase 1
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/sum/"##  
+    label_text = plotutils.StampStr.INT
+    
+    
+class track_electron_bdtsideband(track_electron):
+    save_histrograms_to_file = True
+    load_histrograms_from_file = True
+    signal_dir = signals_2017_full
+    #track_electron_2017
+    print('BaseParams.histograms_root_files_dir', BaseParams.histograms_root_files_dir)
+    #histrograms_file = BaseParams.histograms_root_files_dir + "/track_electron_bdtsideband.root"
+    histrograms_file = BaseParams.histograms_root_files_dir + "/track_electron_2017.root"
+    #bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum"##needed for phase 1 #this caused a crash on Bad numerical expression : "exclusiveTrackCorrJetNoMultIso10Dr0.5"
+    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"##needed for phase 1
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/sum/"
+    #exit(0)
+    
+    baseConitions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "2017", "Electrons")+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.5<0'#+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.5>-0.1'
+    cuts = [
+        {"name":"none", "title": "None", "condition" : analysis_selections.common_preselection, "baseline" : baseConitions, "sc" : "1" },
+        #{"name":"tighter", "title": "None", "condition" : analysis_selections.common_preselection+'&& MHT >= 220 &&  MET >= 140', "baseline" : baseConitions, "sc" : "1" },
+        #{"name":"sr", "title": "sr", "condition" : "(MinDeltaPhiMhtJets > 0.4 && MHT >= 220 &&  MET >= 140 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
+    
+    ]
+    histograms_defs = []
+    histograms_defs.extend(copy.deepcopy(common_histograms))
+    histograms_defs.extend(copy.deepcopy(ex_track_histograms))
+    #histograms_defs = [{ "obs" : "exTrack_deltaR%%%", "minX" : 0, "maxX" : 4, "bins" : 40, "linearYspace" : 1.4, "units" : "\Delta_{}R_{ll}", "logYspace" : 20000 }]
     injectJetIsoToHistograms(histograms_defs, analysis_selections.jetIsos["Electrons"])
     #injectJetIsoToHistograms(histograms_defs, analysis_selections.jetIsos["Electrons"])
     sig_line_width = 6
     
     y_title_offset = 1.0
-    plot_error = False
+    plot_error = True
 
     calculatedLumi = {
             'MET' : analysis_selections.recommended_luminosities["phase1"],
@@ -522,7 +540,4 @@ class track_electron_bdtsideband(track_electron):
     plot_signal = False
     plot_data = True   
     normalise = True  
-
-    
-
-
+    label_text = plotutils.StampStr.INT

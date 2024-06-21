@@ -349,18 +349,13 @@ class track_muons_data_control_region(BaseParams):
     histograms_defs = [
         { "obs" : "exTrack_dilepBDT%%%", "units" : "BDT", "minX" : -1, "maxX" : 1, "bins" : 30, "blind" : [0,1], "sc_obs" : "sc_exTrack_dilepBDT%%%", "linearYspace" : 1.5},
     ]
-    
     jetIsoStr = "CorrJetNoMultIso10Dr0.6"
     injectJetIsoToHistograms(histograms_defs, jetIsoStr)  
-    
-    
     cuts = [
         {"name":"none", "title": "None", "condition" : "(passesUniversalSelection == 1 && MinDeltaPhiMhtJets > 0.4 && MHT >= 220 &&  MET >= 140 && BTagsDeepMedium == 0 && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0)", "baseline" : "exclusiveTrack%%% == 1 && trackBDT%%% > 0 && exTrack_invMass%%% < 12 && exclusiveTrackLeptonFlavour%%% == \"Muons\"", "sc" : "sc_exclusiveTrack%%% == 1 && sc_trackBDT%%% > 0 && sc_exTrack_invMass%%% < 12 && sc_exclusiveTrackLeptonFlavour%%% == \"Muons\"" },
         
     ]
     injectJetIsoToCuts(cuts, jetIsoStr)
-    
-    
     weightString = {
         'MET' : "Weight * passedMhtMet6pack * tEffhMetMhtRealXMht2016 * BranchingRatio",
     }
@@ -371,23 +366,20 @@ class track_muons_data_control_region(BaseParams):
         #Afrer nomult
         'MET' : 35.73895434
     }
-    
     turnOnOnlyUsedObsInTree = True
     usedObs = ["passesUniversalSelection", "BranchingRatio","Weight","passedMhtMet6pack","tEffhMetMhtRealXMht2016","puWeight","MinDeltaPhiMhtJets","BTagsDeepMedium","twoLeptons%%%","MHT","MET","leptonFlavour%%%","invMass%%%","vetoElectronsPassIso","vetoMuonsPassIso","isoCr%%%","sameSign%%%", "leptons%%%", "deltaR%%%", "trackBDT%%%", "exclusiveTrack%%%", "exTrack_invMass%%%", "exclusiveTrackLeptonFlavour%%%", "sc_exclusiveTrack%%%", "sc_trackBDT%%%", "sc_exTrack_invMass%%%", "sc_exclusiveTrackLeptonFlavour%%%", "exTrack_dilepBDT%%%", "sc_exTrack_dilepBDT%%%"]
     injectJetIsoToList(usedObs, jetIsoStr)
-    
     
     plot_sc = True
     plot_data = True
     plot_signal = False
     plot_overflow = True
     plot_ratio = True
-    
     blind_data = True
-
     save_histrograms_to_file = True
     load_histrograms_from_file = False
-    
-
     sig_line_width = 3
     plot_error = True
+    
+    
+    
