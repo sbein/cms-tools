@@ -132,7 +132,7 @@ def main():
     phase1 = args.phase1 or args.phase1_2018
     jecup = args.jecup; jecdown = args.jecdown
     
-    if args.phase1: year=='2017'
+    if args.phase1: year = '2017'
     elif args.phase1_2018: year = '2018'
     else: year = '2016'
     eleReco, eleIdiso, eleIdFastFull, muIdiso, muIdFastFull = getRecoIdisoFastfullLeptonSFhistos(year)
@@ -962,8 +962,8 @@ def main():
             electronsCalcObs["Electrons_deltaRLJ"].push_back(electronsObs["Electrons"][i].DeltaR(var_LeadingJet))
             electronsCalcObs["Electrons_deltaPhiLJ"].push_back(abs(electronsObs["Electrons"][i].DeltaPhi(var_LeadingJet)))
             electronsCalcObs["Electrons_deltaEtaLJ"].push_back(abs(electronsObs["Electrons"][i].Eta() - var_LeadingJet.Eta()))
-            min, minCan = analysis_ntuples.minDeltaLepLeps(electronsObs["Electrons"][i], tracksObs["tracks"])
-            if min is None or min > 0.01 or tracksObs["tracks_charge"][minCan] * electronsObs["Electrons_charge"][i] < 0:
+            mini, minCan = analysis_ntuples.minDeltaLepLeps(electronsObs["Electrons"][i], tracksObs["tracks"])
+            if mini is None or mini > 0.01 or tracksObs["tracks_charge"][minCan] * electronsObs["Electrons_charge"][i] < 0:
                 electronsCalcObs["Electrons_ti"].push_back(-1)
             else:
                 electronsCalcObs["Electrons_ti"].push_back(minCan)
@@ -972,8 +972,8 @@ def main():
             muonsCalcObs["Muons_deltaRLJ"].push_back(muonsObs["Muons"][i].DeltaR(var_LeadingJet))
             muonsCalcObs["Muons_deltaPhiLJ"].push_back(abs(muonsObs["Muons"][i].DeltaPhi(var_LeadingJet)))
             muonsCalcObs["Muons_deltaEtaLJ"].push_back(abs(muonsObs["Muons"][i].Eta() - var_LeadingJet.Eta()))
-            min, minCan = analysis_ntuples.minDeltaLepLeps(muonsObs["Muons"][i], tracksObs["tracks"])
-            if min is None or min > 0.01 or tracksObs["tracks_charge"][minCan] * muonsObs["Muons_charge"][i] < 0:
+            mini, minCan = analysis_ntuples.minDeltaLepLeps(muonsObs["Muons"][i], tracksObs["tracks"])
+            if mini is None or mini > 0.01 or tracksObs["tracks_charge"][minCan] * muonsObs["Muons_charge"][i] < 0:
                 muonsCalcObs["Muons_ti"].push_back(-1)
             else:
                 muonsCalcObs["Muons_ti"].push_back(minCan)
@@ -990,25 +990,25 @@ def main():
             genMuonsIdx = [ i for i in range(var_GenParticles.size()) if abs(var_GenParticles_PdgId[i]) == 13]
             for i in range(electronsObs["Electrons"].size()):
                 signedGenElectrons = [ genElectrons[j] for j in range(len(genElectrons)) if var_GenParticles_PdgId[genElectronsIdx[j]] == -11 *  electronsObs["Electrons_charge"][i] ]
-                min, minCan = analysis_ntuples.minDeltaLepLeps(electronsObs["Electrons"][i], signedGenElectrons)
-                if min is None or min > 0.01:
+                mini, minCan = analysis_ntuples.minDeltaLepLeps(electronsObs["Electrons"][i], signedGenElectrons)
+                if mini is None or mini > 0.01:
                     electronsCalcObs["Electrons_matchGen"].push_back(False)
                 else:
                     electronsCalcObs["Electrons_matchGen"].push_back(True)
             for i in range(muonsObs["Muons"].size()):
                 signedGenMuons = [ genMuons[j] for j in range(len(genMuons)) if var_GenParticles_PdgId[genMuonsIdx[j]] == -13 *  muonsObs["Muons_charge"][i] ]
-                min, minCan = analysis_ntuples.minDeltaLepLeps(muonsObs["Muons"][i], signedGenMuons)
-                if min is None or min > 0.01:
+                mini,minCan = analysis_ntuples.minDeltaLepLeps(muonsObs["Muons"][i], signedGenMuons)
+                if mini is None or mini > 0.01:
                     muonsCalcObs["Muons_matchGen"].push_back(False)
                 else:
                     muonsCalcObs["Muons_matchGen"].push_back(True)
             for i in range(tracksObs["tracks"].size()):
                 signedGenElectrons = [ genElectrons[j] for j in range(len(genElectrons)) if var_GenParticles_PdgId[genElectronsIdx[j]] == -11 *  tracksObs["tracks_charge"][i] ]
                 signedGenMuons = [ genMuons[j] for j in range(len(genMuons)) if var_GenParticles_PdgId[genMuonsIdx[j]] == -13 *  tracksObs["tracks_charge"][i] ]
-                min, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], signedGenMuons)
-                if min is None or min > 0.01:
-                    min, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], signedGenElectrons)
-                    if min is None or min > 0.01:
+                mini, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], signedGenMuons)
+                if mini is None or mini > 0.01:
+                    mini, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], signedGenElectrons)
+                    if mini is None or mini > 0.01:
                         muonsCalcObs["Muons_matchGen"].push_back(False)
                     else:
                         muonsCalcObs["Muons_matchGen"].push_back(True)
@@ -1051,12 +1051,12 @@ def main():
             
             for i in range(leptonsVec.size()):
                 leptonsCorrJetVars[isoJets[lep]["obs"] + "_passNoIso"].push_back(True)
-                min, minCan = analysis_ntuples.minDeltaLepLeps(leptonsVec[i], jetsObs["Jets"])
-                if min is None:
+                mini, minCan = analysis_ntuples.minDeltaLepLeps(leptonsVec[i], jetsObs["Jets"])
+                if mini is None:
                     eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  + "_minDeltaRJets"].push_back(-1)
                     eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  + "_closestJet"].push_back(-1)
                 else:
-                    eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  + "_minDeltaRJets"].push_back(min)
+                    eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  + "_minDeltaRJets"].push_back(mini)
                     eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  + "_closestJet"].push_back(minCan)
                 
         
@@ -1104,8 +1104,8 @@ def main():
             leptonsVec = eval(leptonsVecName.lower() + "Obs")[leptonsVecName]
             
             for i in range(leptonsVec.size()):
-                min, minCan = analysis_ntuples.minDeltaLepLeps(leptonsVec[i], jetsCalcObs["Jets_" + lep + "Corrected"])
-                if min is None:
+                mini, minCan = analysis_ntuples.minDeltaLepLeps(leptonsVec[i], jetsCalcObs["Jets_" + lep + "Corrected"])
+                if mini is None:
                     eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  +  "_correctedMinDeltaRJets"].push_back(-1)
                     eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  +  "_correctedClosestJet"].push_back(-1)
                     for ptRange in utils.leptonCorrJetIsoPtRange:
@@ -1117,27 +1117,27 @@ def main():
                             #leptonsCorrJetVars[isoJets[lep]["obs"] + "_passCorrJetD3Iso" + cuts].push_back(False)
                             leptonsCorrJetVars[isoJets[lep]["obs"] + "_passCorrJetNoMultD3Iso" + cuts].push_back(False)
                 else:
-                    eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  +  "_correctedMinDeltaRJets"].push_back(min)
+                    eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  +  "_correctedMinDeltaRJets"].push_back(mini)
                     eval(leptonsVecName.lower() + "CalcObs")[leptonsVecName  +  "_correctedClosestJet"].push_back(minCan)
                     
                     for lepIso in ["CorrJetNoMultIso"]:#["CorrJetIso", "CorrJetNoMultIso"]:
                         d3Iso = "CorrJetD3Iso" if lepIso == "CorrJetIso" else "CorrJetNoMultD3Iso"
                         for ptRange in utils.leptonCorrJetIsoPtRange:
                         
-                            min, minCan = analysis_ntuples.minDeltaLepLeps(leptonsVec[i], isoJets[lep][lepIso+str(ptRange)])
+                            mini, minCan = analysis_ntuples.minDeltaLepLeps(leptonsVec[i], isoJets[lep][lepIso+str(ptRange)])
                         
                             for drCut in utils.leptonCorrJetIsoDrCuts:
                             
                                 cuts = str(ptRange) + "Dr" + str(drCut)
                             
-                                if min is None or min > drCut:
+                                if mini is None or mini > drCut:
                                     leptonsCorrJetVars[isoJets[lep]["obs"] + "_pass" + lepIso + cuts].push_back(True)
                                 else:
                                     leptonsCorrJetVars[isoJets[lep]["obs"] + "_pass" + lepIso + cuts].push_back(False)
                                 ### REVIEW CR
-                                if min is not None and min < drCut and jetsObs["Jets"][isoJetsIdx[lep][lepIso+str(ptRange)][minCan]].Pt() < 30: #and min >= 0.2
+                                if mini is not None and mini < drCut and jetsObs["Jets"][isoJetsIdx[lep][lepIso+str(ptRange)][minCan]].Pt() < 30: #and mini >= 0.2
                                     leptonsCorrJetVars[isoJets[lep]["obs"] + "_pass"+ d3Iso + cuts].push_back(True)
-                                    leptonsCorrJetVars[isoJets[lep]["obs"] + "_minDr" + d3Iso + cuts].push_back(min)
+                                    leptonsCorrJetVars[isoJets[lep]["obs"] + "_minDr" + d3Iso + cuts].push_back(mini)
                                 else:
                                     leptonsCorrJetVars[isoJets[lep]["obs"] + "_pass"+ d3Iso + cuts].push_back(False)
                                     leptonsCorrJetVars[isoJets[lep]["obs"] + "_minDr"+ d3Iso + cuts].push_back(-1)
@@ -1156,17 +1156,17 @@ def main():
         tight_electrons = [ electronsObs["Electrons"][i] for i in range(len(electronsObs["Electrons"])) if analysis_ntuples.electronPassesTightSelection(i, electronsObs["Electrons"], leptonsCorrJetVars["Electrons_pass" + utils.defaultJetIsoSetting], electronsCalcObs["Electrons_deltaRLJ"]) ]
         tight_muons = [ muonsObs["Muons"][i] for i in range(len(muonsObs["Muons"])) if analysis_ntuples.muonPassesTightSelection(i, muonsObs["Muons"], muonsObs["Muons_mediumID"], leptonsCorrJetVars["Muons_pass" + utils.defaultJetIsoSetting], muonsCalcObs["Muons_deltaRLJ"]) ]
         
-        min, minCan = analysis_ntuples.minDeltaLepLeps(var_LeadingJet, tight_electrons)
+        mini, minCan = analysis_ntuples.minDeltaLepLeps(var_LeadingJet, tight_electrons)
         if minCan is None:
             commonCalcFlatObs["LeadingJetMinDeltaRElectrons"][0] = -1
         else:
-            commonCalcFlatObs["LeadingJetMinDeltaRElectrons"][0] = min
+            commonCalcFlatObs["LeadingJetMinDeltaRElectrons"][0] = mini
             
-        min, minCan = analysis_ntuples.minDeltaLepLeps(var_LeadingJet, tight_muons)
+        mini, minCan = analysis_ntuples.minDeltaLepLeps(var_LeadingJet, tight_muons)
         if minCan is None:
             commonCalcFlatObs["LeadingJetMinDeltaRMuons"][0] = -1
         else:
-            commonCalcFlatObs["LeadingJetMinDeltaRMuons"][0] = min
+            commonCalcFlatObs["LeadingJetMinDeltaRMuons"][0] = mini
         
         for vecObs in analysis_observables.dileptonObservablesVecList:
             for iso in utils.leptonIsolationList:
@@ -1333,9 +1333,9 @@ def main():
     
                                     for i in range(len(leptons)):
                                         lepton = leptons[i]
-                                        min, minCan = analysis_ntuples.minDeltaRGenParticles(lepton, gens, var_GenParticles)
+                                        mini, minCan = analysis_ntuples.minDeltaRGenParticles(lepton, gens, var_GenParticles)
                                         pdgId = var_GenParticles_ParentId[minCan]
-                                        if min > 0.01:
+                                        if mini > 0.01:
                                             #print "BAD GEN!!! ", min
                                             pdgId = 0
                                         else:
@@ -1427,14 +1427,14 @@ def main():
         for i in range(len(tracksObs["tracks"])):
             t = tracksObs["tracks"][i]
             
-            min, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], electronsObs["Electrons"])
-            if min is None or min > 0.01 or electronsObs["Electrons_charge"][minCan] * tracksObs["tracks_charge"][i] < 0:
+            mini, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], electronsObs["Electrons"])
+            if mini is None or mini > 0.01 or electronsObs["Electrons_charge"][minCan] * tracksObs["tracks_charge"][i] < 0:
                 tracksCalcObs["tracks_ei"].push_back(-1)
             else:
                 tracksCalcObs["tracks_ei"].push_back(minCan)
             
-            min, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], muonsObs["Muons"])
-            if min is None or min > 0.01 or muonsObs["Muons_charge"][minCan] * tracksObs["tracks_charge"][i] < 0:
+            mini, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], muonsObs["Muons"])
+            if mini is None or mini > 0.01 or muonsObs["Muons_charge"][minCan] * tracksObs["tracks_charge"][i] < 0:
                 tracksCalcObs["tracks_mi"].push_back(-1)
             else:
                 tracksCalcObs["tracks_mi"].push_back(minCan)
@@ -1619,41 +1619,48 @@ def main():
             vars["BTagNom"][0], vars["BTagUp"][0], vars["BTagDown"][0] =  sfbtagnom, sfbtagup, sfbtagdown#SB
             vars["PuNom"][0], vars["PuUp"][0], vars["PuDown"][0] =  c.puWeight, c.puSysUp, c.puSysDown#SB
             
-            if ELECTRON_MODE: 
-                leppt, lepeta = RecoElectrons[0][0].Pt(), RecoElectrons[0][0].Eta()
-                yax = eleReco.GetYaxis()
-                binpt = min(yax.FindBin(leppt), yax.GetNbins())
-                xax = eleReco.GetXaxis()
-                bineta = min(xax.FindBin(lepeta), xax.GetNbins())
-                lepsf*=eleReco.GetBinContent(bineta, binpt)
-                yax = eleIdiso.GetYaxis()
-                binpt = min(yax.FindBin(leppt), yax.GetNbins())
-                xax = eleIdiso.GetXaxis()
-                bineta = min(xax.FindBin(lepeta), xax.GetNbins())
-                lepsf*=eleIdiso.GetBinContent(bineta, binpt)    
-                yax = eleIdFastFull.GetYaxis()
-                binpt = min(yax.FindBin(leppt), yax.GetNbins())
-                xax = eleIdFastFull.GetXaxis()
-                bineta = min(xax.FindBin(lepeta), xax.GetNbins())
-                lepsf*=eleIdFastFull.GetBinContent(bineta, binpt)
-                vars["EleSf"][0] = lepsf
-                vars["MuSf"][0]  = 1
-                print('harnassing an electron with pt', leppt, 'sf=', lepsf)
-            elif MUON_MODE:
-                leppt, lepeta = RecoMuons[0][0].Pt(), RecoMuons[0][0].Eta()                
-                xax = muIdiso.GetXaxis()
-                binpt = min(xax.FindBin(leppt), xax.GetNbins())
-                yax = muIdiso.GetYaxis()
-                bineta = min(yax.FindBin(lepeta), yax.GetNbins())
-                lepsf*=muIdiso.GetBinContent(binpt, bineta)    
-                xax = muIdFastFull.GetXaxis()
-                binpt = min(xax.FindBin(leppt), xax.GetNbins())
-                yax = muIdFastFull.GetYaxis()
-                bineta = min(yax.FindBin(lepeta), yax.GetNbins())
-                lepsf*=muIdFastFull.GetBinContent(binpt, bineta)
-                vars["EleSf"][0] = 1
+            vars["EleSf"][0] = 1
+            vars["MuSf"][0] = 1            
+            if muonsObs["Muons"].size()>1:
+                lepsf = 1.0
+                for imu in range(2):
+                    print('reaching into Is', muIdiso.GetName())
+                    xax = muIdiso.GetXaxis()
+                    leppt, lepeta = max(xax.GetBinLowEdge(1)+0.000001, muonsObs["Muons"][imu].Pt()), muonsObs["Muons"][imu].Eta()                      
+                    binpt = min(xax.FindBin(leppt), xax.GetNbins())
+                    yax = muIdiso.GetYaxis()
+                    bineta = min(yax.FindBin(lepeta), yax.GetNbins())
+                    lepsf*=muIdiso.GetBinContent(binpt, bineta)    
+                    print('reaching into FF', muIdFastFull.GetName())                    
+                    xax = muIdFastFull.GetXaxis()
+                    binpt = min(xax.FindBin(leppt), xax.GetNbins())
+                    yax = muIdFastFull.GetYaxis()
+                    bineta = min(yax.FindBin(lepeta), yax.GetNbins())
+                    lepsf*=muIdFastFull.GetBinContent(binpt, bineta)
                 vars["MuSf"][0]  = lepsf
-                print('harnassing a muon with pt', leppt, 'sf=', lepsf)                
+                print('harnassing a muon with pt', leppt, 'sf=', lepsf)  
+                            
+            elif electronsObs["Electrons"].size()>1: 
+                lepsf = 1.0
+                for iel in range(2):
+                    xax = eleReco.GetXaxis()                
+                    leppt, lepeta = max(xax.GetBinLowEdge(1)+0.000001, electronsObs["Electrons"][iel].Pt()), electronsObs["Electrons"][iel].Eta()
+                    yax = eleReco.GetYaxis()
+                    binpt = min(yax.FindBin(leppt), yax.GetNbins())
+                    bineta = min(xax.FindBin(lepeta), xax.GetNbins())
+                    lepsf*=eleReco.GetBinContent(bineta, binpt)
+                    yax = eleIdiso.GetYaxis()
+                    binpt = min(yax.FindBin(leppt), yax.GetNbins())
+                    xax = eleIdiso.GetXaxis()
+                    bineta = min(xax.FindBin(lepeta), xax.GetNbins())
+                    lepsf*=eleIdiso.GetBinContent(bineta, binpt)    
+                    yax = eleIdFastFull.GetYaxis()
+                    binpt = min(yax.FindBin(leppt), yax.GetNbins())
+                    xax = eleIdFastFull.GetXaxis()
+                    bineta = min(xax.FindBin(lepeta), xax.GetNbins())
+                    lepsf*=eleIdFastFull.GetBinContent(bineta, binpt)
+                vars["EleSf"][0] = lepsf
+                print('harnassing an electron with pt', leppt, 'sf=', lepsf)              
             
         else:
             vars["FastSimWeightPR31285To36122"][0] = 1
