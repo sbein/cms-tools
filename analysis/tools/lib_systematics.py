@@ -228,17 +228,15 @@ def getRecoIdisoFastfullLeptonSFhistos(year='2017'):
         eleIdiso.SetDirectory(0)
         f.Close()
         
-        
         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/detailed_ele_full_fast_sf_'+yearmodthou+'.root')
         eleIdFastFull = f.Get('CutBasedTightNoIso94XV2_sf')
         print ('eleIdiso.GetBinContent(1,1)', eleIdFastFull.GetBinContent(1,1)        )
         eleIdFastFull.SetDirectory(0)
-        f.Close()
-        
+        f.Close()  
         
         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/'+year+'_MuonMediumIdIso_SUS.root')
         if year=='2016': muIdIso = f.Get('SF')
-        else: muIdIso = f.Get('TnP_MC_NUM_MiniIso02Cut_DEN_MediumID_PAR_pt_eta')
+        else: muIdIso = f.Get('NUM_MediumID_DEN_genTracks_pt_abseta')
         print ('muIdIso.GetBinContent(1,1)', muIdIso.GetBinContent(1,1)        )
         muIdIso.SetDirectory(0)
         f.Close()
@@ -251,6 +249,46 @@ def getRecoIdisoFastfullLeptonSFhistos(year='2017'):
                                                 
         return eleReco, eleIdiso, eleIdFastFull, muIdIso, muIdFastFull
         
+    
+    
+# #time to add some systmatics stuff
+# def getRecoIdisoFastfullLeptonSFhistos(year='2017'):
+#         yearmodthou = year.replace('20','')
+#         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/egammaEffi.txt_EGM2D_RECO'+year+'.root')
+#         eleReco = f.Get('EGamma_EffMC2D')
+#         print ('eleReco.GetBinContent(1,1)', eleReco.GetBinContent(1,1))
+#         eleReco.SetDirectory(0)
+#         f.Close()
+#         
+#         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/ElectronScaleFactors_Run'+year+'.root')
+#         eleIdiso = f.Get('Run'+year+'_CutBasedLooseNoIso94XV2')
+#         print ('eleIdiso.GetBinContent(1,1)', eleIdiso.GetBinContent(1,1)        )
+#         eleIdiso.SetDirectory(0)
+#         f.Close()
+#         
+#         
+#         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/detailed_ele_full_fast_sf_'+yearmodthou+'.root')
+#         eleIdFastFull = f.Get('CutBasedTightNoIso94XV2_sf')
+#         print ('eleIdiso.GetBinContent(1,1)', eleIdFastFull.GetBinContent(1,1)        )
+#         eleIdFastFull.SetDirectory(0)
+#         f.Close()
+#         
+#         
+#         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/'+year+'_MuonMediumIdIso_SUS.root')
+#         if year=='2016': muIdIso = f.Get('SF')
+#         else: muIdIso = f.Get('TnP_MC_NUM_MiniIso02Cut_DEN_MediumID_PAR_pt_eta')
+#         print ('muIdIso.GetBinContent(1,1)', muIdIso.GetBinContent(1,1)        )
+#         muIdIso.SetDirectory(0)
+#         f.Close()
+#         
+#         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/detailed_mu_full_fast_sf_'+yearmodthou+'.root')
+#         muIdFastFull = f.Get('miniIso02_MediumId_sf')
+#         print ('muIdFastFull.GetBinContent(1,1)', muIdFastFull.GetBinContent(1,1)        )
+#         muIdFastFull.SetDirectory(0)
+#         f.Close()
+#                                                 
+#         return eleReco, eleIdiso, eleIdFastFull, muIdIso, muIdFastFull
+#         
         
                 
         

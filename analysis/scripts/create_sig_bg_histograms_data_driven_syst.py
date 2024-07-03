@@ -56,8 +56,8 @@ else: thing2grab = '1.roo'
 #systs_weightbased_nuni = ['','']#['','','TrgEff']#the first two are the normalization and Nominal value histograms, respectively!
 #systs_weightbased_uni = []#['Isr','Pu']
 
-systs_weightbased_nuni = ['','','TrgEff']#the first two are the normalization and Nominal value histograms, respectively!
-systs_weightbased_uni = ['Isr','Pu']
+systs_weightbased_nuni = ['','','TrgEff','MuSF','ElSF']#the first two are the normalization and Nominal value histograms, respectively!
+systs_weightbased_uni = ['Isr','Pu','BTag']
 
 if wanted_year=='2016': 
     #synch with Yuval
