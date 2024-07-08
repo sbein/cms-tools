@@ -234,11 +234,14 @@ def getRecoIdisoFastfullLeptonSFhistos(year='2017'):
         eleIdFastFull.SetDirectory(0)
         f.Close()  
         
+        print('looking at file', os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/'+year+'_MuonMediumIdIso_SUS.root')
         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/'+year+'_MuonMediumIdIso_SUS.root')
-        if year=='2016': muIdIso = f.Get('SF')
+        if False:  muIdIso = f.Get('SF')#year=='2016':
         else: muIdIso = f.Get('NUM_MediumID_DEN_genTracks_pt_abseta')
+        print('printing file contents, looking for', 'NUM_MediumID_DEN_genTracks_pt_abseta')
+        f.ls()
+        muIdIso.SetDirectory(0)        
         print ('muIdIso.GetBinContent(1,1)', muIdIso.GetBinContent(1,1)        )
-        muIdIso.SetDirectory(0)
         f.Close()
         
         f = TFile(os.environ['CMSSW_BASE']+'/src/systematics/leptonscalefactors/detailed_mu_full_fast_sf_'+yearmodthou+'.root')
