@@ -103,8 +103,12 @@ commonBranches = {
         "PuNom" : "float",
         "PuUp" : "float",
         "PuDown" : "float",
-        "ElSf" : "float",
-        "MuSf" : "float"               
+        "ElSfNom" : "float",
+        "ElSfUp" : "float",
+        "ElSfDown" : "float",                
+        "MuSfNom" : "float",
+        "MuSfUp" : "float",
+        "MuSfDown" : "float"                  
 }
 
 def main():
@@ -543,14 +547,14 @@ def main():
     baseFileName = os.path.basename(input_file)
     crossSection = 1
     if signal:
+        print('sam', sam)
         if sam:
             if phase1:
+                print('working with input_file', input_file)
                 chiM = os.path.basename(input_file).split("_")[3]
             else:
                 chiM = os.path.basename(input_file).split("_")[2]
-            print("Got chiM=" + chiM)
             crossSection = utils.samCrossSections.get(chiM)
-            print("Cross Section is", crossSection)
         else:
             filename = (os.path.basename(input_file).split("Chi20Chipm")[0]).replace("p", ".")
             crossSection = utils.getCrossSection(filename)
@@ -1619,49 +1623,67 @@ def main():
             vars["BTagNom"][0], vars["BTagUp"][0], vars["BTagDown"][0] =  sfbtagnom, sfbtagup, sfbtagdown#SB
             vars["PuNom"][0], vars["PuUp"][0], vars["PuDown"][0] =  c.puWeight, c.puSysUp, c.puSysDown#SB
             
-            vars["ElSf"][0] = 1
-            vars["MuSf"][0] = 1            
+            vars["ElSfNom"][0], vars["ElSfUp"][0], vars["ElSfDown"][0] = 1, 1, 1
+            vars["MuSfNom"][0], vars["MuSfUp"][0], vars["MuSfDown"][0] = 1, 1, 1            
             if muonsObs["Muons"].size()>1:
-                lepsf = 1.0
+                lepsfnom = 1.0
+                lepsfup = 1.0 
+                lepsfdown = 1.0
                 for imu in range(2):
-                    print('reaching into Is', muIdiso.GetName())
+                    print('reaching into Is', muIdiso.GetName)
                     xax = muIdiso.GetXaxis()
                     leppt, lepeta = max(xax.GetBinLowEdge(1)+0.000001, muonsObs["Muons"][imu].Pt()), abs(muonsObs["Muons"][imu].Eta())
                     binpt = min(xax.FindBin(leppt), xax.GetNbins())
                     yax = muIdiso.GetYaxis()
                     bineta = min(yax.FindBin(lepeta), yax.GetNbins())
-                    lepsf*=muIdiso.GetBinContent(binpt, bineta)   
-                    print('reaching into FF', muIdFastFull.GetName())                    
+                    lepsfnom*=muIdiso.GetBinContent(binpt, bineta)
+                    lepsfup*=(muIdiso.GetBinContent(binpt, bineta)+muIdiso.GetBinError(binpt, bineta))
+                    lepsfdown*=(muIdiso.GetBinContent(binpt, bineta)-muIdiso.GetBinError(binpt, bineta))                    
                     xax = muIdFastFull.GetXaxis()
+                    leppt, lepeta = max(xax.GetBinLowEdge(1)+0.000001, muonsObs["Muons"][imu].Pt()), abs(muonsObs["Muons"][imu].Eta())
                     binpt = min(xax.FindBin(leppt), xax.GetNbins())
                     yax = muIdFastFull.GetYaxis()
                     bineta = min(yax.FindBin(lepeta), yax.GetNbins())
-                    lepsf*=muIdFastFull.GetBinContent(binpt, bineta)
-                vars["MuSf"][0]  = lepsf
-                print('harnassing a muon with pt', leppt, 'sf=', lepsf)  
+                    lepsfnom*=muIdFastFull.GetBinContent(binpt, bineta)
+                    lepsfup*=(muIdFastFull.GetBinContent(binpt, bineta)+muIdFastFull.GetBinError(binpt, bineta))
+                    lepsfdown*=(muIdFastFull.GetBinContent(binpt, bineta)-muIdFastFull.GetBinError(binpt, bineta))                    
+                vars["MuSfNom"][0]  = lepsfnom
+                vars["MuSfUp"][0]  = lepsfup
+                vars["MuSfDown"][0]  = lepsfdown                                
+                print('harnassing a muon with pt', leppt, 'sf=', lepsfnom, '+/-', lepsfup-lepsfnom, '/', lepsfnom-lepsfdown)  
                             
             elif electronsObs["Electrons"].size()>1: 
-                lepsf = 1.0
+                lepsfnom = 1.0
+                lepsfup = 1.0
+                lepsfdown = 1.0                                
                 for iel in range(2):
                     xax = eleReco.GetXaxis()                
                     yax = eleReco.GetYaxis()                    
                     leppt, lepeta = max(yax.GetBinLowEdge(1)+0.000001, electronsObs["Electrons"][iel].Pt()), abs(electronsObs["Electrons"][iel].Eta())
                     binpt = min(yax.FindBin(leppt), yax.GetNbins())
                     bineta = min(xax.FindBin(lepeta), xax.GetNbins())
-                    lepsf*=eleReco.GetBinContent(bineta, binpt)
+                    lepsfnom*=eleReco.GetBinContent(bineta, binpt)
+                    lepsfup*=(eleReco.GetBinContent(bineta, binpt)+eleReco.GetBinError(bineta, binpt))
+                    lepsfdown*=(eleReco.GetBinContent(bineta, binpt)-eleReco.GetBinError(bineta, binpt))                    
                     yax = eleIdiso.GetYaxis()
                     xax = eleIdiso.GetXaxis()  
                     leppt, lepeta = max(yax.GetBinLowEdge(1)+0.000001, electronsObs["Electrons"][iel].Pt()), abs(electronsObs["Electrons"][iel].Eta())                  
                     binpt = min(yax.FindBin(leppt), yax.GetNbins())
                     bineta = min(xax.FindBin(lepeta), xax.GetNbins())
-                    lepsf*=eleIdiso.GetBinContent(bineta, binpt)    
+                    lepsfnom*=eleIdiso.GetBinContent(bineta, binpt)
+                    lepsfup*=(eleIdiso.GetBinContent(bineta, binpt)+eleIdiso.GetBinError(bineta, binpt))
+                    lepsfdown*=(eleIdiso.GetBinContent(bineta, binpt)-eleIdiso.GetBinError(bineta, binpt))                                        
                     yax = eleIdFastFull.GetYaxis()
                     xax = eleIdFastFull.GetXaxis()
                     leppt, lepeta = max(yax.GetBinLowEdge(1)+0.000001, electronsObs["Electrons"][iel].Pt()), abs(electronsObs["Electrons"][iel].Eta())                                      
                     binpt = min(yax.FindBin(leppt), yax.GetNbins())
                     bineta = min(xax.FindBin(lepeta), xax.GetNbins())
-                    lepsf*=eleIdFastFull.GetBinContent(bineta, binpt)
-                vars["ElSf"][0] = lepsf
+                    lepsfnom*=eleIdFastFull.GetBinContent(bineta, binpt)
+                    lepsfup*=(eleIdFastFull.GetBinContent(bineta, binpt)+eleIdFastFull.GetBinError(bineta, binpt))
+                    lepsfdown*=(eleIdFastFull.GetBinContent(bineta, binpt)-eleIdFastFull.GetBinError(bineta, binpt))                    
+                vars["ElSfNom"][0] = lepsfnom
+                vars["ElSfUp"][0] = lepsfup
+                vars["ElSfDown"][0] = lepsfdown                                
                 print('harnassing an electron with pt', leppt, 'sf=', lepsf)              
             
         else:
