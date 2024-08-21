@@ -1684,7 +1684,7 @@ def main():
                 vars["ElSfNom"][0] = lepsfnom
                 vars["ElSfUp"][0] = lepsfup
                 vars["ElSfDown"][0] = lepsfdown                                
-                print('harnassing an electron with pt', leppt, 'sf=', lepsf)              
+                print('harnassing an electron with pt', leppt, 'sf=', lepsfnom)              
             
         else:
             vars["FastSimWeightPR31285To36122"][0] = 1
