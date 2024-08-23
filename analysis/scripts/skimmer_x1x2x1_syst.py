@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -167,6 +167,8 @@ def main():
     output_dir = None
     if args.output_dir:
         output_dir = args.output_dir[0].strip()
+    
+    is_pmssm = 'pMSSM' in input_file
 
     if (bg and signal):
         signal = True
@@ -548,7 +550,9 @@ def main():
     crossSection = 1
     if signal:
         print('sam', sam)
-        if sam:
+        if is_pmssm:
+            crossSection = 1
+        elif sam:
             if phase1:
                 print('working with input_file', input_file)
                 chiM = os.path.basename(input_file).split("_")[3]
@@ -1684,7 +1688,7 @@ def main():
                 vars["ElSfNom"][0] = lepsfnom
                 vars["ElSfUp"][0] = lepsfup
                 vars["ElSfDown"][0] = lepsfdown                                
-                print('harnassing an electron with pt', leppt, 'sf=', lepsf)              
+                print('harnassing an electron with pt', leppt, 'sf=', lepsfnom)              
             
         else:
             vars["FastSimWeightPR31285To36122"][0] = 1
