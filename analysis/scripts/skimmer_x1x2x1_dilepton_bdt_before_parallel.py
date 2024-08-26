@@ -38,7 +38,7 @@ parser.add_argument('-sc', '--same_charge', dest='sc', help='Same Charge', actio
 parser.add_argument('-sam', '--sam', dest='sam', help='Sam Samples', action='store_true')
 args = parser.parse_args()
 
-print args
+print(args)
 
 signal = args.signal
 bg = args.bg
@@ -70,7 +70,7 @@ def main():
     c = iFile.Get('tEvent')
     
     triggerFileName = os.path.expandvars("$CMSSW_BASE/src/cms-tools/lib/susy-trig-plots.root")
-    print "Opening trigger file: " + triggerFileName
+    print("Opening trigger file: " + triggerFileName)
     
     triggerFile = TFile(triggerFileName, "read")
     
@@ -135,7 +135,7 @@ def main():
     
     if not data:
         if two_leptons:
-            print "TWO_LEPTONS!"
+            print("TWO_LEPTONS!")
             tree.Branch('leptons_ParentPdgId', 'std::vector<int>', var_leptons_ParentPdgId)
             
             if bg:
@@ -162,7 +162,7 @@ def main():
     
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     (univ_testBGHists, univ_trainBGHists, univ_testSignalHists, univ_trainSignalHists, univ_methods, univ_names) = cut_optimisation.get_bdt_hists([univ_bdt])
     univ_trainSignalHist, univ_trainBGHist, univ_testSignalHist, univ_testBGHist = univ_trainSignalHists[0], univ_trainBGHists[0], univ_testSignalHists[0], univ_testBGHists[0]
@@ -173,26 +173,26 @@ def main():
     univ_bdt_vars_map = cut_optimisation.getVariablesMemMap(univ_bdt_vars)
     univ_bdt_specs = cut_optimisation.getSpecSpectatorFromXMLWeightsFile(univ_bdt_weights)
     univ_bdt_specs_map = cut_optimisation.getSpectatorsMemMap(univ_bdt_specs)
-    print univ_bdt_vars
-    print univ_bdt_vars_map
-    print univ_bdt_specs
-    print univ_bdt_specs_map
+    print(univ_bdt_vars)
+    print(univ_bdt_vars_map)
+    print(univ_bdt_specs)
+    print(univ_bdt_specs_map)
     univ_bdt_reader = cut_optimisation.prepareReader(univ_bdt_weights, univ_bdt_vars, univ_bdt_vars_map, univ_bdt_specs, univ_bdt_specs_map)
 
-    print "-------------------"
+    print("-------------------")
 
-    print "univ_highestZ=" + str(univ_highestZ)
-    print "univ_highestS=" + str(univ_highestS)
-    print "univ_highestB=" + str(univ_highestB)
-    print "univ_highestMVA=" + str(univ_highestMVA)
-    print "univ_ST=" + str(univ_ST)
-    print "univ_BT=" + str(univ_BT)
+    print("univ_highestZ=" + str(univ_highestZ))
+    print("univ_highestS=" + str(univ_highestS))
+    print("univ_highestB=" + str(univ_highestB))
+    print("univ_highestMVA=" + str(univ_highestMVA))
+    print("univ_ST=" + str(univ_ST))
+    print("univ_BT=" + str(univ_BT))
 
-    print "-------------------"
+    print("-------------------")
 
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         c.GetEntry(ientry)
     
         for k, v in univ_bdt_vars_map.items():
@@ -208,7 +208,7 @@ def main():
         
         if not data:
             gens = [i for i in range(c.GenParticles.size())]
-            #print "c.GenParticles.size() ", c.GenParticles.size(), gens
+            #print("c.GenParticles.size() ", c.GenParticles.size(), gens)
             if two_leptons:
                 if bg:
                     var_tautau[0] = False
@@ -237,19 +237,19 @@ def main():
                     min, minCan = analysis_ntuples.minDeltaRGenParticles(lepton, gens, c.GenParticles)
                     pdgId = c.GenParticles_ParentId[minCan]
                     if min > 0.01:
-                        #print "BAD GEN!!! ", min
+                        #print("BAD GEN!!! ", min)
                         pdgId = 0
                     else:
                         if ((abs(c.GenParticles_PdgId[minCan]) == 13 and c.leptonFlavour == "Muons") or (abs(c.GenParticles_PdgId[minCan]) == 11 and c.leptonFlavour == "Electrons")) and c.leptons_charge[i] * c.GenParticles_PdgId[minCan] < 0:
                             numRealLeptons += 1
                             lepCans.append(minCan)
                         else:
-                            #print "BAD GEN MATCH! "
+                            #print("BAD GEN MATCH! ")
                             pdgId = 0
                         # parentIdx = c.GenParticles_ParentIdx[minCan]
 #                         if c.GenParticles_PdgId[parentIdx] != pdgId:
-#                             print "WHAT?!?! ******** c.GenParticles_PdgId[parentIdx]", c.GenParticles_PdgId[parentIdx], "pdgId", pdgId, "parentIdx", parentIdx
-#                             print "c.GenParticles_ParentId[minCan]", c.GenParticles_ParentId[minCan], "c.GenParticles_PdgId[parentIdx]", c.GenParticles_PdgId[parentIdx]
+#                             print("WHAT?!?! ******** c.GenParticles_PdgId[parentIdx]", c.GenParticles_PdgId[parentIdx], "pdgId", pdgId, "parentIdx", parentIdx)
+#                             print("c.GenParticles_ParentId[minCan]", c.GenParticles_ParentId[minCan], "c.GenParticles_PdgId[parentIdx]", c.GenParticles_PdgId[parentIdx])
                     var_leptons_ParentPdgId.push_back(pdgId)
                 tree.SetBranchAddress('leptons_ParentPdgId', var_leptons_ParentPdgId)
                 if bg:
@@ -288,8 +288,8 @@ def main():
                                 for i in range(c.GenParticles.size()):
                                     if c.GenParticles_Status[i] == 1 and c.GenParticles_ParentIdx[i] == parentIdx:
                                         numOfParentChildren += 1
-                                #print "numOfParentChildren=", numOfParentChildren, "var_leptons_ParentPdgId[0]", var_leptons_ParentPdgId[0], "c.GenParticles_PdgId[parentIdx]", c.GenParticles_PdgId[parentIdx], "c.GenParticles_PdgId[parentIdx2]", c.GenParticles_PdgId[parentIdx2]
-                                #print lepCans
+                                #print("numOfParentChildren=", numOfParentChildren, "var_leptons_ParentPdgId[0]", var_leptons_ParentPdgId[0], "c.GenParticles_PdgId[parentIdx]", c.GenParticles_PdgId[parentIdx], "c.GenParticles_PdgId[parentIdx2]", c.GenParticles_PdgId[parentIdx2])
+                                #print(lepCans)
                                 if numOfParentChildren == 2:
                                     var_sc[0] = True
                                     if abs(c.GenParticles_PdgId[parentIdx]) == 223:
@@ -314,21 +314,21 @@ def main():
                                 var_tc[0] = True
             else:
                 min, minCan = analysis_ntuples.minDeltaRGenParticles(c.lepton, gens, c.GenParticles)
-                #print min, m inCan
+                #print(min, m inCan)
                 pdgId = c.GenParticles_ParentId[minCan]
                 if min > 0.05:
-                 #   print "BAD GEN LEPTON!!!"
+                 #   print("BAD GEN LEPTON!!!")
                     pdgId = 0
                 #else:
-                #    print "GOOD LEPTON ", pdgId
+                #    print("GOOD LEPTON ", pdgId)
                 var_leptonParentPdgId[0] = pdgId
                 min, minCan = analysis_ntuples.minDeltaRGenParticles(c.track, gens, c.GenParticles)
                 pdgId = c.GenParticles_ParentId[minCan]
                 if min > 0.05:
-                    #print "BAD GEN TRACK!!!"
+                    #print("BAD GEN TRACK!!!")
                     pdgId = 0
                 #else:
-                #    print "GOOD TRACK ", pdgId
+                #    print("GOOD TRACK ", pdgId)
                 var_trackParentPdgId[0] = pdgId
         if not data:            
             var_tEffhMetMhtRealXMet2016[0] = tEffhMetMhtRealXMet2016.Eval(c.Met)
@@ -342,9 +342,9 @@ def main():
             var_passedMhtMet6pack[0] = True
             
             #if c.Met < 200:
-            #    print "HERE:", var_tEffhMetMhtRealXMet2016[0]
+            #    print("HERE:", var_tEffhMetMhtRealXMet2016[0])
         else:
-            print "ELSE!!"
+            print("ELSE!!")
             var_tEffhMetMhtRealXMet2016[0] = 1
             var_tEffhMetMhtRealXMet2017[0] = 1
             var_tEffhMetMhtRealXMet2018[0] = 1
@@ -357,18 +357,18 @@ def main():
         
         tree.Fill()
         
-    print "DONE SKIMMING"
+    print("DONE SKIMMING")
     if iFile.GetListOfKeys().Contains("lumiSecs") or tree.GetEntries() != 0:
         fnew = TFile(output_file,'recreate')
         tree.Write()
-        print "Done writing tree..."
+        print("Done writing tree...")
         if iFile.GetListOfKeys().Contains("lumiSecs"):
             lumiSecs = iFile.Get("lumiSecs")
             lumiSecs.Write("lumiSecs")
         #hHt.Write()
         fnew.Close()
     else:
-        print "*** RESULT EMPTY"
+        print("*** RESULT EMPTY")
     iFile.Close()
 
 main()

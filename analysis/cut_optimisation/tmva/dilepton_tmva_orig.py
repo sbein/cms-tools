@@ -35,8 +35,8 @@ if args.bg:
 no_norm = args.no_norm
 all = args.all
 
-print "No norm=" + str(no_norm)
-print "All=" + str(all)
+print("No norm=" + str(no_norm))
+print("All=" + str(all))
 
 tmp_dir = "/afs/desy.de/user/n/nissanuv/nfs/tmp/"
 
@@ -49,7 +49,7 @@ cat = "LowPtTight"
 ######## END OF CMDLINE ARGUMENTS ########
 
 dir = os.path.dirname(output_file_name)
-print "Changing directory to", dir
+print("Changing directory to", dir)
 os.chdir(dir)
 
 gROOT.SetBatch(1)
@@ -82,15 +82,15 @@ totalEvents = 0
 weights = 0
 
 bg_files = glob(bg_dir + "/*")
-print bg_files
+print(bg_files)
 
 for input_file in input_files:
-    print "Opening File " + input_file
+    print("Opening File " + input_file)
     fsignal = TFile(input_file)
     sFiles.append(fsignal)
     sTree = fsignal.Get("tEvent")
     if sTree.GetEntries() == 0:
-        print "Emtpy. Skipping"
+        print("Emtpy. Skipping")
         continue
     #for lepNum in ["reco", "exTrack"]:
         #for lep in ["Electrons", "Muons"]:
@@ -102,22 +102,22 @@ for input_file in input_files:
                     #for ptRange in ptRanges:
     if dataloaders.get(lepNum + lep + iso + str(ptRange) + cat) is None:
         dataloaders[lepNum + lep + iso + str(ptRange) + cat] = TMVA.DataLoader("dataset")
-    print "Getting", iso + str(ptRange) + cat
+    print("Getting", iso + str(ptRange) + cat)
     preselection = None
     
     if lepNum == "reco":
         preselection = "twoLeptons" + iso + str(ptRange) + cat + " == 1 && BTagsDeepMedium == 0 && leptonFlavour" + iso + str(ptRange) + cat  + " == \"" + lep + "\""
     else:
         preselection = "exclusiveTrack" + iso + str(ptRange) + cat + ' == 1 && BTagsDeepMedium == 0 && exclusiveTrackLeptonFlavour' + iso + str(ptRange) + cat  + " == \"" + lep + "\""
-    print "Copying tree", input_file, "with", preselection
+    print("Copying tree", input_file, "with", preselection)
     newFile = TFile(tmp_dir + "signal_" + lepNum + lep + iso + str(ptRange) + cat + ".root", "recreate")
     newTree = sTree.CopyTree(preselection)
-    print "Done copying."
+    print("Done copying.")
     if newTree.GetEntriesFast() == 0:
-        print "Empty tree!!!!"
+        print("Empty tree!!!!")
         newFile.Close()
     else:
-        print "Entries copied", newTree.GetEntriesFast()
+        print("Entries copied", newTree.GetEntriesFast())
         newFiles.append(newFile)
         sTrees.append(sTree)
         newTrees.append(newTree)
@@ -126,12 +126,12 @@ for input_file in input_files:
 
 for bg_file in bg_files:
     if "QCD" in bg_file:
-        print "Skipping QCD", bg_file
+        print("Skipping QCD", bg_file)
         #exit(0)
         continue
     if len(bg_file) == 0 or bg_file.isspace():
         continue
-    print "Processing", bg_file
+    print("Processing", bg_file)
     
     #if "DYJetsToLL_M-50_HT-800to1200" not in bg_file:
     #    continue
@@ -149,22 +149,22 @@ for bg_file in bg_files:
         #            for ptRange in ptRanges:
     bTrees.append(bTree)
 
-    print "Getting", iso + str(ptRange) + cat
+    print("Getting", iso + str(ptRange) + cat)
     preselection = None
     
     if lepNum == "reco":
         preselection = "twoLeptons" + iso + str(ptRange) + cat + " == 1 && BTagsDeepMedium == 0 && leptonFlavour" + iso + str(ptRange) + cat  + " == \"" + lep + "\""
     else:
         preselection = "exclusiveTrack" + iso + str(ptRange) + cat + ' == 1 && BTagsDeepMedium == 0 && exclusiveTrackLeptonFlavour' + iso + str(ptRange) + cat  + " == \"" + lep + "\""
-    print "Copying tree", bg_file, "with", preselection
+    print("Copying tree", bg_file, "with", preselection)
     newFile = TFile(tmp_dir + "bg_" + lepNum + lep + iso + str(ptRange) + cat + ".root", "recreate")
     newTree = bTree.CopyTree(preselection)
-    print "Done copying."
+    print("Done copying.")
     if newTree.GetEntriesFast() == 0:
-        print "Empty tree!!!!"
+        print("Empty tree!!!!")
         newFile.Close()
     else:
-        print "Entries copied", newTree.GetEntriesFast()
+        print("Entries copied", newTree.GetEntriesFast())
         newFiles.append(newFile)
         newTrees.append(newTree)
         dataloaders[lepNum + lep + iso + str(ptRange) + cat].AddBackgroundTree(newTree, 1)

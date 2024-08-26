@@ -37,14 +37,14 @@ all = args.all
 lep = args.lep[0]
 
 
-print "No norm=" + str(no_norm)
-print "All=" + str(all)
-print "Lep=" + lep
+print("No norm=" + str(no_norm))
+print("All=" + str(all))
+print("Lep=" + lep)
 
 ######## END OF CMDLINE ARGUMENTS ########
 
 dir = os.path.dirname(output_file_name)
-print "Changing directory to", dir
+print("Changing directory to", dir)
 os.chdir(dir)
 
 #output_file_name_object = os.path.splitext(output_file_name)[0] + "Object.root"
@@ -89,7 +89,7 @@ sFiles = []
 sTrees = []
 
 for input_file in input_files:
-    print "Opening File " + input_file
+    print("Opening File " + input_file)
     fsignal = TFile(input_file)
     sFiles.append(fsignal)
     #for lep in ["Electrons", "Muons"]:
@@ -105,19 +105,19 @@ for input_file in input_files:
                     cuts = ""
                     if len(str(ptRange)) > 0:
                         cuts = str(ptRange) + "Dr" + str(drCut)
-                    #print "Checking " + iso + cuts + cat
+                    #print("Checking " + iso + cuts + cat)
                     if iso + cuts + cat != analysis_selections.jetIsos[lep]:
                         continue
                     sTree = fsignal.Get(lep + iso + cuts + cat)
                     if sTree.GetEntries() == 0:
-                        print "Emtpy. Skipping"
+                        print("Emtpy. Skipping")
                         continue
                     sTrees.append(sTree)
                     dataloaders[lep + iso + cuts + cat].AddSignalTree(sTree, 1)
                     
 for bg_file in bg_files:
     if "QCD" in bg_file:
-        print "Skipping QCD", bg_file
+        print("Skipping QCD", bg_file)
         #exit(0)
         continue
     fbackground = TFile(bg_file)
@@ -139,7 +139,7 @@ for bg_file in bg_files:
                         continue
                     bTree = fbackground.Get(iso + cuts + cat)
                     if bTree.GetEntries() == 0:
-                        print "Emtpy. Skipping"
+                        print("Emtpy. Skipping")
                         continue
                     if len(bTrees) == 0 or bTree != bTrees[-1]:
                         bTrees.append(bTree)

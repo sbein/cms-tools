@@ -31,7 +31,7 @@ parser.add_argument('-o', '--output_file', nargs=1, help='Output Filename', requ
 
 args, unknown = parser.parse_known_args()
 
-print args
+print(args)
 
 
 input_file = None
@@ -42,11 +42,11 @@ if args.output_file:
     output_file = args.output_file[0].strip()
 
 def main():
-    print "Skimming", input_file, "into", output_file
+    print("Skimming", input_file, "into", output_file)
     file = TFile(input_file, "read")
     full_tree = file.Get("tEvent")
     nentries = full_tree.GetEntries()
-    print "There are", nentries, "in the full tree"
+    print("There are", nentries, "in the full tree")
     
     selection_or = []
     
@@ -63,12 +63,12 @@ def main():
                     selection_or.append("twoLeptons" + postfix + " == 1")
                     
     selection_string = " || ".join(selection_or)
-    print "selection_string=" + selection_string
+    print("selection_string=" + selection_string)
     
     new_file = TFile(output_file, "recreate")
     
     new_tree = full_tree.CopyTree(selection_string)
-    print "new_tree has", new_tree.GetEntries(), "entries"
+    print("new_tree has", new_tree.GetEntries(), "entries")
     
     new_file.cd()
     new_tree.Write()

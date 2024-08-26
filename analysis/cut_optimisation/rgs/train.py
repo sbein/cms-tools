@@ -7,7 +7,7 @@ import argparse
 from glob import glob
 
 def error(message):
-    print "** %s" % message
+    print("** %s" % message)
     exit(0)
 
 gSystem.AddDynamicPath("$RGS_PATH/lib")
@@ -54,8 +54,8 @@ else:
 	dir = os.path.dirname(os.path.realpath(sys.argv[0]))
 	cuts_name = NAME
 
-print dir
-print cuts_name
+print(dir)
+print(cuts_name)
 
 varfilename  = dir + "/" + "%s.cuts" % cuts_name
 
@@ -67,7 +67,7 @@ if not os.path.exists(varfilename):
 #	error("unable to open background dir %s" % bkgfiledir)
 
 cutdatafilename = cuts_files or sigfilename
-print "cutdatafilename" + "=" + cutdatafilename
+print("cutdatafilename" + "=" + cutdatafilename)
 start      = 0           # start row 
 treename   = "tEvent"    # name of Root tree 
 weightname = "Weight"    # name of event weight variable
@@ -86,14 +86,14 @@ if sigfilename:
 	rgs.add(sigfilename, start, numrows, "_signal")
 if train_file:
 	filename = os.path.basename(train_file).split(".")[0].replace("-", "_")
-	print "Name: " + filename
+	print("Name: " + filename)
 	outputFilename = filename
 	rgs.add(train_file, start, numrows, "_" + filename)
 
 # bgFiles = glob(bkgfiledir + "/*.root")
 # for bgFile in bgFiles:
 # 	filename = os.path.basename(bgFile).split(".")[0].replace("-", "_")
-# 	print "Name: " + filename
+# 	print("Name: " + filename)
 # 	rgs.add(bgFile, start, numrows, "_" + filename)
 
 rgs.run(varfilename)

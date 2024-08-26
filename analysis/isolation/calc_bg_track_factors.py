@@ -49,7 +49,7 @@ if wanted_year != "2016":
 ######## END OF CMDLINE ARGUMENTS ########
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     c1 = TCanvas("c1", "c1", 800, 800)
     c1.cd()
@@ -60,17 +60,17 @@ def main():
     if wanted_year == "2017" or wanted_year == "2018":
         pattern = "/Run" + wanted_year + "*"
     
-    print "WANTED YEAR", wanted_year
+    print("WANTED YEAR", wanted_year)
     
     data_files = glob(data_dir + pattern)
     i=1
     for filename in data_files:#glob(bg_dir + "/*"):
-        print "====================================="
-        print "Analysing file", str(i), "out of", len(data_files)
+        print("=====================================")
+        print("Analysing file", str(i), "out of", len(data_files))
         #if i > 10:
         #    break
         i+=1
-        print "Opening", filename
+        print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
         
@@ -88,7 +88,7 @@ def main():
                 
                 
                 histName = "1t_" + lep + ("_sc" if sc else "")
-                print "histName", histName
+                print("histName", histName)
                 obs = None
                 if sc:
                     obs = analysis_selections.exTrackSameSignDilepBDTString[wanted_year] + analysis_selections.jetIsos[lep]
@@ -110,7 +110,7 @@ def main():
                         conditions = analysis_selections.sc_ex_track_cr_electrons_selections
                 
                 condition = analysis_selections.getDataString(wanted_year, lep, conditions)
-                print "new condition=" + condition
+                print("new condition=" + condition)
                 hist = utils.getHistogramFromTree(histName, c, obs, 1, -1, 1, condition, False)
                 hist.Sumw2()
                 new_sum = hist.Integral()
@@ -125,25 +125,25 @@ def main():
                 
         f.Close()
     
-    print "\n\n\n\n\n"
-    print data_1t_hist
-    print "\n\n\n\n\n"
+    print("\n\n\n\n\n")
+    print(data_1t_hist)
+    print("\n\n\n\n\n")
     for dataHistName in data_1t_hist:
         dataHist = data_1t_hist[dataHistName]
         dataNum = dataHist.GetBinContent(1)
         dataError = dataHist.GetBinError(1)
-        print dataHistName, "dataNum", dataNum, "dataError", dataError
+        print(dataHistName, "dataNum", dataNum, "dataError", dataError)
     
-    print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
+    print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
     
     for lep in ["Muons", "Electrons"]:
     #for lep in ["Muons"]:
-        print "\n\n\nsc scale factor - " + lep
+        print("\n\n\nsc scale factor - " + lep)
         numHist = data_1t_hist["1t_" + lep]
         denHist = data_1t_hist["1t_" + lep + "_sc"]
-        print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+        print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
         numHist.Divide(denHist)
-        print "sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+        print("sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
  
     exit(0)
     

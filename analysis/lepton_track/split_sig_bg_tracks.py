@@ -107,12 +107,12 @@ def main():
                     utils.barchTreeFromVarsDef(bgTrees[postfix], vars)
 
     c = TChain('tEvent')
-    print "Going to open the file"
-    print input_file
+    print("Going to open the file")
+    print(input_file)
     c.Add(input_file)
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
     afterAtLeastOneReco = 0
     notCorrect = 0
     noReco = 0
@@ -120,32 +120,32 @@ def main():
     sigTrack = 0
     for ientry in range(nentries):
         if ientry % 5000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
         #No exclusive track category
         #if c.category == 0:
         #    continue
         rightProcess = analysis_ntuples.isX1X2X1Process(c)
         if not rightProcess:
-            #print "No"
+            #print("No")
             notCorrect += 1
             continue
         
-        #print "Size Reco="
-        #print str(len(c.Electrons) + len(c.Muons))
+        #print("Size Reco=")
+        #print(str(len(c.Electrons) + len(c.Muons)))
         #if c.Electrons.size() + c.Muons.size() < 1:
-            #print "No reco"
+            #print("No reco")
         #    noReco += 1
         #    continue
         #afterAtLeastOneReco += 1
         genZL, genNonZL = analysis_ntuples.classifyGenZLeptons(c)
         if genZL is None or len(genZL) == 0:
-            #print "genZL is None"
+            #print("genZL is None")
             continue
         #if len(genNonZL) == 0:
-            #print "genNonZL is None"
+            #print("genNonZL is None")
         if len(genZL) != 2:
-            print "What:", len(genZL)
+            print("What:", len(genZL))
         
         for iso in utils.leptonIsolationList:
             for cat in utils.leptonIsolationCategories:
@@ -210,7 +210,7 @@ def main():
                             minNZ, minCanNZ = analysis_ntuples.minDeltaRGenParticles(t, genNonZL, c.GenParticles)
         
                             #if minNZ is None:
-                            #	print "minNZ is None for " + str(genNonZL)
+                            #	print("minNZ is None for " + str(genNonZL))
             
                             min = None
                             if minNZ is None or minZ < minNZ:
@@ -230,7 +230,7 @@ def main():
                                     if abs(c.GenParticles_PdgId[minCanZ]) == 13:
                                         genFlavour = "Muons"
                                     result = "Zl"
-                                    #print "Found!"
+                                    #print("Found!")
                                 else:
                                     result = "MM"
                             else:
@@ -246,7 +246,7 @@ def main():
                                 vars[varsDict["invMass"]]["var"][0] = (ll + t).M()
                                 vars[varsDict["deltaPhiLL"]]["var"][0] = t.DeltaPhi(ll)
                                 if (ll + t).M() < 0:
-                                    print "Negative invMass continue", (ll + t).M()
+                                    print("Negative invMass continue", (ll + t).M())
                                     continue
                             else:
                                 ll = TLorentzVector()
@@ -270,7 +270,7 @@ def main():
                                 tree = signalTrees[genFlavour + postfix]
                                 
                                 sigTrack += 1
-                                #print "Pt=" + str(vars[varsDict["track"]]["var"].Pt())
+                                #print("Pt=" + str(vars[varsDict["track"]]["var"].Pt()))
                             else:
                                 
                                 tree = bgTrees[postfix]
@@ -279,11 +279,11 @@ def main():
                             tree.SetBranchAddress('lepton', vars[varsDict["lepton"]]["var"])
                             tree.Fill()
 
-    print "notCorrect=" + str(notCorrect)
-    print "afterAtLeastOneReco=" + str(afterAtLeastOneReco)
-    print "clean=" + str(clean)
-    print "noReco=" + str(noReco)
-    print "sigTrack=" + str(sigTrack)
+    print("notCorrect=" + str(notCorrect))
+    print("afterAtLeastOneReco=" + str(afterAtLeastOneReco))
+    print("clean=" + str(clean))
+    print("noReco=" + str(noReco))
+    print("sigTrack=" + str(sigTrack))
 
     fnew = TFile(output_file + "_sig.root",'recreate')
     for lep in ["Electrons", "Muons"]:
@@ -327,7 +327,7 @@ def main():
                     bgTrees[postfix].Write()
     fnew.Close()
     
-    print "Done writing"
+    print("Done writing")
         
 main()
 exit(0)

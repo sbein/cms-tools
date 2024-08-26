@@ -31,12 +31,12 @@ args = parser.parse_args()
 def ptdr(x, par):
     delta = x[0]**2-par[1]**2
     if delta < 0:
-        print "WHAT?", x[0], par[1]
+        print("WHAT?", x[0], par[1])
     return (3.096916**2)/(2*par[0]*(cosh(par[1])-cos(sqrt(delta))))
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     c1 = TCanvas("c1", "c1", 800, 800)
     c1.SetLeftMargin(0.13)
@@ -70,7 +70,7 @@ def main():
         fileNames = glob("/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_jpsi_single_electron/sum/*")
     
     for fileName in fileNames:
-        print fileName
+        print(fileName)
         rootFile = TFile(fileName)
         c = rootFile.Get('tEvent')
                         
@@ -87,13 +87,13 @@ def main():
 
     # for f in rootfiles:
 #         if os.path.basename(f) in plot_par.ignore_bg_files:
-#             print "File", f, "in ignore list. Skipping..."
+#             print("File", f, "in ignore list. Skipping...")
 #             continue
 #         rootFile = TFile(f)
 #         if not_full and i > 0:
 #             break
 #         i += 1
-#         print f
+#         print(f)
 #         c = rootFile.Get('tEvent')
     
     #hist = TH1F("ptdrhist", "ptdrhist", 50, 0, 1)

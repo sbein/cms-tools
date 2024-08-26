@@ -34,15 +34,15 @@ if args.bg:
 no_norm = args.no_norm
 all = args.all
 
-print "No norm=" + str(no_norm)
-print "All=" + str(all)
+print("No norm=" + str(no_norm))
+print("All=" + str(all))
 
 two_leptons=args.two_leptons
 
 ######## END OF CMDLINE ARGUMENTS ########
 
 dir = os.path.dirname(output_file_name)
-print "Changing directory to", dir
+print("Changing directory to", dir)
 os.chdir(dir)
 
 gROOT.SetBatch(1)
@@ -69,23 +69,23 @@ totalEvents = 0
 weights = 0
 
 for input_file in input_files:
-    print "Opening File " + input_file
+    print("Opening File " + input_file)
     fsignal = TFile(input_file, "update")
     sTree = fsignal.Get("tEvent")
     nEvents = sTree.GetEntries()
     if nEvents == 0:
-        print "Emtpy. Skipping"
+        print("Emtpy. Skipping")
         continue
     totalEvents += nEvents
     sTree.GetEntry(0)
     weight = sTree.Weight
     weights += weight * nEvents
-    print "nEvents=" + str(nEvents) + " weight=" + str(weight)
+    print("nEvents=" + str(nEvents) + " weight=" + str(weight))
     sFiles.append(fsignal)
     sTrees.append(sTree)
 
 signalWeight = weights / totalEvents
-print "Average weight=" + str(signalWeight)
+print("Average weight=" + str(signalWeight))
 
 for sTree in sTrees:
     #dataloader.AddSignalTree(sTree, signalWeight)
@@ -95,7 +95,7 @@ for sTree in sTrees:
 bFileNames =  glob(bg_dir + "/*");
 for f in bFileNames:
     if "QCD" in f:
-        print "Skipping QCD", f
+        print("Skipping QCD", f)
         #exit(0)
         continue
     bFile = TFile(f, "update")

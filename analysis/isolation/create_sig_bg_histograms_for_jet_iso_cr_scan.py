@@ -110,7 +110,7 @@ if phase1_2017:
 ######## END OF CMDLINE ARGUMENTS ########
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     fnew = TFile(output_file,'recreate')
     c1 = TCanvas("c1", "c1", 800, 800)
@@ -121,12 +121,12 @@ def main():
     
     if get_data:
     
-        print "Getting Data..."
+        print("Getting Data...")
         data_files = [data_slim_file]
         for filename in data_files:#glob(bg_dir + "/*"):
         
-            print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
-            print "Opening", filename
+            print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
+            print("Opening", filename)
             f = TFile(filename)
             c = f.Get('tEvent')
         
@@ -174,7 +174,7 @@ def main():
                                 orthOpt = [True, False] if lep == "Muons" else [False]
                                 orth_cond = " && (leptons" + jetiso + "[1].Pt() <= 3.5 || deltaR" + jetiso + " <= 0.3)"
                                 isoCrs = [True, False] if iso == wanted_iso else [False]
-                                print "isoCrs", isoCrs
+                                print("isoCrs", isoCrs)
                                 for orth in orthOpt:
                                     for isoCr in isoCrs:
                                         c1.cd()
@@ -195,7 +195,7 @@ def main():
     
     i = 0
     
-    print "Getting signals..."
+    print("Getting signals...")
     
     for signal_file in signals:
         filename = signal_dir + "/higgsino_" + signal_file + "Chi20Chipm_1.root"
@@ -203,15 +203,15 @@ def main():
         if phase1_2017:
             filename = signal_dir + "/" + signal_file + "_1.root"
             
-        print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
-        print "Opening", filename  
+        print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
+        print("Opening", filename  )
         if sam or phase1_2017:
             deltaM = utils.getPointFromSamFileName(filename)
         else:
-            print filename
+            print(filename)
             deltaM = utils.getPointFromFileName(filename)  
         
-        print "deltaM=" + deltaM
+        print("deltaM=" + deltaM)
         f = TFile(filename)
         c = f.Get('tEvent')
 
@@ -271,11 +271,11 @@ def main():
     bg_1t_hist = {}
     bg_2l_hist = {}
     
-    print "Getting BG..."
+    print("Getting BG...")
     bg_files = [bg_slim_file]
     for filename in bg_files:#glob(bg_dir + "/*"):
-        print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
-        print "Opening", filename
+        print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
+        print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
         
@@ -325,7 +325,7 @@ def main():
                             orthOpt = [True, False] if lep == "Muons" else [False]
                             orth_cond = " && (leptons" + jetiso + "[1].Pt() <= 3.5 || deltaR" + jetiso + " <= 0.3)"
                             isoCrs = [True, False] if iso == wanted_iso else [False]
-                            print "isoCrs", isoCrs
+                            print("isoCrs", isoCrs)
                             for orth in orthOpt:
                                 for isoCr in isoCrs:
                                     c1.cd()
@@ -373,7 +373,7 @@ def main():
                             for isoCr in isoCrs:
                                 bg_2l_hist[lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else "")].Write("bg_2l_" + ("orth_" if orth else "") + lep + "_" + jetiso + ("_isoCr" if isoCr else ""))
     fnew.Close()
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
 
     exit(0)
     

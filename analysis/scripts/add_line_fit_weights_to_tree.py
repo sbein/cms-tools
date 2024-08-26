@@ -99,7 +99,7 @@ b = 0.931
 b_s = 0.07
 
 if wanted_phase == "phase1":
-    print "Phase 1 wanted!"
+    print("Phase 1 wanted!")
     
     dilepBDTobs = "dilepBDT"
     
@@ -109,7 +109,7 @@ if wanted_phase == "phase1":
     b = 1.118
     b_s = 0.122
 
-print "Line fit parameters m=", m, " b=", b
+print("Line fit parameters m=", m, " b=", b)
 
 # 0 = b, 1 = m
 
@@ -136,7 +136,7 @@ fileList = [input_file]
 
 for filename in fileList:
     if os.path.isdir(filename): continue
-    print "processing file " + filename
+    print("processing file " + filename)
     f = TFile(filename, "update")
     
     t = f.Get("tEvent")
@@ -165,7 +165,7 @@ for filename in fileList:
                         obsStr = newObservableStrs[0] + postfix
                         if t.GetBranchStatus(obsStr):
                             if not force:
-                                print "Tree", filename ,"already has", obsStr, "! Skipping..."
+                                print("Tree", filename ,"already has", obsStr, "! Skipping...")
                                 shouldSkipTree = True
                             else:
                                 rewriteTree = True
@@ -181,11 +181,11 @@ for filename in fileList:
     obsMem = {}
     branches = {}
     
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
     
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         t.GetEntry(ientry)
         
         for iso in utils.leptonIsolationList:
@@ -215,7 +215,7 @@ for filename in fileList:
                                     obsMem[obsStr] = np.zeros(1,dtype=float)
             
                                     if t.GetBranchStatus(obsStr):
-                                        print "Restting branch", obsStr
+                                        print("Restting branch", obsStr)
                                         branch = t.GetBranch(obsStr)
                                         branch.Reset()
                                         branch.SetAddress(obsMem[obsStr])
@@ -232,18 +232,18 @@ for filename in fileList:
                                     if newObservableStr == "muonsClosureLineFitWeight":
                                         obsMem[obsStr][0] = fLine.Eval(dilepBDT)
                                     elif newObservableStr == "muonsClosureLineFitSigmaMWeight":
-                                        #print "calculating for fLineSigmaM", dilepBDT, " by hand ", 1.114 + 0.383*dilepBDT, " eval ", fLineSigmaM.Eval(dilepBDT)
+                                        #print("calculating for fLineSigmaM", dilepBDT, " by hand ", 1.114 + 0.383*dilepBDT, " eval ", fLineSigmaM.Eval(dilepBDT))
                                         obsMem[obsStr][0] = fLineSigmaM.Eval(dilepBDT)
                                     elif newObservableStr == "muonsClosureLineFitSigmaBWeight":
                                         obsMem[obsStr][0] = fLineSigmaB.Eval(dilepBDT)
                                 else:
                                     obsMem[obsStr][0] = 1
-                                    #print "NOT TWO LEPTONS", "twoLeptons"  + postfix, getattr(t, "twoLeptons"  + postfix), getattr(t, "leptons"  + postfix).size()
+                                    #print("NOT TWO LEPTONS", "twoLeptons"  + postfix, getattr(t, "twoLeptons"  + postfix), getattr(t, "leptons"  + postfix).size())
                                     #obsMem[obsStr][0] = -2
                                 branches[obsStr].Fill()
    
     t.Write("tEvent",TObject.kOverwrite)
-    print "Done"
+    print("Done")
     f.Close()
 
 

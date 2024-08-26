@@ -48,9 +48,10 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 # CMS ENV
 cd $CMS_WD
-. /etc/profile.d/modules.sh
-module use -a /afs/desy.de/group/cms/modulefiles/
-module load cmssw
+#. /etc/profile.d/modules.sh
+#module use -a /afs/desy.de/group/cms/modulefiles/
+#module load cmssw
+source /cvmfs/cms.cern.ch/cmsset_default.sh
 cmsenv
 
 
@@ -86,6 +87,9 @@ elif [ -n "$ONPHASE0" ]; then
 fi
 
 
+echo $OUTPUT_WD
+echo $BDT_DIR
+#exit
 
 timestamp=$(date +%Y%m%d_%H%M%S%N)
 output_file="${WORK_DIR}/condor_submut.${timestamp}"
@@ -104,8 +108,10 @@ EOM
 
 if [ -n "$SAM" ] || [ -n "$PHASE1" ] || [ -n "$PHASE1_2018" ]; then
     FILES=${INPUT_DIR}/sum/*
+    echo ${INPUT_DIR}/sum/
 else
     FILES=${INPUT_DIR}/single/*
+    echo ${INPUT_DIR}/sum/
 fi
 #FILES=(mChipm160GeV_dm0p44GeV.root mChipm140GeV_dm4p28GeV.root)
 
@@ -135,6 +141,6 @@ output = ${INPUT_DIR}/stdout/${filename}_dilepton_bdt.output
 Queue
 EOM
 done
-
+echo $output_file
 condor_submit $output_file
 #rm $output_file

@@ -55,7 +55,7 @@ else:
     output_file = "histograms.root"
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     c1 = TCanvas("c1", "c1", 800, 800)
     c1.cd()
@@ -65,7 +65,7 @@ def main():
     significance = {}
     
     for filename in glob(bg_dir + "/*"):
-        print "Opening", filename
+        print("Opening", filename)
 
         f = TFile(filename)
         c = f.Get('tEvent')
@@ -119,14 +119,14 @@ def main():
 
         f.Close()
     
-    print "Getting signals..."
+    print("Getting signals...")
     
     for filename in glob(signal_dir + "/*"):
-        print "Opening", filename    
+        print("Opening", filename    )
         deltaM = os.path.basename(filename).split('_')[-1].split('Chi20Chipm')[0].split('dm')[1]
         mu = os.path.basename(filename).split('_')[1].split('mu')[1]
-        print "deltaM=" + deltaM
-        print "mu=" + mu
+        print("deltaM=" + deltaM)
+        print("mu=" + mu)
         f = TFile(filename)
         c = f.Get('tEvent')
         
@@ -148,7 +148,7 @@ def main():
                     significance[mu][deltaM][isoStr] = {}
                 
                 for lep in ["Muons", "Electrons"]:
-                    print mu, deltaM, isoStr, lep
+                    print(mu, deltaM, isoStr, lep)
                     
                     shortLep ="m"
                     if lep == "Electrons":
@@ -190,9 +190,9 @@ def main():
                     
         f.Close()
     
-    print significance
+    print(significance)
     
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
 
 main()

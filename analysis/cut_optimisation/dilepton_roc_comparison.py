@@ -92,7 +92,7 @@ def plot_rocs():
     
         name = os.path.basename(dir)
         #cut = cuts[name]
-        print "Processing " + name
+        print("Processing " + name)
     
         file = [dir]
         c2.cd()
@@ -100,11 +100,11 @@ def plot_rocs():
             (testBGHists, trainBGHists, testSignalHists, trainSignalHists, methods, names) = cut_optimisation.get_bdt_hists(file)
             #condition = "&& invMass < " + str(cut)
             #condition = "1"
-            #print "Condition=" + condition
+            #print("Condition=" + condition)
             #(testBGHistsCut, trainBGHistsCut, testSignalHistsCut, trainSignalHistsCut, methodsCut, namesCut) = cut_optimisation.get_bdt_hists(file, None, None, None, None, None, None, 10000, condition)
         except Exception as e:
                 logging.error(traceback.format_exc())
-                print "Skipping this one...."
+                print("Skipping this one....")
                 continue
     
         count += 1
@@ -122,12 +122,12 @@ def plot_rocs():
 #         memory.extend(testSignalHistsCut)
 #         memory.extend(trainSignalHistsCut)
         inx = 0
-        print "Here!!!!"
+        print("Here!!!!")
         for mode in ([[testBGHists[inx], trainBGHists[inx], testSignalHists[inx], trainSignalHists[inx], methods[inx], names[inx], ""]]):#, [testBGHistsCut[inx], trainBGHistsCut[inx], testSignalHistsCut[inx], trainSignalHistsCut[inx], methodsCut[inx], namesCut[inx], " - invMass Cut"]):
-            print "***"
+            print("***")
             histPad.cd(pId)
             testBGHist, trainBGHist, testSignalHist, trainSignalHist, method, name, title = mode
-            print "title=" + title
+            print("title=" + title)
             legend = TLegend(0.2, 0.2, 0.7, 0.45)
             memory.append(legend)
     
@@ -166,9 +166,9 @@ def plot_rocs():
 
             h.Draw("same")
 
-            print "highestZ=" + str(highestZ)
-            print "highestS=" + str(highestS)
-            print "highestB=" + str(highestB)
+            print("highestZ=" + str(highestZ))
+            print("highestS=" + str(highestS))
+            print("highestB=" + str(highestB))
 
             hHighestZ = TGraph()
             hHighestZ.SetPoint(0, highestS/ST, 1-highestB/BT)
@@ -211,9 +211,9 @@ def plot_rocs():
             break
     
     if needToDraw:
-        print "HERE"
+        print("HERE")
         for id in range(pId, 5):
-            print "Clearing pad " + str(id)
+            print("Clearing pad " + str(id))
             pad = histPad.cd(id)
             pad.Clear()
         c1.Print(outputFile);

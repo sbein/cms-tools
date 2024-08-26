@@ -142,12 +142,12 @@ cuts = [{"name":"none", "title": "No Cuts"},
         ]
 
 def createPlots(rootfiles, type, histograms):
-    print "Processing "
-    print rootfiles
+    print("Processing ")
+    print(rootfiles)
     lumiSecs = LumiSectMap()
     
     for f in rootfiles:
-        print f
+        print(f)
         rootFile = TFile(f)
         c = rootFile.Get('tEvent')
         if type == "data":
@@ -158,10 +158,10 @@ def createPlots(rootfiles, type, histograms):
                     lumiSecs.insert(k, a)
                     
         nentries = c.GetEntries()
-        print 'Analysing', nentries, "entries"
+        print('Analysing', nentries, "entries")
         for ientry in range(nentries):
             if ientry % 10000 == 0:
-                print "Processing " + str(ientry)
+                print("Processing " + str(ientry))
             c.GetEntry(ientry)
             
             for cut in cuts:
@@ -187,7 +187,7 @@ def createPlots(rootfiles, type, histograms):
             
 def main():
     
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     histograms = {}
     
@@ -210,7 +210,7 @@ def main():
             sumTypes[type] = {}
         #sumTypes[types[0]][types[1]] = True
 
-    print sumTypes
+    print(sumTypes)
     #exit(0)
     for cut in cuts:
         for hist_def in histograms_defs:
@@ -235,7 +235,7 @@ def main():
     if plot_data:
         dataFiles = glob(data_dir + "/*")
         calculated_lumi = createPlots(dataFiles, "data", histograms)
-        print "Calculated Luminosity: ", calculated_lumi
+        print("Calculated Luminosity: ", calculated_lumi)
         weight = calculated_lumi * 1000 / utils.LUMINOSITY
     
     for type in sumTypes:
@@ -243,12 +243,12 @@ def main():
             continue
         #if type == "ZJetsToNuNu" or type == "WJetsToLNu":
         #    continue
-        print "Summing type", type
+        print("Summing type", type)
         rootfiles = glob(bg_dir + "/*" + type + "*.root")
         createPlots(rootfiles, type, histograms)
     
     for cType in utils.compoundTypes:
-        print "Creating compound type", cType
+        print("Creating compound type", cType)
         rootFiles = []
         for type in utils.compoundTypes[cType]:
             if type not in sumTypes:
@@ -257,9 +257,9 @@ def main():
         if len(rootFiles):
             createPlots(rootFiles, cType, histograms)
         else:
-            print "**Couldn't find file for " + cType
+            print("**Couldn't find file for " + cType)
     
-    print "Plotting observable"
+    print("Plotting observable")
 
     c1 = TCanvas("c1", "c1", 800, 800)
     
@@ -288,7 +288,7 @@ def main():
     
     for cut in cuts:
         cutName = cut["name"]
-        print "Cut " + cutName
+        print("Cut " + cutName)
         t.Clear()
         t.AddText(cutName)
         t.Draw()
@@ -396,14 +396,14 @@ def main():
         
         if needToDraw:
             for id in range(pId, 5):
-                print "Clearing pad " + str(id)
+                print("Clearing pad " + str(id))
                 pad = histPad.cd(id)
                 pad.Clear()
         c1.Print(output_file);
         
     c1.Print(output_file+"]");
     
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
 
 main()
 

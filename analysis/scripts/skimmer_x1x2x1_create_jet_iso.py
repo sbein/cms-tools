@@ -71,19 +71,19 @@ def main():
             for ptRange in ptRanges:
                 branchName = lep + "_pass" +  CorrJetObs + str(ptRange)
                 if tEvent.GetBranchStatus(branchName):
-                    print "Reseting branch", branchName
+                    print("Reseting branch", branchName)
                     branches[branchName] = tEvent.GetBranch(branchName)
                     branches[branchName].Reset()
                     tEvent.SetBranchAddress(branchName, leptonsCorrJetVars[branchName])
                     #branches[DTypeObs + postfix].SetAddress(exTrackVars[DTypeObs + postfix])
                 else:
-                    print "Branching", branchName
+                    print("Branching", branchName)
                     branches[branchName] = tEvent.Branch(branchName, 'std::vector<' + utils.leptonsCorrJetVecList[CorrJetObs] + '>', leptonsCorrJetVars[branchName])
                     tEvent.SetBranchAddress(branchName, leptonsCorrJetVars[branchName])
     
     for ientry in range(nentries):
         if ientry % 100 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         tEvent.GetEntry(ientry)
         
         ### JET ISOLATION ####
@@ -119,7 +119,7 @@ def main():
         for lep in isoJets:
 
             leptonsVecName = isoJets[lep]["obs"]
-            #print leptonsVecName
+            #print(leptonsVecName)
             leptonsVec = eval("tEvent." + leptonsVecName)
             
             for i in range(leptonsVec.size()):
@@ -147,7 +147,7 @@ def main():
         
         var_Jets_muonCorrected = ROOT.std.vector(TLorentzVector)(tEvent.Jets)
         var_Jets_electronCorrected = ROOT.std.vector(TLorentzVector)(tEvent.Jets)
-        #print len(tEvent.Muons), tEvent.Muons.size()
+        #print(len(tEvent.Muons), tEvent.Muons.size())
         
         non_iso_jet_electrons = [ i for i in range(len(tEvent.Electrons)) if electronsCalcObs["Electrons_minDeltaRJets"][i] >= 0 and electronsCalcObs["Electrons_minDeltaRJets"][i] < 0.4 ]
         non_iso_jet_muons = [ i for i in range(len(tEvent.Muons)) if analysis_ntuples.muonPassesJetIsoSelection(i, tEvent.Muons, tEvent.Muons_mediumID) and muonsCalcObs["Muons_minDeltaRJets"][i] >= 0 and muonsCalcObs["Muons_minDeltaRJets"][i] < 0.4 ]
@@ -203,7 +203,7 @@ def main():
                     for ptRange in utils.leptonCorrJetIsoPtRange:
                         tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs + str(ptRange), leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)])
                 else:
-                    #print lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs]
+                    #print(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
                     tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
         
         #### END OF JET ISOLATION

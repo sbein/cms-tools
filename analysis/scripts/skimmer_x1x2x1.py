@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -50,7 +50,7 @@ args = parser.parse_args()
 print(args)
     
 def getDyMuons(c):
-    #print "getDyMuons"
+    #print("getDyMuons")
     muons = [i for i in range(len(c.Muons)) if c.Muons[i].Pt() >= 20 and bool(c.Muons_mediumID[i]) and bool(c.Muons_passIso[i]) and abs(c.Muons[i].Eta()) <= 2.4]
     
     if len(muons) != 2:
@@ -332,7 +332,7 @@ def main():
                         for DTypeObs in analysis_observables.dileptonObservablesDTypesList:
                             dileptonVars[DTypeObs + postfix] = np.zeros(1,dtype=analysis_observables.dileptonObservablesDTypesList[DTypeObs])
 
-    #print dileptonVars
+    #print(dileptonVars)
        
     var_LeadingJet = TLorentzVector()
     
@@ -556,7 +556,7 @@ def main():
             utils.insertToPythonLumiSection(seenLumiSecs, c.RunNum, c.LumiBlockNum)
 
         hHt.Fill(c.HT)
-        #print "crossSection=" + str(crossSection)
+        #print("crossSection=" + str(crossSection))
         hHtWeighted.Fill(c.HT, crossSection)
 
         if not rightProcess:
@@ -600,14 +600,14 @@ def main():
                     nLGenMapZ[nLGenZ] = 1
             
                 if nX20 > 0:
-                    #print "nX20", nX20, "nLGenZ", nLGenZ
+                    #print("nX20", nX20, "nLGenZ", nLGenZ)
                     if nX20 == 1 and nLGenZ == 2:
                         branching_ratio *= 0.2
                     elif nX20 == 2 and nLGenZ == 4:
                         branching_ratio *= 0.04
                     elif nX20 == 1 and nLGenZ == 0:
                         branching_ratio *= 1.8
-                        #print "******", branching_ratio
+                        #print("******", branching_ratio)
                     elif nX20 == 2 and nLGenZ == 0:
                         branching_ratio *= 3.24
             else:
@@ -670,8 +670,8 @@ def main():
             jetsHt = [i for i in range(len(c.Jets)) if c.Jets[i].Pt() >= 30 and abs(c.Jets[i].Eta()) <= 2.4 and all(abs(c.Muons[j].DeltaR(c.Jets[i])) > 0.1 for j in muons)]
             jetsMht = [i for i in range(len(c.Jets)) if c.Jets[i].Pt() >= 30 and abs(c.Jets[i].Eta()) <= 5 and all(abs(c.Muons[j].DeltaR(c.Jets[i])) > 0.1 for j in muons)]
     
-            #print "jetsHt=", jetsHt, "len(c.Jets)", len(c.Jets)
-            #print "jetsMht=", jetsMht
+            #print("jetsHt=", jetsHt, "len(c.Jets)", len(c.Jets))
+            #print("jetsMht=", jetsMht)
             
             HT = 0
             for i in jetsHt:
@@ -715,7 +715,7 @@ def main():
         nj, btagsDeepMedium, ljet = analysis_ntuples.eventNumberOfJets30Pt2_4Eta_DeepMedium(jetsObs["Jets"], jetsObs["Jets_bJetTagDeepCSVBvsAll"])
         
         if ljet is None and not jpsi:
-            #print "No ljet:",ljet 
+            #print("No ljet:",ljet )
             continue
             
         #if no_lepton_selection and btagsDeepMedium > 0:
@@ -829,8 +829,8 @@ def main():
             takeLeptonsFrom = c
         
         if dy:
-            #print "In DY section"
-            #print "muons=", muons
+            #print("In DY section")
+            #print("muons=", muons)
             muons, invMass = getDyMuons(takeLeptonsFrom)
             if muons is None:
                 muons = getWMuon(takeLeptonsFrom)
@@ -861,7 +861,7 @@ def main():
                 dyMuonsClassObs["DYMuonsSum"] = takeLeptonsFrom.Muons[muons[0]] + takeLeptonsFrom.Muons[muons[1]]
             else:
                 dyMuonsClassObs["DYMuonsSum"] = takeLeptonsFrom.Muons[muons[0]]
-            #print "invMass=", invMass
+            #print("invMass=", invMass)
             dyMuonsFlatObs["DYMuonsInvMass"][0] = invMass
             
             for muonsOb in analysis_observables.muonsObs:
@@ -1122,7 +1122,7 @@ def main():
                             cuts = str(ptRange) + "Dr" + str(drCut)
                             tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs + cuts, leptonsCorrJetVars[lep + "_pass" + CorrJetObs + cuts])
                 else:
-                    #print lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs]
+                    #print(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
                     tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
         
         tight_electrons = [ electronsObs["Electrons"][i] for i in range(len(electronsObs["Electrons"])) if analysis_ntuples.electronPassesTightSelection(i, electronsObs["Electrons"], leptonsCorrJetVars["Electrons_pass" + utils.defaultJetIsoSetting], electronsCalcObs["Electrons_deltaRLJ"]) ]
@@ -1183,8 +1183,8 @@ def main():
                         if iso + cuts + cat == utils.defaultJetIsoSetting:
                             postfixi = [iso + cuts + cat, ""]
                 
-                        #print "default=", utils.defaultJetIsoSetting
-                        #print iso + str(ptRange) + cat, postfixi
+                        #print("default=", utils.defaultJetIsoSetting)
+                        #print(iso + str(ptRange) + cat, postfixi)
                 
                         for DTypeObs in analysis_observables.dileptonObservablesDTypesList:
                             for postfix in postfixi:
@@ -1205,8 +1205,8 @@ def main():
                             leptonFlavour = "Muons"
                             same_sign = False
                             leptons, leptonsIdx, leptonsCharge = analysis_ntuples.getTwoJPsiLeptonsAfterSelection(24, 24, muonsObs["Muons"], leptonsCorrJetVars["Muons_pass" + iso + cuts], muonsObs["Muons_mediumID"], muonsObs["Muons_charge"], utils.leptonIsolationCategories[cat]["muonPt"], utils.leptonIsolationCategories[cat]["lowPtTightMuons"], muonsObs["Muons_tightID"], muonsObs["Muons_passIso"])
-                            #print ientry
-                            #print ientry, leptons, leptonsIdx, leptonsCharge
+                            #print(ientry)
+                            #print(ientry, leptons, leptonsIdx, leptonsCharge)
                         else:
                             # need to see how to make it work for noiso too.....
                             #print(leptonsCorrJetVars)
@@ -1232,11 +1232,11 @@ def main():
                         #if leptons is not None and (jpsi_muons or commonCalcFlatObs["BTagsLoose"][0] < 3 or commonCalcFlatObs["BTagsMedium"][0] < 3 or commonCalcFlatObs["BTagsDeepLoose"][0] < 3 or commonCalcFlatObs["BTagsDeepMedium"][0] < 3):
                         if leptons is not None and (jpsi_muons or commonCalcFlatObs["BTagsLoose"][0] == 0 or commonCalcFlatObs["BTagsMedium"][0] == 0 or commonCalcFlatObs["BTagsDeepLoose"][0] == 0 or commonCalcFlatObs["BTagsDeepMedium"][0] == 0):
                 
-                            #print var_BTagsLoose[0], var_BTagsMedium[0], var_BTagsDeepLoose[0], var_BTagsDeepMedium[0]
+                            #print(var_BTagsLoose[0], var_BTagsMedium[0], var_BTagsDeepLoose[0], var_BTagsDeepMedium[0])
                 
                             foundTwoLeptons = True
-                            #print "foundTwoLeptons!!!", ientry
-                            #print ientry, leptons, leptonsIdx, leptonsCharge, leptonFlavour, same_sign
+                            #print("foundTwoLeptons!!!", ientry)
+                            #print(ientry, leptons, leptonsIdx, leptonsCharge, leptonFlavour, same_sign)
                     
                             pt = TLorentzVector()
                             pt.SetPtEtaPhiE(MET,0,METPhi,MET)
@@ -1246,7 +1246,7 @@ def main():
                     
                             for postfix in postfixi:
                     
-                                #print ientry, postfix, leptons, leptonsIdx, leptonsCharge, leptonFlavour, same_sign
+                                #print(ientry, postfix, leptons, leptonsIdx, leptonsCharge, leptonFlavour, same_sign)
                         
                                 dileptonVars["isoCr" + postfix][0] = isoCr
                                 dileptonVars["isoCrMinDr" + postfix][0] = isoCrMinDr
@@ -1282,11 +1282,11 @@ def main():
                                 dileptonVars["mth2" + postfix][0] = analysis_tools.MT2(MHT, MHTPhi, leptons[1])
                         
                                 #if leptons[0].Pt() < 1 or leptons[1].Pt() < 1:
-                                #    print "FUCK!"
+                                #    print("FUCK!")
                                 #    exit(0)
                         
-                                #print postfix
-                                #print ientry
+                                #print(postfix)
+                                #print(ientry)
                                 dileptonVars["mtautau" + postfix][0] = analysis_tools.Mtautau(pt, leptons[0], leptons[1])
                                 dileptonVars["nmtautau" + postfix][0] = analysis_tools.Mtautau2(pt, leptons[0], leptons[1])
                                 dileptonVars["deltaEtaLeadingJetDilepton" + postfix][0] = abs((leptons[0] + leptons[1]).Eta() - var_LeadingJet.Eta())
@@ -1308,14 +1308,14 @@ def main():
                                         min, minCan = analysis_ntuples.minDeltaRGenParticles(lepton, gens, var_GenParticles)
                                         pdgId = var_GenParticles_ParentId[minCan]
                                         if min > 0.01:
-                                            #print "BAD GEN!!! ", min
+                                            #print("BAD GEN!!! ", min)
                                             pdgId = 0
                                         else:
                                             if ((abs(var_GenParticles_PdgId[minCan]) == 13 and leptonFlavour == "Muons") or (abs(var_GenParticles_PdgId[minCan]) == 11 and leptonFlavour == "Electrons")) and leptonsCharge[i] * var_GenParticles_PdgId[minCan] < 0:
                                                 numRealLeptons += 1
                                                 lepCans.append(minCan)
                                             else:
-                                                #print "BAD GEN MATCH! "
+                                                #print("BAD GEN MATCH! ")
                                                 pdgId = 0
                                             dileptonVars["leptons_ParentPdgId" + postfix].push_back(pdgId)
 
@@ -1355,8 +1355,8 @@ def main():
                                                     for i in range(var_GenParticles.size()):
                                                         if var_GenParticles_Status[i] == 1 and var_GenParticles_ParentIdx[i] == parentIdx:
                                                             numOfParentChildren += 1
-                                                    #print "numOfParentChildren=", numOfParentChildren, "var_leptons_ParentPdgId[0]", var_leptons_ParentPdgId[0], "var_GenParticles_PdgId[parentIdx]", var_GenParticles_PdgId[parentIdx], "var_GenParticles_PdgId[parentIdx2]", var_GenParticles_PdgId[parentIdx2]
-                                                    #print lepCans
+                                                    #print("numOfParentChildren=", numOfParentChildren, "var_leptons_ParentPdgId[0]", var_leptons_ParentPdgId[0], "var_GenParticles_PdgId[parentIdx]", var_GenParticles_PdgId[parentIdx], "var_GenParticles_PdgId[parentIdx2]", var_GenParticles_PdgId[parentIdx2])
+                                                    #print(lepCans)
                                                     if numOfParentChildren == 2:
                                                         dileptonVars["sc" + postfix][0] = True
                                                         if abs(var_GenParticles_PdgId[parentIdx]) == 223:
@@ -1382,10 +1382,10 @@ def main():
                             
                         for postfix in postfixi:
                             for vecObs in analysis_observables.dileptonObservablesVecList:
-                                #print "tEvent.SetBranchAddress(" + vecObs + postfix +","+ str(dileptonVars[vecObs + postfix]) + ")"
+                                #print("tEvent.SetBranchAddress(" + vecObs + postfix +","+ str(dileptonVars[vecObs + postfix]) + ")")
                                 tEvent.SetBranchAddress(vecObs + postfix, dileptonVars[vecObs + postfix])
                             for stringObs in analysis_observables.dileptonObservablesStringList:
-                                #print "tEvent.SetBranchAddress(" + stringObs + postfix +","+ str(dileptonVars[stringObs + postfix]) + ")"
+                                #print("tEvent.SetBranchAddress(" + stringObs + postfix +","+ str(dileptonVars[stringObs + postfix]) + ")")
                                 tEvent.SetBranchAddress(stringObs + postfix, dileptonVars[stringObs + postfix])
         
         if not foundTwoLeptons and dy:
@@ -1480,12 +1480,12 @@ def main():
             genVecObs["genLeptonsIdx"] = cppyy.gbl.std.vector(int)()
             
             genZL, genNonZL = analysis_ntuples.classifyGenZLeptons(c)
-            #print len(genZL)
+            #print(len(genZL))
             
             if genZL is None:
                 commonObservablesStringObs["genFlavour"] = cppyy.gbl.std.string("")
-                #print "****"
-                #print commonObservablesStringObs["genFlavour"]
+                #print("****")
+                #print(commonObservablesStringObs["genFlavour"])
                 for i in range(electronsObs["Electrons"].size()):
                     electronsCalcObs["Electrons_isZ"].push_back(False)
                 for i in range(muonsObs["Muons"].size()):
@@ -1589,7 +1589,7 @@ def main():
             vars["passesUniversalSelection"][0] = True
             
             #if tree.Met < 200:
-            #    print "HERE:", var_tEffhMetMhtRealXMet2016[0]
+            #    print("HERE:", var_tEffhMetMhtRealXMet2016[0])
         else:
             vars["tEffhMetMhtRealXMet2016"][0] = 1
             vars["tEffhMetMhtRealXMet2017"][0] = 1

@@ -72,19 +72,19 @@ ignore_bg_files = ["TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root", "TTJets_TuneCU
 
 def countBgInFiles(type, rootFiles, counts):
     for f in rootFiles:
-        print f
+        print(f)
         if os.path.basename(f) in ignore_bg_files:
-            print "File", f, "in ignore list. Skipping..."
+            print("File", f, "in ignore list. Skipping...")
             continue
         rootFile = TFile(f)
         c = rootFile.Get('tEvent')
-        #print c
+        #print(c)
         for bgReTagType in bgReTaggingOrder:
-            #print bgReTagType
+            #print(bgReTagType)
             drawString = hist_def["cond"] + " * " + bgReTagging[bgReTagType]
             hist = utils.getHistogramFromTree("tmp", c, hist_def["obs"], hist_def["bins"], hist_def["minX"], hist_def["maxX"], drawString, False)
-            #print hist
-            #print "{:.2f}".format(hist.Integral())
+            #print(hist)
+            #print("{:.2f}".format(hist.Integral()))
             if counts[type].get(bgReTagType) is None:
                 counts[type][bgReTagType] = 0
             counts[type][bgReTagType] += hist.Integral()
@@ -93,7 +93,7 @@ def countBgInFiles(type, rootFiles, counts):
         rootFile.Close()
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     counts = {}
     
@@ -116,31 +116,31 @@ def main():
             sumTypes[type] = {}
         #sumTypes[types[0]][types[1]] = True
 
-    print sumTypes
+    print(sumTypes)
     
     for type in sumTypes:
         if utils.existsInCoumpoundType(type):
             continue
-        print "Summing type", type
+        print("Summing type", type)
         counts[type] = {}
         rootFiles = glob(bg_dir + "/*" + type + "_*.root")
         countBgInFiles(type, rootFiles, counts)
     
     for cType in utils.compoundTypes:
-        print "Creating compound type", cType
+        print("Creating compound type", cType)
         counts[cType] = {}
         rootFiles = utils.getFilesForCompoundType(cType, bg_dir)
-        print rootFiles
+        print(rootFiles)
         countBgInFiles(cType, rootFiles, counts)
         
-    print counts
+    print(counts)
     
     sortedBgReTagging = sorted([k for k in bgReTagging], key=lambda a: bgReTaggingOrder[a])
     sortedBgTypes = sorted([k for k in utils.bgOrder], key=lambda a: utils.bgOrder[a])
     
-    print "," + ",".join(sortedBgReTagging)
+    print("," + ",".join(sortedBgReTagging))
     for bgType in sortedBgTypes:
-        #print bgType
-        print bgType + "," + ",".join(["{:.2f}".format(counts[bgType][bgRetagType]) for bgRetagType in sortedBgReTagging])
+        #print(bgType)
+        print(bgType + "," + ",".join(["{:.2f}".format(counts[bgType][bgRetagType]) for bgRetagType in sortedBgReTagging]))
 
 main()

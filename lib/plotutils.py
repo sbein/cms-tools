@@ -161,7 +161,7 @@ def styledStackFromStack(bgHist, memory, legend=None, title="", colorInx=None, n
     
     if bgHist is None or bgHist.GetNhists() == 0:
         return newStack
-    #print "Num of hists: " + str(bgHist.GetNhists())
+    #print("Num of hists: " + str(bgHist.GetNhists()))
     bgHists = bgHist.GetHists()
 
     for i, hist in enumerate(bgHists):
@@ -233,7 +233,7 @@ def deprecated_histoStyler(h, ratio = False):
     else:
         size = 0.04
         labelSize = 0.04
-        #print h.GetXaxis()
+        #print(h.GetXaxis())
         h.GetXaxis().SetTitleOffset(1.0)
         h.GetYaxis().SetTitleOffset(1.5)
     
@@ -302,7 +302,7 @@ def stamp_plot(lumi = 135.0, label = StampStr.WIP, cmsLocation = StampCoor.ABOVE
 #     testing.SetNDC()
 #     testing.SetTextFont(cmsTextFont)
 #     testing.SetTextSize(0.85*testing.GetTextSize()) 
-#     print "--------", testing.GetTextSize()
+#     print("--------", testing.GetTextSize())
 #     testing.DrawLatex(0.18,0.915, 'CMS')
 #     
 #     testing.SetTextFont(extraTextFont)

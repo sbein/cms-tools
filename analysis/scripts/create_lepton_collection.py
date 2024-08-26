@@ -22,7 +22,7 @@ parser.add_argument('-i', '--input_file', nargs=1, help='Input Filename', requir
 parser.add_argument('-o', '--output_file', nargs=1, help='Output Filename', required=False)
 args = parser.parse_args()
 
-print args
+print(args)
 
 input_file = None
 if args.input_file:
@@ -36,17 +36,17 @@ def main():
     c = TChain('TreeMaker2/PreSelection')
     c.Add(input_file)
 
-    print "Creating " + output_file
+    print("Creating " + output_file)
     fnew = TFile(output_file,'recreate')
     
     leptonCollectionMap = LeptonCollectionMap()
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
         leptonCollection = LeptonCollection()
         leptonCollection.Electrons = c.Electrons

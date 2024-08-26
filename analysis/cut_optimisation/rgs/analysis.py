@@ -32,9 +32,9 @@ data_pickle = args.pickle
 def main():
     global cut
     
-    print "="*80
-    print "\t=== %s: find best cuts ===" % NAME
-    print "="*80
+    print("="*80)
+    print("\t=== %s: find best cuts ===" % NAME)
+    print("="*80)
     
     dir = None
     cuts_name = None
@@ -97,7 +97,7 @@ def main():
     varfilename  = dir + "/" + "%s.cuts" % cuts_name
     
     if data_pickle:
-    	print "Opening pickle!"
+    	print("Opening pickle!")
 	with open(dir + "/output.pickle", "rb") as f:
     		data = pickle.load(f)
     		ts = data[0]
@@ -111,17 +111,17 @@ def main():
     	numFiles = 0
 
     	for resultsfilename in resultsfilenames:
-		print "\n\topen RGS file: %s"  % resultsfilename
+		print("\n\topen RGS file: %s"  % resultsfilename)
 		filename = os.path.basename(resultsfilename).split(".")[0].replace("-", "_")
-		print "\n\tFilename: " + filename
+		print("\n\tFilename: " + filename)
 		ntuple = Ntuple(resultsfilename, treename)
 		variables = ntuple.variables()
 		if var_count is None:
 		    var_count = {}
 		    for name, count in variables:
-			print "\t\t%-30s\t%5d" % (name, count)
+			print("\t\t%-30s\t%5d" % (name, count))
 			var_count[name] = count
-		print "\tnumber of cut-points: ", ntuple.size()
+		print("\tnumber of cut-points: ", ntuple.size())
 
 		if sCount is None:
 			sCount = [0] * ntuple.size()
@@ -131,8 +131,8 @@ def main():
 
 		# get the totals
 
-		print "totals", totals
-		print "len(totals)", len(totals)
+		print("totals", totals)
+		print("len(totals)", len(totals))
 
 		if filename == "signal":
 			ts = totals[0][0]
@@ -141,25 +141,25 @@ def main():
 
 		for row, cuts in enumerate(ntuple):
 			if row % 100000 == 0:
-				print "In row:", row
+				print("In row:", row)
 			if filename == "signal":
 				sCount[row] = cuts.count_signal
 			else:
 				bCount[row] += cuts("count_" + filename)
 
 		numFiles += 1
-		print "Number of files:", numFiles
+		print("Number of files:", numFiles)
     
     	with open(dir + "/output.pickle", "wb") as f:
     		pickle.dump((ts, tb, sCount, bCount), f)
     
-    print "Totals:"
-    print "Signal: " + str(ts)
-    print "Background: " + str(tb)
+    print("Totals:")
+    print("Signal: " + str(ts))
+    print("Background: " + str(tb))
     for row, b in enumerate(bCount):
-    	#print "Row " + str(row)
-    	#print "Cuts: "
-    	#print cuts
+    	#print("Row " + str(row))
+    	#print("Cuts: ")
+    	#print(cuts)
         b  = bCount[row] #  background count        
         s  = sCount[row] #  signal count
         
@@ -168,9 +168,9 @@ def main():
         
         hroc.Fill(fb, fs)
         hrocrej.Fill(fs, 1-fb)
-        #print "----------------------------"
-        #print "Fraction Signal: " + str(fs)
-        #print "Fraction Background: " + str(fb)
+        #print("----------------------------")
+        #print("Fraction Signal: " + str(fs))
+        #print("Fraction Background: " + str(fb))
 
         Z = signalSignificance(s, b)
         if Z > bestZ:
@@ -178,7 +178,7 @@ def main():
             bestRow = row
         
     
-    print "\t== plot ROC ==="	
+    print("\t== plot ROC ==="	)
     croc = TCanvas("h_%s_ROC" % cuts_name, "ROC", 520, 10, 500, 500)
     croc.cd()
     #croc.SetLogx()
@@ -190,23 +190,23 @@ def main():
     croc.Update()
     croc.SaveAs(dir + "/" + cuts_name + "_rej.pdf")
     
-    print "\t=== %s: best cut ===" % NAME
-    print "Best Z: " + str(bestZ)
+    print("\t=== %s: best cut ===" % NAME)
+    print("Best Z: " + str(bestZ))
     
     b  = bCount[bestRow]     
     s  = sCount[bestRow]
 
     fs = s / ts
     fb = b / tb
-    print "-------------"
-    print "(fs,fb,1-fb)=("+str(fs)+","+str(fb)+","+str(1-fb)+")"
-    print "-------------"
-    print "b=" + str(b)
-    print "s=" + str(s)
+    print("-------------")
+    print("(fs,fb,1-fb)=("+str(fs)+","+str(fb)+","+str(1-fb)+")")
+    print("-------------")
+    print("b=" + str(b))
+    print("s=" + str(s))
     
     
 # ---------------------------------------------------------------------
 try:
     main()
 except KeyboardInterrupt:
-    print '\nciao!'
+    print('\nciao!')

@@ -23,11 +23,11 @@ parser.add_argument('-o', '--output_file', nargs=1, help='Output Filename', requ
 parser.add_argument('-f', '--input_file_name', nargs=1, help='Input Filename', required=False)
 args = parser.parse_args()
 
-print args
+print(args)
 
 input_files = None
 #if len(args.input_file) < 2:
-#    print "Need at least 2 file"
+#    print("Need at least 2 file")
 #    exit(0)
 if args.input_file_name:
     input_file_name =  args.input_file_name[0]
@@ -55,7 +55,7 @@ def main():
     i = 1
     shouldWrite = True
     for nf in input_files:
-        print "Opening ", nf, " ", i, " out of", len(input_files)
+        print("Opening ", nf, " ", i, " out of", len(input_files))
         f = TFile(nf,'read')
         leptonCollectionMapN = f.Get("leptonCollectionFilesMap")
         if leptonCollectionMap is None:
@@ -67,7 +67,7 @@ def main():
         f.Close()
         f.IsA().Destructor(f)
         if i % maxMapSize == 0:
-            print "Writing map " + str(mapNum)
+            print("Writing map " + str(mapNum))
             newFile.cd()
             leptonCollectionMap.Write("leptonCollectionFilesMap" + str(mapNum))
             mapNum += 1
@@ -78,7 +78,7 @@ def main():
             shouldWrite = True
         i += 1
     if shouldWrite and leptonCollectionMap is not None:
-        print "Writing map " + str(mapNum)
+        print("Writing map " + str(mapNum))
         newFile.cd()
         leptonCollectionMap.Write("leptonCollectionFilesMap" + str(mapNum))
     newFile.Close()

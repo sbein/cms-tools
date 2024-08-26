@@ -30,16 +30,16 @@ parser.add_argument('-bg', '--background', dest='bg', help='Background', action=
 parser.add_argument('-data', '--data', dest='data', help='Data', action='store_true')
 args = parser.parse_args()
 
-print args
+print(args)
 
 madHTgt = None
 madHTlt = None
 if args.madHTgt:
     madHTgt = int(args.madHTgt[0])
-    print "Got madHT lower bound of " + str(madHTgt)
+    print("Got madHT lower bound of " + str(madHTgt))
 if args.madHTlt:
     madHTlt = int(args.madHTlt[0])
-    print "Got madHT upper bound of " + str(madHTlt)
+    print("Got madHT upper bound of " + str(madHTlt))
 
 
 signal = args.signal
@@ -63,7 +63,7 @@ def main():
     chain.Add(input_file)
     c = chain.CloneTree()
     chain = None
-    print "Creating " + output_file
+    print("Creating " + output_file)
     fnew = TFile(output_file,'recreate')
 
     hHt = TH1F('hHt','hHt',100,0,3000)
@@ -140,7 +140,7 @@ def main():
     tEvent.Branch('MinDeltaPhiMhtJets', var_MinDeltaPhiMhtJets,'MinDeltaPhiMhtJets/D')
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     count = 0
     afterPreselection = 0
@@ -158,10 +158,10 @@ def main():
                 crossSection = utils.crossSections.get(filename)
             else:
                 crossSection = 1.21547
-    print "Starting Loop"
+    print("Starting Loop")
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
 
         ### MADHT ###
@@ -176,7 +176,7 @@ def main():
             lumiSecs.insert(c.RunNum, c.LumiBlockNum)
 
         hHt.Fill(c.HT)
-        #print "crossSection=" + str(crossSection)
+        #print("crossSection=" + str(crossSection))
         hHtWeighted.Fill(c.HT, crossSection)
 
         if not rightProcess:
@@ -296,13 +296,13 @@ def main():
 
     fnew.cd()
     tEvent.Write()
-    print 'just created', fnew.GetName()
-    print "Total: " + str(nentries)
-    print "Right Process: " + str(count)
-    print "After MET: " + str(afterMET)
-    print "After BTAGS: " + str(afterBTAGS)
-    print "After NJ: " + str(afterNj)
-    print "After Preselection: " + str(afterPreselection)
+    print('just created', fnew.GetName())
+    print("Total: " + str(nentries))
+    print("Right Process: " + str(count))
+    print("After MET: " + str(afterMET))
+    print("After BTAGS: " + str(afterBTAGS))
+    print("After NJ: " + str(afterNj))
+    print("After Preselection: " + str(afterPreselection))
 
     hHt.Write()
     hHtWeighted.Write()

@@ -41,11 +41,11 @@ if args.input:
 if args.method:
     method = args.method[0]
 
-print "input", input
-print "method", method
+print("input", input)
+print("method", method)
 ######## END OF CMDLINE ARGUMENTS ########
 
-print "Running for input: " + input
+print("Running for input: " + input)
 
 phase = "Phase 1"
 phase = "Phase 0"
@@ -134,7 +134,7 @@ if not output_file:
 
 def main():
 
-    print "Plotting observable"
+    print("Plotting observable")
     c2 = TCanvas("c2")
     plotting = plotutils.Plotting()
     currStyle = plotting.setStyle()
@@ -207,7 +207,7 @@ def main():
         
         mvaCutPoint = TGraph()
         memory.append(mvaCutPoint)
-        print "x=",S/ST,"y=",1-B/BT
+        print("x=",S/ST,"y=",1-B/BT)
         mvaCutPoint.SetPoint(0, S/ST, 1-B/BT)
         #mvaCutPoint.SetPoint(0, 0.5, 0.5)
         #color = colors[colorInx]

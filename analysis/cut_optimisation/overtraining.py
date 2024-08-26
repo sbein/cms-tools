@@ -46,8 +46,8 @@ if args.input_file:
     
 if args.method:
     method = args.method[0]
-print "input", input
-print "method", method
+print("input", input)
+print("method", method)
 ######## END OF CMDLINE ARGUMENTS ########
 
 memory = []

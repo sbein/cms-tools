@@ -88,12 +88,12 @@ def main():
     bgTree = TTree("bTree", "bTree")
     
     for flatOb in analysis_ntuples.commonFlatObs:
-        print "tEvent.Branch(" + flatOb + "," +  "flatObs[flatOb]" + "," + flatOb + "/" + utils.typeTranslation[analysis_ntuples.commonFlatObs[flatOb]] + ")"
+        print("tEvent.Branch(" + flatOb + "," +  "flatObs[flatOb]" + "," + flatOb + "/" + utils.typeTranslation[analysis_ntuples.commonFlatObs[flatOb]] + ")")
         signalTree.Branch(flatOb, flatObs[flatOb],flatOb + "/" + utils.typeTranslation[analysis_ntuples.commonFlatObs[flatOb]])
         bgTree.Branch(flatOb, flatObs[flatOb],flatOb + "/" + utils.typeTranslation[analysis_ntuples.commonFlatObs[flatOb]])
     
     for calcDiOb in calcDiObsDef:
-        print calcDiOb, calcDiObs[calcDiOb],calcDiOb + "/" + utils.typeTranslation[calcDiObsDef[calcDiOb]]
+        print(calcDiOb, calcDiObs[calcDiOb],calcDiOb + "/" + utils.typeTranslation[calcDiObsDef[calcDiOb]])
         signalTree.Branch(calcDiOb, calcDiObs[calcDiOb],calcDiOb + "/" + utils.typeTranslation[calcDiObsDef[calcDiOb]])
         bgTree.Branch(calcDiOb, calcDiObs[calcDiOb],calcDiOb + "/" + utils.typeTranslation[calcDiObsDef[calcDiOb]])
         
@@ -107,15 +107,15 @@ def main():
     
 
     c = TChain('tEvent')
-    print "Going to open the file"
-    print input_file
+    print("Going to open the file")
+    print(input_file)
     c.Add(input_file)
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
     for ientry in range(nentries):
         if ientry % 5000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
         
         for flatOb in flatObs:
@@ -127,7 +127,7 @@ def main():
                 calcDiObs[calcDiOb][0] = (getattr(c, calcDiOb))[i]
 #                 
 #                 if c.tagJpsi[i] > 0 or c.probeJpsi[i] > 0:
-#                     print calcDiOb, (getattr(c, calcDiOb))[i], calcDiObs[calcDiOb][0]
+#                     print(calcDiOb, (getattr(c, calcDiOb))[i], calcDiObs[calcDiOb][0])
         
             tagMuonIdx = c.tagMuon[i]
             probeTrackIdx = c.probeTrack[i]
@@ -145,7 +145,7 @@ def main():
             
             
             for vecOb in vecObsDef:
-            #print "tEvent.SetBranchAddress(" + calcDiOb + ", " + str(calcDiObs[calcDiOb]) + ")"
+            #print("tEvent.SetBranchAddress(" + calcDiOb + ", " + str(calcDiObs[calcDiOb]) + ")")
                 tree.SetBranchAddress(vecOb, vecObs[vecOb])
             
             #bla[0] = 5
@@ -162,7 +162,7 @@ def main():
     bgTree.Write("tEvent")
     fnew.Close()
     
-    print "Done writing"
+    print("Done writing")
         
 main()
 exit(0)

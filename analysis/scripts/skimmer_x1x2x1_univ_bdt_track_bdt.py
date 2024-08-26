@@ -42,7 +42,7 @@ signal = args.signal
 bg = args.bg
 sc = args.sc
 
-print "SAME CHARGE=", sc
+print("SAME CHARGE=", sc)
 
 input_file = None
 if args.input_file:
@@ -162,7 +162,7 @@ def main():
     tree.Branch('deltaPhiMetLepton', var_deltaPhiMetLepton, 'deltaPhiMetLepton/D')
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     # (univ_testBGHists, univ_trainBGHists, univ_testSignalHists, univ_trainSignalHists, univ_methods, univ_names) = cut_optimisation.get_bdt_hists([univ_bdt])
 #     univ_trainSignalHist, univ_trainBGHist, univ_testSignalHist, univ_testBGHist = univ_trainSignalHists[0], univ_trainBGHists[0], univ_testSignalHists[0], univ_testBGHists[0]
@@ -185,27 +185,27 @@ def main():
     track_bdt_specs_map = cut_optimisation.getSpectatorsMemMap(track_bdt_vars)
     track_bdt_reader = cut_optimisation.prepareReader(track_bdt_weights, track_bdt_vars, track_bdt_vars_map, track_bdt_specs, track_bdt_specs_map)
 
-    print track_bdt_vars_map
+    print(track_bdt_vars_map)
 
-#     print "-------------------"
+#     print("-------------------")
 # 
-#     print "univ_highestZ=" + str(univ_highestZ)
-#     print "univ_highestS=" + str(univ_highestS)
-#     print "univ_highestB=" + str(univ_highestB)
-#     print "univ_highestMVA=" + str(univ_highestMVA)
-#     print "univ_ST=" + str(univ_ST)
-#     print "univ_BT=" + str(univ_BT)
+#     print("univ_highestZ=" + str(univ_highestZ))
+#     print("univ_highestS=" + str(univ_highestS))
+#     print("univ_highestB=" + str(univ_highestB))
+#     print("univ_highestMVA=" + str(univ_highestMVA))
+#     print("univ_ST=" + str(univ_ST))
+#     print("univ_BT=" + str(univ_BT))
 
-    print "-------------------"
+    print("-------------------")
 
-    print "track_highestZ=" + str(track_highestZ)
-    print "track_highestS=" + str(track_highestS)
-    print "track_highestB=" + str(track_highestB)
-    print "track_highestMVA=" + str(track_highestMVA)
-    print "track_ST=" + str(track_ST)
-    print "track_BT=" + str(track_BT)
+    print("track_highestZ=" + str(track_highestZ))
+    print("track_highestS=" + str(track_highestS))
+    print("track_highestB=" + str(track_highestB))
+    print("track_highestMVA=" + str(track_highestMVA))
+    print("track_ST=" + str(track_ST))
+    print("track_BT=" + str(track_BT))
 
-    print "-------------------"
+    print("-------------------")
 
     afterMonoLepton = 0
     afterUniversalBdt = 0
@@ -219,7 +219,7 @@ def main():
 
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
         
         if c.MaxCsv25 > 0.7:
@@ -230,7 +230,7 @@ def main():
         if ll is None:
             continue
         if leptonCharge == 0:
-            print "WHAT?! leptonCharge=0"
+            print("WHAT?! leptonCharge=0")
         var_leptonCharge[0] = leptonCharge
         var_leptonFlavour = ROOT.std.string(leptonFlavour)
     
@@ -314,11 +314,11 @@ def main():
                 var_trackBDT[0] = track_tmva_value
                 oppositeChargeTrack = ti
 
-        #print "-------------"
-        #print "Total Tracks=" + str(c.tracks.size())
-        #print "Passed Tracks=" + str(len(survivedTracks))
+        #print("-------------")
+        #print("Total Tracks=" + str(c.tracks.size()))
+        #print("Passed Tracks=" + str(len(survivedTracks)))
     
-        #print "survivedTracks=" + str(len(survivedTracks))
+        #print("survivedTracks=" + str(len(survivedTracks)))
     
 #         if len(survivedTracks) == 0:
 #             noSurvivingTracks += 1
@@ -340,8 +340,8 @@ def main():
         #if numberOfOppositeChargeTracks != 1:
         #    continue
     
-        #print "Track charge=" + str(c.tracks_charge[survivedTracks[0]])
-        #print "Lepton charge=" + str(leptonCharge)
+        #print("Track charge=" + str(c.tracks_charge[survivedTracks[0]]))
+        #print("Lepton charge=" + str(leptonCharge))
     
         #if c.tracks_charge[survivedTracks[0]] * leptonCharge > 0:
         #	continue
@@ -361,7 +361,7 @@ def main():
 
         # for v in tracksVars:
 #             tracksMem[v["name"]] = eval("ROOT.std.vector(" + v["type"] + ")()")
-#             #print eval("c.tracks_" + v["name"] + "[survivedTracks[0]]")
+#             #print(eval("c.tracks_" + v["name"] + "[survivedTracks[0]]"))
 #             tracksMem[v["name"]].push_back(eval(v["type"] + "(c.tracks_" + v["name"] + "[oppositeChargeTrack])"))
 #             tree.SetBranchAddress('tracks_' + v["name"], tracksMem[v["name"]])
 #     
@@ -434,17 +434,17 @@ def main():
         #hHt.Write()
         fnew.Close()
     else:
-        print "*** RESULT EMPTY"
+        print("*** RESULT EMPTY")
     iFile.Close()
 
-    print "nentries=" + str(nentries)
-    print "totalTracks=" + str(totalTracks)
-    print "totalSurvivedTracks=" + str(totalSurvivedTracks)
-    print "eventsWithGreaterThanOneOppSignTracks=" + str(eventsWithGreaterThanOneOppSignTracks)
-    print "noSurvivingTracks=" + str(noSurvivingTracks)
-    print "afterAtLeastOneTrack=" + str(afterAtLeastOneTrack)
-    print "afterMonoLepton=" + str(afterMonoLepton)
-    print "afterUniversalBdt=" + str(afterUniversalBdt)
-    print "afterMonoTrack=" + str(afterMonoTrack)
+    print("nentries=" + str(nentries))
+    print("totalTracks=" + str(totalTracks))
+    print("totalSurvivedTracks=" + str(totalSurvivedTracks))
+    print("eventsWithGreaterThanOneOppSignTracks=" + str(eventsWithGreaterThanOneOppSignTracks))
+    print("noSurvivingTracks=" + str(noSurvivingTracks))
+    print("afterAtLeastOneTrack=" + str(afterAtLeastOneTrack))
+    print("afterMonoLepton=" + str(afterMonoLepton))
+    print("afterUniversalBdt=" + str(afterUniversalBdt))
+    print("afterMonoTrack=" + str(afterMonoTrack))
 
 main()

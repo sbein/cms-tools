@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-print r"""
+print(r""")
 \documentclass[12pt,A4paper]{article}
 \usepackage{cite}
 \usepackage{hyperref}
@@ -39,7 +39,7 @@ for l in fl:
         mu = line[0]
         mun = line[0].split("mu")[1]
         dmn = line[1].split("dm")[1]
-        print r"""\multicolumn{1}{|l|}{\multirow{""" + str(muCount[line[0]]) + r"""}{*}{""" + mun + r"""}} & \multicolumn{1}{l|}{""" + dmn + r"""} & \multicolumn{1}{c|}{"""+line[2]+r"""}        & \multicolumn{1}{c|}{"""+line[3]+r"""}         & \multicolumn{1}{c|}{"""+line[4]+r"""}        & \multicolumn{1}{c|}{"""+line[5]+r"""}         & \multicolumn{1}{c|}{"""+line[6]+r"""}        & \multicolumn{1}{c|}{"""+line[7]+r"""}         & \multicolumn{1}{c|}{"""+line[8]+r"""}         & \multicolumn{1}{c|}{"""+line[9]+r"""}         & \multicolumn{1}{c|}{"""+line[10]+r"""}         \\ \cline{2-11} """
+        print(r"""\multicolumn{1}{|l|}{\multirow{""" + str(muCount[line[0]]) + r"""}{*}{""" + mun + r"""}} & \multicolumn{1}{l|}{""" + dmn + r"""} & \multicolumn{1}{c|}{"""+line[2]+r"""}        & \multicolumn{1}{c|}{"""+line[3]+r"""}         & \multicolumn{1}{c|}{"""+line[4]+r"""}        & \multicolumn{1}{c|}{"""+line[5]+r"""}         & \multicolumn{1}{c|}{"""+line[6]+r"""}        & \multicolumn{1}{c|}{"""+line[7]+r"""}         & \multicolumn{1}{c|}{"""+line[8]+r"""}         & \multicolumn{1}{c|}{"""+line[9]+r"""}         & \multicolumn{1}{c|}{"""+line[10]+r"""}         \\ \cline{2-11} """)
     else:
         currMuCount += 1
         dmn = line[1].split("dm")[1]
@@ -49,10 +49,10 @@ for l in fl:
         else:
             ending = r"""\hline"""
             currMuCount = 0
-        print r"""\multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{""" + dmn + r"""} & \multicolumn{1}{c|}{"""+line[2]+r"""}        & \multicolumn{1}{c|}{"""+line[3]+r"""}         & \multicolumn{1}{c|}{"""+line[4]+r"""}        & \multicolumn{1}{c|}{"""+line[5]+r"""}         & \multicolumn{1}{c|}{"""+line[6]+r"""}        & \multicolumn{1}{c|}{"""+line[7]+r"""}        & \multicolumn{1}{c|}{"""+line[8]+r"""}        & \multicolumn{1}{c|}{"""+line[9]+r"""}        & \multicolumn{1}{c|}{"""+line[10]+r"""}         \\ """ + ending
+        print(r"""\multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{""" + dmn + r"""} & \multicolumn{1}{c|}{"""+line[2]+r"""}        & \multicolumn{1}{c|}{"""+line[3]+r"""}         & \multicolumn{1}{c|}{"""+line[4]+r"""}        & \multicolumn{1}{c|}{"""+line[5]+r"""}         & \multicolumn{1}{c|}{"""+line[6]+r"""}        & \multicolumn{1}{c|}{"""+line[7]+r"""}        & \multicolumn{1}{c|}{"""+line[8]+r"""}        & \multicolumn{1}{c|}{"""+line[9]+r"""}        & \multicolumn{1}{c|}{"""+line[10]+r"""}         \\ """ + ending)
     
     
-print r"""
+print(r""")
 \end{tabular}
 \end{table}
 \end{document}

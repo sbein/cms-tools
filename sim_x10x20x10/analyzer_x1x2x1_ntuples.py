@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from ROOT import *
 from glob import glob
@@ -13,7 +13,7 @@ import sys
 # gSystem.Load("libDataFormatsFWLite.so");
 # FWLiteEnabler.enable()
 
-# load FWlite python libraries
+# load FWlite python3 libraries
 # from DataFormats.FWLite import Handle, Events
 # import FWCore.ParameterSet.Config as cms
 
@@ -125,7 +125,7 @@ def handleX10X20X10NLGen(event, weight):
 				else:
 					utils.fillHistWithCuts("MatchLep", 0, histList, cutsDef, "ntuples", event, weight)
 			else:
-				#print "No minR"
+				#print("No minR")
 				utils.fillHistWithCuts("MatchLep", 0, histList, cutsDef, "ntuples", event, weight)
 			if l1 is None:
 				l1 = ipart
@@ -166,11 +166,11 @@ def isRightProcess(event):
 	partSize = event.GenParticles.size()
 	for ipart in range(partSize):
 		if event.GenParticles_PdgId[ipart] == 1000022:
-			#print "Found x10"
+			#print("Found x10")
 			if event.GenParticles_ParentId[ipart] == 1000023:
-				#print "Mother x20"
+				#print("Mother x20")
 				if not isSusy(event.GenParticles_ParentId[event.GenParticles_ParentIdx[ipart]]):
-					#print "Found!!!"
+					#print("Found!!!")
 					return True
 	return False 
 	
@@ -187,11 +187,11 @@ c = TChain("TreeMaker2/PreSelection");
 c.Add(input_file)
 
 nentries = c.GetEntries()
-print "nentries=" + str(nentries)
+print("nentries=" + str(nentries))
 
 for ientry in range(nentries) :
 	if ientry % 10000 == 0 :
-		print "processing entry" , ientry, "out of", nentries
+		print("processing entry" , ientry, "out of", nentries)
 	c.GetEntry(ientry)
 	if isRightProcess(c):
 		weight = 1
@@ -208,7 +208,7 @@ sigma = 1215.47 #fb
 LUMINOSITY = 35.900 #1/fb
 N = histList["HT"].Integral(-1,99999999)+0.000000000001
 
-print "Number of HT event " + str(N)
+print("Number of HT event " + str(N))
 
 weight = sigma * LUMINOSITY / N
 

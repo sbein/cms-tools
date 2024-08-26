@@ -40,16 +40,16 @@ parser.add_argument('-sc', '--sc', dest='sc', help='Same Charge', action='store_
 parser.add_argument('-nlp', '--no_lepton_selection', dest='no_lepton_selection', help='No Lepton Selection Skim', action='store_true')
 args = parser.parse_args()
 
-print args
+print(args)
 
 madHTgt = None
 madHTlt = None
 if args.madHTgt:
     madHTgt = int(args.madHTgt[0])
-    print "Got madHT lower bound of " + str(madHTgt)
+    print("Got madHT lower bound of " + str(madHTgt))
 if args.madHTlt:
     madHTlt = int(args.madHTlt[0])
-    print "Got madHT upper bound of " + str(madHTlt)
+    print("Got madHT upper bound of " + str(madHTlt))
 
 
 signal = args.signal
@@ -61,12 +61,12 @@ sc = args.sc
 no_lepton_selection = args.no_lepton_selection
 
 if dy:
-    print "Got Drell-Yan"
+    print("Got Drell-Yan")
     #exit(0)
 if sc:
-    print "SAME SIGN!"
+    print("SAME SIGN!")
 if no_lepton_selection:
-    print "NO LEPTON SELECTION!"
+    print("NO LEPTON SELECTION!")
 
 input_file = None
 if args.input_file:
@@ -253,7 +253,7 @@ def main():
             else:
                 leptonsCorrJetVars[lep + "_pass" + CorrJetObs] = ROOT.std.vector(eval(utils.leptonsCorrJetVecList[CorrJetObs]))()
     
-    print leptonsCorrJetVars
+    print(leptonsCorrJetVars)
     
     # DILEPTON OBSERVABLES
     
@@ -272,7 +272,7 @@ def main():
                 for DTypeObs in utils.dileptonObservablesDTypesList:
                     dileptonVars[DTypeObs + iso + str(ptRange) + cat] = np.zeros(1,dtype=utils.dileptonObservablesDTypesList[DTypeObs])
 
-    print dileptonVars
+    print(dileptonVars)
        
     var_LeadingJet = TLorentzVector()
         
@@ -419,7 +419,7 @@ def main():
             if CorrJetObs == "CorrJetIso":
                  ptRanges = utils.leptonCorrJetIsoPtRange
             for ptRange in ptRanges:
-                print "tEvent.Branch(" + lep + "_pass" + CorrJetObs + str(ptRange), 'std::vector<' + str(utils.leptonsCorrJetVecList[CorrJetObs]) + '>', leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)], ")"
+                print("tEvent.Branch(" + lep + "_pass" + CorrJetObs + str(ptRange), 'std::vector<' + str(utils.leptonsCorrJetVecList[CorrJetObs]) + '>', leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)], ")")
                 tEvent.Branch(lep + "_pass" +  CorrJetObs + str(ptRange), 'std::vector<' + utils.leptonsCorrJetVecList[CorrJetObs] + '>', leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)])
             
     ###### Tracks #######
@@ -455,13 +455,13 @@ def main():
                 ptRanges = utils.leptonCorrJetIsoPtRange
             for ptRange in ptRanges:
                 for vecObs in utils.dileptonObservablesVecList:
-                    print "tEvent.Branch(" + vecObs + iso + str(ptRange) + cat, 'std::vector<' + utils.dileptonObservablesVecList[vecObs] + '>', dileptonVars[vecObs + iso + str(ptRange) + cat], ")"
+                    print("tEvent.Branch(" + vecObs + iso + str(ptRange) + cat, 'std::vector<' + utils.dileptonObservablesVecList[vecObs] + '>', dileptonVars[vecObs + iso + str(ptRange) + cat], ")")
                     tEvent.Branch(vecObs + iso + str(ptRange) + cat, 'std::vector<' + utils.dileptonObservablesVecList[vecObs] + '>', dileptonVars[vecObs + iso + str(ptRange) + cat])
                 for stringObs in utils.dileptonObservablesStringList:
-                    print "tEvent.Branch(" + stringObs + iso + str(ptRange) + cat, 'std::string', dileptonVars[stringObs + iso + str(ptRange) + cat],")"
+                    print("tEvent.Branch(" + stringObs + iso + str(ptRange) + cat, 'std::string', dileptonVars[stringObs + iso + str(ptRange) + cat],")")
                     tEvent.Branch(stringObs + iso + str(ptRange) + cat, 'std::string', dileptonVars[stringObs + iso + str(ptRange) + cat])
                 for DTypeObs in utils.dileptonObservablesDTypesList:
-                    print "tEvent.Branch(" + DTypeObs + iso + str(ptRange) + cat, dileptonVars[DTypeObs + iso + str(ptRange) + cat],DTypeObs + iso + str(ptRange) + cat + "/" + utils.typeTranslation[utils.dileptonObservablesDTypesList[DTypeObs]], ")"
+                    print("tEvent.Branch(" + DTypeObs + iso + str(ptRange) + cat, dileptonVars[DTypeObs + iso + str(ptRange) + cat],DTypeObs + iso + str(ptRange) + cat + "/" + utils.typeTranslation[utils.dileptonObservablesDTypesList[DTypeObs]], ")")
                     tEvent.Branch(DTypeObs + iso + str(ptRange) + cat, dileptonVars[DTypeObs + iso + str(ptRange) + cat],DTypeObs + iso + str(ptRange) + cat + "/" + utils.typeTranslation[utils.dileptonObservablesDTypesList[DTypeObs]])
     if not signal:
         tEvent.Branch('TriggerNames', 'std::vector<string>', var_triggerNames)
@@ -470,13 +470,13 @@ def main():
         tEvent.Branch('TriggerVersion', 'std::vector<int>', var_triggerVersion)
 
     chain = TChain('TreeMaker2/PreSelection')
-    print "Opening", input_file
+    print("Opening", input_file)
     chain.Add(input_file)
     c = chain.CloneTree()
     chain = None
-    print "Creating " + output_file
+    print("Creating " + output_file)
     fnew = TFile(output_file,'recreate')
-    print "Created."
+    print("Created.")
 
     hHt = TH1F('hHt','hHt',100,0,3000)
     hHtWeighted = TH1F('hHtWeighted','hHtWeighted',100,0,3000)
@@ -486,7 +486,7 @@ def main():
     lumiSecs = LumiSectMap()
     
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     count = 0
     afterPreselection = 0
@@ -501,9 +501,9 @@ def main():
     if signal:
         if sam:
             chiM = os.path.basename(input_file).split("_")[2]
-            print "Got chiM=" + chiM
+            print("Got chiM=" + chiM)
             crossSection = utils.samCrossSections.get(chiM)
-            print "Cross Section is", crossSection
+            print("Cross Section is", crossSection)
         else:
             filename = (os.path.basename(input_file).split("Chi20Chipm")[0]).replace("p", ".")
             crossSection = utils.getCrossSection(filename)
@@ -514,17 +514,17 @@ def main():
                 crossSection = 1.21547
     elif bg and "DYJetsToLL_M-5to50_" in input_file:
         fileBasename = os.path.basename(input_file).split(".root")[0].split("RunIISummer16MiniAODv3.")[1].split("_TuneCUETP8M1")[0]
-        print "Checking DY CS for", fileBasename
+        print("Checking DY CS for", fileBasename)
         cs = utils.dyCrossSections.get(fileBasename)
-        print "Got cs", cs
+        print("Got cs", cs)
     
     currLeptonCollectionMap = None
     currLeptonCollectionFileMapFile = None
     
-    print "Starting Loop"
+    print("Starting Loop")
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
 
         ### MADHT ###
@@ -540,17 +540,17 @@ def main():
             lumiSecs.insert(c.RunNum, c.LumiBlockNum)
 
         hHt.Fill(c.HT)
-        #print "crossSection=" + str(crossSection)
+        #print("crossSection=" + str(crossSection))
         hHtWeighted.Fill(c.HT, crossSection)
 
         if not rightProcess:
             continue
         
 #         if madHTgt is not None and c.madHT < madHTgt:
-#             print "Skipping because got madHTgt of", madHTgt, "but value is", c.madHT 
+#             print("Skipping because got madHTgt of", madHTgt, "but value is", c.madHT )
 #             continue
 #         elif if madHTlt is not None and c.madHT > madHTlt:
-#             print "Skipping because got madHTlt of", madHTlt, "but value is", c.madHT 
+#             print("Skipping because got madHTlt of", madHTlt, "but value is", c.madHT )
 #             continue
             
         count += 1
@@ -590,14 +590,14 @@ def main():
                 nLGenMapZ[nLGenZ] = 1
             
             if nX20 > 0:
-                #print "nX20", nX20, "nLGenZ", nLGenZ
+                #print("nX20", nX20, "nLGenZ", nLGenZ)
                 if nX20 == 1 and nLGenZ == 2:
                     branching_ratio *= 0.2
                 elif nX20 == 2 and nLGenZ == 4:
                     branching_ratio *= 0.04
                 elif nX20 == 1 and nLGenZ == 0:
                     branching_ratio *= 1.8
-                    #print "******", branching_ratio
+                    #print("******", branching_ratio)
                 elif nX20 == 2 and nLGenZ == 0:
                     branching_ratio *= 3.24
                     
@@ -605,11 +605,11 @@ def main():
         
         var_BranchingRatio[0] = branching_ratio
         # if branching_ratio == 1.8:
-#             print "YEY"
+#             print("YEY")
 #         
         # if nX20 > 0:
 #             if nX20 * 2 != nLGenZ:
-#                 print "WTF", nX20, nLGenZ
+#                 print("WTF", nX20, nLGenZ)
         
         # nX20 = 0
 #         nX10 = 0
@@ -635,22 +635,22 @@ def main():
 #                     susy_map[abs(c.GenParticles_PdgId[ipart])] = 1
 #                     susy_status[abs(c.GenParticles_PdgId[ipart])] = []
 #                     susy_status[abs(c.GenParticles_PdgId[ipart])].append(abs(c.GenParticles_Status[ipart]))
-#         print susy
-#         print susy_map
-#         print susy_status
+#         print(susy)
+#         print(susy_map)
+#         print(susy_status)
         
         
         
         #continue
 #         if nX20>1:
-#             print "MORE THAN 1!"
+#             print("MORE THAN 1!")
 #         if nX20<1:
-#             print "LESS THAN 1!", nX1pm, nX10
+#             print("LESS THAN 1!", nX1pm, nX10)
 #         if  nX1pm !=1:
-#             print "nX1pm not 1", nX1pm, nX10
+#             print("nX1pm not 1", nX1pm, nX10)
 #         if nX1pm == 0 and nX20 == 0 and nX10 == 0:
-#             print "ALL 0!"
-#         print "============"
+#             print("ALL 0!")
+#         print("============")
 #         continue
     
         var_NLGen[0] = nLGen
@@ -707,18 +707,18 @@ def main():
             MET = abs(metVec.Pt())
             
             if MET > 3000:
-                print "HERE WE GO!!!"
-                print "c.MET=", c.MET, "metVec=", metVec.Pt(), "MET=", MET
-                print "c.Muons[muons[0]].Pt()=", c.Muons[muons[0]].Pt(), "c.Muons[muons[1]].Pt()=", c.Muons[muons[1]].Pt()
-                print "-------"
+                print("HERE WE GO!!!")
+                print("c.MET=", c.MET, "metVec=", metVec.Pt(), "MET=", MET)
+                print("c.Muons[muons[0]].Pt()=", c.Muons[muons[0]].Pt(), "c.Muons[muons[1]].Pt()=", c.Muons[muons[1]].Pt())
+                print("-------")
             
             METPhi = metVec.Phi()
             
             jetsHt = [i for i in range(len(c.Jets)) if c.Jets[i].Pt() >= 30 and abs(c.Jets[i].Eta()) <= 2.4 and abs(c.Muons[muons[0]].DeltaR(c.Jets[i])) > 0.1 and abs(c.Muons[muons[1]].DeltaR(c.Jets[i])) > 0.1]
             jetsMht = [i for i in range(len(c.Jets)) if c.Jets[i].Pt() >= 30 and abs(c.Jets[i].Eta()) <= 5 and abs(c.Muons[muons[0]].DeltaR(c.Jets[i])) > 0.1 and abs(c.Muons[muons[1]].DeltaR(c.Jets[i])) > 0.1]
             
-            #print "jetsHt=", jetsHt
-            #print "jetsMht=", jetsMht
+            #print("jetsHt=", jetsHt)
+            #print("jetsMht=", jetsMht)
             
             HT = 0
             for i in jetsHt:
@@ -785,7 +785,7 @@ def main():
         nj, btagsDeepMedium, ljet = analysis_ntuples.eventNumberOfJets25Pt2_4Eta_DeepMedium(jets, jets_bJetTagDeepCSVBvsAll)
         
         if ljet is None:
-            #print "No ljet:",ljet 
+            #print("No ljet:",ljet )
             continue
             
         if no_lepton_selection and btagsDeepMedium > 0:
@@ -857,32 +857,32 @@ def main():
         
         if replace_lepton_collection:
             if currLeptonCollectionMap is None or not currLeptonCollectionMap.contains(c.RunNum, c.LumiBlockNum, c.EvtNum):
-                print "NEED NEW LEPTON COLLECTION..."
+                print("NEED NEW LEPTON COLLECTION...")
                 if currLeptonCollectionMap is not None:
                     currLeptonCollectionMap.Delete()
                     currLeptonCollectionMap = None
                 currLeptonCollection = None
                 currLeptonCollectionFileMapFile = utils.getLeptonCollectionFileMapFile(baseFileName)
                 if currLeptonCollectionFileMapFile is None:
-                    print "FATAL: could not open LeptonCollectionFileMapFile"
+                    print("FATAL: could not open LeptonCollectionFileMapFile")
                     exit(1)
-                print "currLeptonCollectionFileMapFile", currLeptonCollectionFileMapFile
+                print("currLeptonCollectionFileMapFile", currLeptonCollectionFileMapFile)
                 currLeptonCollectionFileMap = utils.getLeptonCollectionFileMap(currLeptonCollectionFileMapFile, c.RunNum, c.LumiBlockNum, c.EvtNum)
-                print "Got currLeptonCollectionFileMap"
+                print("Got currLeptonCollectionFileMap")
                 if currLeptonCollectionFileMap is None:
-                    print "FATAL: could not find file map. continuing..."
+                    print("FATAL: could not find file map. continuing...")
                     exit(1) 
                 currLeptonCollectionFileName = currLeptonCollectionFileMap.get(c.RunNum, c.LumiBlockNum, c.EvtNum)
                 currLeptonCollectionFileMap.Delete()
                 currLeptonCollectionFileMap = None
-                print "currLeptonCollectionFileName=", currLeptonCollectionFileName
+                print("currLeptonCollectionFileName=", currLeptonCollectionFileName)
                 
                 currLeptonCollectionMap = utils.getLeptonCollection(currLeptonCollectionFileName)
-                print "currLeptonCollectionMap=", currLeptonCollectionMap
+                print("currLeptonCollectionMap=", currLeptonCollectionMap)
                 currLeptonCollectionFileMapFile.Close()
             
             if currLeptonCollectionMap is None:
-                print "FATAL: could not find lepton map for ",c.RunNum, c.LumiBlockNum, c.EvtNum, " continuing..."
+                print("FATAL: could not find lepton map for ",c.RunNum, c.LumiBlockNum, c.EvtNum, " continuing...")
                 exit(1)
             
             takeLeptonsFrom = currLeptonCollectionMap.get(c.RunNum, c.LumiBlockNum, c.EvtNum)
@@ -909,10 +909,10 @@ def main():
 #             takeLeptonsFrom["Muons_MTW"] = c.Muons_MTW
              
         if dy:
-            #print "muons=", muons
+            #print("muons=", muons)
             muons, invMass = getDyMuons(takeLeptonsFrom)
             if muons is None:
-                print "WHAT IS GOING ON?"
+                print("WHAT IS GOING ON?")
             
             var_DYMuons = ROOT.std.vector(TLorentzVector)()
             var_DYMuons_charge = ROOT.std.vector(int)()
@@ -1240,7 +1240,7 @@ def main():
                     for ptRange in utils.leptonCorrJetIsoPtRange:
                         tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs + str(ptRange), leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)])
                 else:
-                    #print lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs]
+                    #print(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
                     tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
         
         tight_electrons = [ var_Electrons[i] for i in range(len(var_Electrons)) if analysis_ntuples.electronPassesTightSelection(i, var_Electrons, leptonsCorrJetVars["Electrons_passJetIso"], var_Electrons_deltaRLJ) ]
@@ -1331,10 +1331,10 @@ def main():
                         dileptonVars["deltaPhiMetLepton2" + iso + str(ptRange) + cat][0] = abs(leptons[1].DeltaPhi(pt))
 
                     for vecObs in utils.dileptonObservablesVecList:
-                        #print "tEvent.Branch(" + vecObs + iso + str(ptRange) + cat, 'std::vector<' + utils.dileptonObservablesVecList[vecObs] + '>', dileptonVars[vecObs + iso + str(ptRange) + cat], ")"
+                        #print("tEvent.Branch(" + vecObs + iso + str(ptRange) + cat, 'std::vector<' + utils.dileptonObservablesVecList[vecObs] + '>', dileptonVars[vecObs + iso + str(ptRange) + cat], ")")
                         tEvent.SetBranchAddress(vecObs + iso + str(ptRange) + cat, dileptonVars[vecObs + iso + str(ptRange) + cat])
                     for stringObs in utils.dileptonObservablesStringList:
-                        #print "tEvent.Branch(" + stringObs + iso + str(ptRange) + cat, 'std::string', dileptonVars[stringObs + iso + str(ptRange) + cat],")"
+                        #print("tEvent.Branch(" + stringObs + iso + str(ptRange) + cat, 'std::string', dileptonVars[stringObs + iso + str(ptRange) + cat],")")
                         tEvent.SetBranchAddress(stringObs + iso + str(ptRange) + cat, dileptonVars[stringObs + iso + str(ptRange) + cat])
         
         if not no_lepton_selection and not foundTwoLeptons and not foundSingleLepton:
@@ -1447,19 +1447,19 @@ def main():
 
     fnew.cd()
     tEvent.Write()
-    print 'just created', fnew.GetName()
-    print "Total: " + str(nentries)
-    print "Right Process: " + str(count)
-    print "After MET: " + str(afterMET)
-    print "After NJ: " + str(afterNj)
-    print "After Preselection: " + str(afterPreselection)
-    print "After Leptons: " + str(afterLeptons)
-    print "nL:"
-    print nLMap
-    print "nLGen:"
-    print nLGenMap
-    print "nLGenZ:"
-    print nLGenMapZ
+    print('just created', fnew.GetName())
+    print("Total: " + str(nentries))
+    print("Right Process: " + str(count))
+    print("After MET: " + str(afterMET))
+    print("After NJ: " + str(afterNj))
+    print("After Preselection: " + str(afterPreselection))
+    print("After Leptons: " + str(afterLeptons))
+    print("nL:")
+    print(nLMap)
+    print("nLGen:")
+    print(nLGenMap)
+    print("nLGenZ:")
+    print(nLGenMapZ)
 
     hHt.Write()
     hHtWeighted.Write()

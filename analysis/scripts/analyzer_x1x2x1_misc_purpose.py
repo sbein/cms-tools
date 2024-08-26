@@ -323,7 +323,7 @@ def handleX10X20X10NLGen(event, weight, params, nj):
 				else:
 					utils.fillHistWithCuts("MatchLep", 0, histList, cutsDef, "ntuples", event, weight, params)
 			else:
-				#print "No minR"
+				#print("No minR")
 				utils.fillHistWithCuts("MatchLep", 0, histList, cutsDef, "ntuples", event, weight, params)
 			if l1 is None:
 				l1 = ipart
@@ -415,10 +415,10 @@ madHTgt = None
 madHTlt = None
 if args.madHTgt:
 	madHTgt = int(args.madHTgt[0])
-	print "Got madHT lower bound of " + str(madHTgt)
+	print("Got madHT lower bound of " + str(madHTgt))
 if args.madHTlt:
 	madHTlt = int(args.madHTlt[0])
-	print "Got madHT upper bound of " + str(madHTlt)
+	print("Got madHT upper bound of " + str(madHTlt))
 	
 
 signal = args.signal
@@ -441,18 +441,18 @@ if (bg and signal) or not (bg or signal):
 	
 ################## CUT FLOW ##################
 if cf:
-	print "IN CUTFLOW"
+	print("IN CUTFLOW")
 	cutFlow = cuts.createCutFlow(cf, cutsDef, "ntuples")
 	input_files = input_file.split(" ")
 	for file in input_files:
 		c = TChain("TreeMaker2/PreSelection");
 		c.Add(file)
 		nentries = c.GetEntries()
-		print "nentries=" + str(nentries)
+		print("nentries=" + str(nentries))
 		for ientry in range(nentries):
 			if ientry % 10000 == 0:
-				print "processing entry" , ientry, "out of", nentries
-				#print cutFlow
+				print("processing entry" , ientry, "out of", nentries)
+				#print(cutFlow)
 			rightProcess = True
 			c.GetEntry(ientry)
 			if signal:
@@ -470,11 +470,11 @@ histDefs = histograms.commonHistDefs
 histList = utils.createHistograms(histDefs, cutsDef)
 	
 if signal and not output_file:
-	print "No output file for signal analysis. Assigning default."
+	print("No output file for signal analysis. Assigning default.")
 	output_file = "../../sim_x10x20x10/x10x20x10.root"
 
 if signal and not input_file:
-	print "No input file for signal analysis. Assigning default."
+	print("No input file for signal analysis. Assigning default.")
 	input_file = "/nfs/dust/cms/user/beinsam/CommonNtuples/MC_BSM/CompressedHiggsino/M1M2Scan/ntuple_sidecar/higgsino_mu100_dm3.28Chi20Chipm.root"
 
 c = TChain("TreeMaker2/PreSelection");
@@ -489,12 +489,12 @@ def isX1X2X1Process(event):
 	x_24 = 0
 	for ipart in range(partSize):
 		if event.GenParticles_PdgId[ipart] == 1000022:
-			#print "Found x10"
+			#print("Found x10")
 			x22 +=1
 			if event.GenParticles_ParentId[ipart] == 1000023:
-				#print "Mother x20"
+				#print("Mother x20")
 				if not analysis_tools.isSusy(event.GenParticles_ParentId[event.GenParticles_ParentIdx[ipart]]):
-					#print "Found!!!"
+					#print("Found!!!")
 					right = True
 		elif event.GenParticles_PdgId[ipart] == 1000023:
 			x23 += 1
@@ -505,20 +505,20 @@ def isX1X2X1Process(event):
 	return (right, x22, x23, x24, x_24)
 
 nentries = c.GetEntries()
-print "nentries=" + str(nentries)
+print("nentries=" + str(nentries))
 
 for ientry in range(nentries) :
 	if ientry % 10000 == 0 :
-		print "processing entry" , ientry, "out of", nentries
+		print("processing entry" , ientry, "out of", nentries)
 	c.GetEntry(ientry)
 	rightProcess = True
 	if signal:
 		(right, x22, x23, x24, x_24) = isX1X2X1Process(c)
 		#if rightProcess: 
-			#print "*******"
-		print right, x22, x23, x24, x_24
+			#print("*******")
+		print(right, x22, x23, x24, x_24)
 	if not rightProcess:
-		print "****NO******"
+		print("****NO******")
 
 exit(0)
 		
@@ -531,11 +531,11 @@ if signal:
 	sigma = 1.21547 #fb 
 	N = histList["HT"].Integral(-1,99999999)+0.000000000001
 
-	print "Number of HT event " + str(N)
+	print("Number of HT event " + str(N))
 
 	weight = sigma * utils.LUMINOSITY / N
 	
-	print "Weight=" + str(weight)
+	print("Weight=" + str(weight))
 
 	utils.scaleHistograms(histList, histDefs, weight)
 	

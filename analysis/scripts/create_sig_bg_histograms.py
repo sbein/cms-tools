@@ -67,16 +67,16 @@ bins = 50
 ######## END OF CMDLINE ARGUMENTS ########
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     fnew = TFile(output_file,'recreate')
     c1 = TCanvas("c1", "c1", 800, 800)
     c1.cd()
     
-    print "Getting signals..."
+    print("Getting signals...")
     
     for filename in glob(signal_dir + "/*"):
-        print "Opening", filename  
+        print("Opening", filename  )
         if sam:
             deltaM = utils.getPointFromSamFileName(filename)
         else:
@@ -84,7 +84,7 @@ def main():
         
         
         
-        print "deltaM=" + deltaM
+        print("deltaM=" + deltaM)
         if deltaM != "mChipm140GeV_dm4p28GeV":
             continue
         f = TFile(filename)
@@ -118,11 +118,11 @@ def main():
     bg_1t_hist = {}
     bg_2l_hist = {}
     
-    print "Getting BG..."
+    print("Getting BG...")
     
     for filename in glob(bg_dir + "/*"):
         break
-        print "Opening", filename
+        print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
         

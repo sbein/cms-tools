@@ -82,7 +82,7 @@ def setTDRStyle():
 
 # Margins:
   tdrStyle.SetPadTopMargin(0.08)
-  tdrStyle.SetPadBottomMargin(0.15)
+  tdrStyle.SetPadBottomMargin(0.13)
   # changed by UV from 0.16
   #tdrStyle.SetPadLeftMargin(0.16)
   #tdrStyle.SetPadLeftMargin(0.12)
@@ -109,18 +109,11 @@ def setTDRStyle():
 
   tdrStyle.SetTitleColor(1, "XYZ")
   tdrStyle.SetTitleFont(42, "XYZ")
-  #tdrStyle.SetTitleSize(0.06, "XYZ")
-  tdrStyle.SetTitleSize(0.075, "XYZ")
+  tdrStyle.SetTitleSize(0.08, "XYZ")
   # tdrStyle.SetTitleXSize(Float_t size = 0.02) # Another way to set the size?
   # tdrStyle.SetTitleYSize(Float_t size = 0.02)
-  # <-----------------------------------
-  # For ratio
   tdrStyle.SetTitleXOffset(0.9)
   tdrStyle.SetTitleYOffset(1.25)
-  # For no ratio
-  #tdrStyle.SetTitleXOffset(1.0)
-  #tdrStyle.SetTitleYOffset(1.2)
-  # <-----------------------------------
   #tdrStyle.SetTitleYOffset(1.0)
   #tdrStyle.SetTitleOffset(1.0, "Y") # Another way to set the Offset
 

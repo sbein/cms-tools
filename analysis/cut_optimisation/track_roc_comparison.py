@@ -88,7 +88,7 @@ def plot_rocs():
 		
 		name = os.path.basename(dir)
 		
-		print "Processing " + name
+		print("Processing " + name)
 		
 		file = [dir]
 		c2.cd()
@@ -147,9 +147,9 @@ def plot_rocs():
 
 			h.Draw("same")
 		
-			print "highestZ=" + str(highestZ)
-			print "highestS=" + str(highestS)
-			print "highestB=" + str(highestB)
+			print("highestZ=" + str(highestZ))
+			print("highestS=" + str(highestS))
+			print("highestB=" + str(highestB))
  
 			hHighestZ = TGraph()
 			hHighestZ.SetPoint(0, highestS/ST, 1-highestB/BT)
@@ -191,9 +191,9 @@ def plot_rocs():
 			needToDraw = False;
 		
 	if needToDraw:
-		print "HERE"
+		print("HERE")
 		for id in range(pId, 5):
-			print "Clearing pad " + str(id)
+			print("Clearing pad " + str(id))
 			pad = histPad.cd(id)
 			pad.Clear()
 		c1.Print(outputFile);

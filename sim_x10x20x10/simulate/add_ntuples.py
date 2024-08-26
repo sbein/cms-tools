@@ -29,13 +29,13 @@ for f in files:
     else:
         points[point] += 1
 
-print points
+print(points)
 
 for point in points:
     point_files = glob(ntuples_dir + "/" + point + "*")
     point_files.sort()
-    print "point=" + point
-    print "size=" + str(len(point_files))
+    print("point=" + point)
+    print("size=" + str(len(point_files)))
     i = 0
     firstElement = 0
     lastElement = 0
@@ -43,18 +43,18 @@ for point in points:
         lastElement = (i+1)*SUM_SIZE + 1
         if lastElement > len(point_files):
             lastElement = -1
-        print "Taking slice " + str(firstElement) + ":" + str(lastElement)
+        print("Taking slice " + str(firstElement) + ":" + str(lastElement))
         slice = None
         if lastElement == -1:
             slice = point_files[firstElement:]
         else:
             slice = point_files[firstElement:lastElement]
-        #print slice
+        #print(slice)
         
         i += 1
         
         cmd = "hadd -f " + output_dir + "/" + point + "_" + str(i) + ".root " + " ".join(slice)
-        print "Running cmd: " + cmd
+        print("Running cmd: " + cmd)
         system(cmd)
         firstElement = lastElement
 

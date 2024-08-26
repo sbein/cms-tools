@@ -201,17 +201,17 @@ def passedCut(cut, c, ti):
 def main():
     
 #     c = TChain('tEvent')
-#     print "Going to open the file"
-#     print input_file
+#     print("Going to open the file")
+#     print(input_file)
 #     c.Add(input_file)
     c= None
     c = TChain('tEvent')
-    print "Opening file", input_file
+    print("Opening file", input_file)
     c.Add(input_file)
     #c.Add('/nfs/dust/cms/user/beinsam/CommonNtuples/MC_BSM/CompressedHiggsino/M1M2Scan/ntuple_sidecar/higgsino_mu100_dm7.39Chi20Chipm.root')
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     histograms = {}
     memory = []
@@ -359,7 +359,7 @@ def main():
     genFlavourAfter = 0
     for ientry in range(nentries):
         if ientry % 5000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
         
         if c.category == 0:
@@ -370,15 +370,15 @@ def main():
         
         rightProcess = analysis_ntuples.isX1X2X1Process(c)
         if not rightProcess:
-            print "No"
+            print("No")
             notCorrect += 1
             continue
         
         ll, leptonIdx, leptonCharge, leptonFlavour = analysis_ntuples.getSingleLeptonAfterSelection(c.Electrons, c.Electrons_passCorrJetIso10, c.Electrons_deltaRLJ, c.Electrons_charge, c.Muons, c.Muons_passCorrJetIso10, c.Muons_mediumID, c.Muons_deltaRLJ, c.Muons_charge)
         
         #if ll is None or leptonFlavour != genFlavour:
-            #print ll
-            #print leptonFlavour, genFlavour
+            #print(ll)
+            #print(leptonFlavour, genFlavour)
         #    continue
         if ll is None:
             leptons, leptonsIdx, leptonsCharge, leptonFlavour, same_sign = analysis_ntuples.getTwoLeptonsAfterSelection(c.Electrons, c.Electrons_passCorrJetIso10, c.Electrons_deltaRLJ, c.Electrons_charge, c.Muons, c.Muons_passCorrJetIso10, c.Muons_mediumID, c.Muons_deltaRLJ, c.Muons_charge)
@@ -390,7 +390,7 @@ def main():
         genFlavourBefore += 1
         
         if leptonFlavour != genFlavour:
-            print leptonFlavour, genFlavour
+            print(leptonFlavour, genFlavour)
             continue
         
         genFlavourAfter += 1
@@ -436,7 +436,7 @@ def main():
                     min = minNZ
                 histograms["Lepton_minDealZ"].Fill(min)
                 if min > 0.01:
-                    #print "No Match"
+                    #print("No Match")
                     for h, hists in enumerate([funcs,lepTrackHists]):
                         for func in hists:
                             if h == 0:
@@ -446,7 +446,7 @@ def main():
                     continue
                 name = ""
                 if minNZ is None or minZ < minNZ:
-                    #print "E Z min: " + str(minZ)
+                    #print("E Z min: " + str(minZ))
                     if c.GenParticles_PdgId[minCanZ] == pdgid * lepCharge:#getattr(c, lepFlavour + "_charge")[li]:
                         name = "Rec_Zl_"
                     else:
@@ -475,7 +475,7 @@ def main():
         #histograms["TrackLepMll"].Fill((ll + c.track).M())
         
         filledOnce = False
-        #print "====="
+        #print("=====")
         for ti in range(c.tracks.size()):
             t = c.tracks[ti]
             
@@ -512,8 +512,8 @@ def main():
                 min = minZ
             else:
                 min = minNZ
-            #print "*********"
-            #print "Min=" + str(min)
+            #print("*********")
+            #print("Min=" + str(min))
             histograms["Track_minDealZ"].Fill(min)
             if min <= 0.1:
                 histograms["Track_RelIso"].Fill(c.tracks_trkRelIso[ti])
@@ -528,9 +528,9 @@ def main():
                     if c.tracks_charge[ti] * leptonCharge < 0:
                         #Opposite charge! Good!
                         for i, cut in enumerate(cuts):
-                            #print "Checking cut " + cut["name"]
+                            #print("Checking cut " + cut["name"])
                             if not passedCut(cut, c, ti):
-                                #print "not passed"
+                                #print("not passed")
                                 continue
                             histograms["GenTrackLepMll_" + cut["name"]].Fill((c.tracks[ti] + ll).M())
                 else:
@@ -544,7 +544,7 @@ def main():
                 else:
                     result = "MM"
             #if result == "Zl":
-            #	print "min=", min, " iso:", c.tracks_trkRelIso[ti]
+            #	print("min=", min, " iso:", c.tracks_trkRelIso[ti])
             
             #if c.track == t:
                 #if c.trackBDT < 0.1:
@@ -554,13 +554,13 @@ def main():
                 #    continue
                 # for i, cut in enumerate(cuts):
 #                     if len(cut["name"]) > 0:
-#                         #print "Checking cut " + cut["name"]
+#                         #print("Checking cut " + cut["name"])
 #                         if not passedCut(cut, c, ti):
-#                             #print "not passed"
+#                             #print("not passed")
 #                             continue
 #                 
 #                     if filledOnce:
-#                         print "WHAT?!?"
+#                         print("WHAT?!?")
 #                         filledOnce = True
 #                     histograms["trackBDT" + "_" + result + "_" + cut["name"]].Fill(c.trackBDT)
 #                     histograms["TrackLepMllTypes" + "_" + result + "_" + cut["name"]].Fill(c.invMass)
@@ -571,16 +571,16 @@ def main():
 #                         histograms["TrackGenLepMll" + "_" + cut["name"]].Fill((t + c.GenParticles[genZL[1]]).M())
 #                     else:
 #                         histograms["TrackGenLepMll" + "_" + cut["name"]].Fill((t + c.GenParticles[genZL[0]]).M())
-            # print "c.secondTrack.Pt()=", c.secondTrack.Pt()
-#             print "t.Pt()", t.Pt()
-#             print "---"
+            # print("c.secondTrack.Pt()=", c.secondTrack.Pt())
+#             print("t.Pt()", t.Pt())
+#             print("---")
             # if t == c.secondTrack:
-#                 print "SECOND TRACK"
+#                 print("SECOND TRACK")
 #                 for i, cut in enumerate(cuts):
 #                     if len(cut["name"]) > 0:
-#                         #print "Checking cut " + cut["name"]
+#                         #print("Checking cut " + cut["name"])
 #                         if not passedCut(cut, c, ti):
-#                             #print "not passed"
+#                             #print("not passed")
 #                             continue
 #                     histograms["secondTrackBDT" + "_" + result + "_" + cut["name"]].Fill(c.secondTrackBDT)
                 
@@ -588,9 +588,9 @@ def main():
             
             for i, cut in enumerate(cuts):
                 if len(cut["name"]) > 0:
-                    #print "Checking cut " + cut["name"]
+                    #print("Checking cut " + cut["name"])
                     if not passedCut(cut, c, ti):
-                        #print "not passed"
+                        #print("not passed")
                         continue
             
                 numIsoTracks[i] += 1
@@ -641,7 +641,7 @@ def main():
                             val = 0
                         histograms[name].Fill(val)
                     else:
-                        #print func
+                        #print(func)
                         if tracksLogScale[j] and abs(getattr(c, func)[ti]) != 0.0:
                             histograms[name].Fill(log(abs(getattr(c, func)[ti]), 10))
                         else:
@@ -653,8 +653,8 @@ def main():
             if numMMIsoTracks[i] == numMMZlIsoTracks[i]:
                 histograms["NM_ZL_Track_NumIso_Per_Reco_" + cut["name"]].Fill(recoNum, numMMZlIsoTracks[i])
 
-    print "Not Correct Procs=" + str(notCorrect)
-    print "genFlavourBefore", genFlavourBefore, "genFlavourAfter", genFlavourAfter
+    print("Not Correct Procs=" + str(notCorrect))
+    print("genFlavourBefore", genFlavourBefore, "genFlavourAfter", genFlavourAfter)
 
     hNM = histograms["NM_Track_NumIso_Per_Reco_" + cuts[-1]["name"]]
     xNMAxis = hNM.GetXaxis()
@@ -668,7 +668,7 @@ def main():
     binZLX = xZLAxis.FindBin(1)
     binZLY = yZLAxis.FindBin(1)
 
-    print "Number of 1,1 bins NM_Track_NumIso_Per_Reco=" + str(hNM.GetBinContent(binNMX,binNMY) ) + " NM_ZL_Track_NumIso_Per_Reco=" + str(hZL.GetBinContent(binZLX,binZLY)) 
+    print("Number of 1,1 bins NM_Track_NumIso_Per_Reco=" + str(hNM.GetBinContent(binNMX,binNMY) ) + " NM_ZL_Track_NumIso_Per_Reco=" + str(hZL.GetBinContent(binZLX,binZLY)) )
 
     c1 = TCanvas("c1")
 
@@ -699,10 +699,10 @@ def main():
         for h, hists in enumerate([funcs,lepTrackHists]):
             for func in hists:
                 for obj in objs:
-                    #print "***"
-                    #print cut["name"], obj, func
+                    #print("***")
+                    #print(cut["name"], obj, func)
                     if len(cut["name"]) > 0 and obj != "Track":
-                        #print "Breaking"
+                        #print("Breaking")
                         continue
                     if h == 1 and obj == "Gen":
                         continue
@@ -728,7 +728,7 @@ def main():
                         name = obj + "_" + lepType + "_" + func
                         if obj == "Track":
                             name += "_" + cut["name"]
-                        print name
+                        print(name)
                         h =  histograms[name]
                         utils.formatHist(h, utils.colorPalette[cP], 0.35, True)
                         cP += 1
@@ -849,7 +849,7 @@ def main():
             cP = 0
             for lepType in lepTypes:
                 name = func + "_" + lepType + "_" + cut["name"]
-                print name
+                print(name)
                 h =  histograms[name]
                 utils.formatHist(h, utils.colorPalette[cP], 0.35, True)
                 cP += 1
@@ -876,7 +876,7 @@ def main():
         
         if needToDraw:
             for id in range(pId, 7):
-                print "Clearing pad " + str(id)
+                print("Clearing pad " + str(id))
                 pad = histPad.cd(id)
                 pad.Clear()
             c1.Print(OUTPUT_FILE);

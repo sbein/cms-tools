@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -56,15 +56,15 @@ else: thing2grab = '1.roo'
 #systs_weightbased_nuni = ['','']#['','','TrgEff']#the first two are the normalization and Nominal value histograms, respectively!
 #systs_weightbased_uni = []#['Isr','Pu']
 
-systs_weightbased_nuni = ['','','TrgEff','MuSF','ElSF']#the first two are the normalization and Nominal value histograms, respectively!
+systs_weightbased_nuni = ['','','TrgEff','MuSf','ElSf']#the first two are the normalization and Nominal value histograms, respectively!
 systs_weightbased_uni = ['Isr','Pu','BTag']
 
-if wanted_year=='2016': 
-    #synch with Yuval
-    #systs_weightbased_nuni = ['','']#['','','TrgEff']
-    #systs_weightbased_uni = []#['Isr']
-    systs_weightbased_nuni = ['','','TrgEff']
-    systs_weightbased_uni = ['Isr']    
+#if wanted_year=='2016': ##sam commented out this block because he didn't understand why the syst list was truncated...
+#    #synch with Yuval
+#    #systs_weightbased_nuni = ['','']#['','','TrgEff']
+#    #systs_weightbased_uni = []#['Isr']
+#    systs_weightbased_nuni = ['','','TrgEff']
+#    systs_weightbased_uni = ['Isr']    
 
 systs_weightbased = systs_weightbased_nuni+systs_weightbased_uni
 print("WANTED YEAR " + wanted_year)
@@ -664,7 +664,7 @@ def main():
         #some systematic variations should preserve the normalization
         if signal_hists[hist].Integral()>0 and not ('Norm' in hist): 
             normhist = ('_'.join(hist.split('_')[:2])+'Norm').replace('Nom','Norm')
-            print ('want to divide', hist, 'by', normhist)
+            print(('want to divide', hist, 'by', normhist))
             unitarity_factor = signal_hists[normhist].Integral()/signal_hists[hist].Integral()
             print('unitarity_factor', hist, unitarity_factor)
             signal_hists[hist].Scale(unitarity_factor)

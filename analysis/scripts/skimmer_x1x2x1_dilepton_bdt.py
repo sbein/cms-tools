@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -46,7 +46,7 @@ parser.add_argument('-onphase0', '--onphase0', dest='onphase0', help='Write phas
 
 args = parser.parse_args()
 
-print args
+print(args)
 
 signal = args.signal
 bg = args.bg
@@ -70,11 +70,11 @@ jpsi = False
 
 if jpsi_muons:
     jpsi = True
-    print "Got JPSI"
+    print("Got JPSI")
     if jpsi_muons:
-        print "MUONS"
+        print("MUONS")
     else:
-        print "ELECTRONS"
+        print("ELECTRONS")
 
 ######## END OF CMDLINE ARGUMENTS ########
 
@@ -145,12 +145,12 @@ def main():
                                     
                                     vars[observableStr] = np.zeros(1,dtype=analysis_observables.commonPostBdtObservablesDTypesList[DTypeObs])
                                     if tree.GetBranchStatus(observableStr):
-                                        print "Reseting branch", observableStr
+                                        print("Reseting branch", observableStr)
                                         branches[observableStr] = tree.GetBranch(observableStr)
                                         branches[observableStr].Reset()
                                         tree.SetBranchAddress(observableStr, vars[observableStr])
                                     else:
-                                        print "Branching", observableStr
+                                        print("Branching", observableStr)
                                         branches[observableStr] = tree.Branch(observableStr, vars[observableStr], observableStr + "/" + utils.typeTranslation[analysis_observables.commonPostBdtObservablesDTypesList[DTypeObs]])
                                         tree.SetBranchAddress(observableStr, vars[observableStr])
                         
@@ -162,12 +162,12 @@ def main():
                                     observableStr = sc_prefix + DTypeObs + phaseStr + postfix
                                     vars[observableStr] = np.zeros(1,dtype=analysis_observables.exclusiveTrackPostBdtObservablesDTypesList[DTypeObs])
                                     if tree.GetBranchStatus(sc_prefix + DTypeObs + phaseStr + postfix):
-                                        print "Reseting branch", observableStr
+                                        print("Reseting branch", observableStr)
                                         branches[observableStr] = tree.GetBranch(observableStr)
                                         branches[observableStr].Reset()
                                         tree.SetBranchAddress(observableStr, vars[observableStr])
                                     else:
-                                        print "Branching", observableStr
+                                        print("Branching", observableStr)
                                         branches[observableStr] = tree.Branch(observableStr, vars[observableStr], observableStr + "/" + utils.typeTranslation[analysis_observables.exclusiveTrackPostBdtObservablesDTypesList[DTypeObs]])
                                         tree.SetBranchAddress(observableStr, vars[observableStr])
                 
@@ -197,13 +197,13 @@ def main():
                                 bdt_specs_maps[prefix + lep + iso + cuts + cat] = bdt_specs_map
                                 bdt_readers[prefix + lep + iso + cuts + cat] = bdt_reader
 
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
     
     iFile.cd()
     counting = 0
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         tree.GetEntry(ientry)
         
         for iso in utils.leptonIsolationList:
@@ -268,48 +268,48 @@ def main():
                                     if not jpsi and eventPassed:
                                         leptonFlavour = str(leptonFlavour)
                                         name = prefix + leptonFlavour + postfix
-                                        #print bdt_vars_maps[prefix + postfix]
-                                        #print name, eval("tree.twoLeptons"  + postfix), eval("tree.exclusiveTrack"  + postfix)
+                                        #print(bdt_vars_maps[prefix + postfix])
+                                        #print(name, eval("tree.twoLeptons"  + postfix), eval("tree.exclusiveTrack"  + postfix))
                                         for k, v in bdt_vars_maps[prefix + leptonFlavour + iso + cuts + cat].items():
-                                            #print k, v
+                                            #print(k, v)
                                             try:
                                                 if k in analysis_observables.dileptonBDTeventObservables:
                                                     if k == "LeadingJet.Eta()":
                                                         v[0] = eval("tree.LeadingJet.Eta()")
                                                     else:
-                                                        #print "getattr(tree, k)", k
+                                                        #print("getattr(tree, k)", k)
                                                         v[0] = getattr(tree, k)
                                                 else:
-                                                    #print k, " not in analysis_observables.dileptonBDTeventObservables"
-                                                    #print "eval", "tree." + sc_prefix  + k
-                                                    #print "getattr(tree, sc_prefix + k)", sc_prefix + k
+                                                    #print(k, " not in analysis_observables.dileptonBDTeventObservables")
+                                                    #print("eval", "tree." + sc_prefix  + k)
+                                                    #print("getattr(tree, sc_prefix + k)", sc_prefix + k)
                                                     if "[" in k:
-                                                        #print "Special stuff"
+                                                        #print("Special stuff")
                                                         (basenameK, postfixK) = k.split("[")
-                                                        #print basenameK, postfixK
+                                                        #print(basenameK, postfixK)
                                                         branch = getattr(tree, sc_prefix + basenameK)
-                                                        #print "branch", branch
-                                                        #print "Going to eval", "branch[" + postfixK
+                                                        #print("branch", branch)
+                                                        #print("Going to eval", "branch[" + postfixK)
                                                         v[0] = eval("branch[" + postfixK)
-                                                        #print "After", v[0]
+                                                        #print("After", v[0])
                                                     elif "()" in k:
-                                                        #print "Special stuff"
+                                                        #print("Special stuff")
                                                         (basenameK, postfixK) = k.rsplit(".", 1)
-                                                        #print basenameK, postfixK
+                                                        #print(basenameK, postfixK)
                                                         branch = getattr(tree, sc_prefix + basenameK)
-                                                        #print "branch", branch
-                                                        #print "Going to eval", "branch." + postfixK
+                                                        #print("branch", branch)
+                                                        #print("Going to eval", "branch." + postfixK)
                                                         v[0] = eval("branch." + postfixK)
-                                                        #print "After", v[0]
+                                                        #print("After", v[0])
                                                     else:
-                                                        #print "*****"
-                                                        #print "getattr(tree," + sc_prefix + k + ")"
+                                                        #print("*****")
+                                                        #print("getattr(tree," + sc_prefix + k + ")")
                                                         v[0] = getattr(tree, sc_prefix + k)
                                                 
                                             except Exception as e:
-                                                print "exception", e
-                                                print ientry, k, name, getattr(tree, "twoLeptons"  + iso + cuts + cat), getattr(tree, "exclusiveTrack"  + iso + cuts + cat)
-                                                print "ERROR!!! GIVING UP..."
+                                                print("exception", e)
+                                                print(ientry, k, name, getattr(tree, "twoLeptons"  + iso + cuts + cat), getattr(tree, "exclusiveTrack"  + iso + cuts + cat))
+                                                print("ERROR!!! GIVING UP...")
                                                 exit(1)
                                         for k, v in bdt_specs_maps[prefix + leptonFlavour + iso + cuts + cat].items():
                                             if data and k == "Weight":
@@ -320,14 +320,14 @@ def main():
                                         print('we are here', sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix)
                                         vars[sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix][0] = bdt_readers[prefix + leptonFlavour+ iso + cuts + cat].EvaluateMVA("BDT")
                                         #if vars[sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix][0] == -1:
-                                        #    print "Got a BDT score of -1...", 
+                                        #    print("Got a BDT score of -1...", )
                                             #exit(1)
                                         #if sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix == "exTrack_dilepBDTCorrJetNoMultIso10Dr0.6" and leptonFlavour == "Muons":
                                             #counting +=1
                                         
                                         #if sc_prefix == "sc_" and postfix == "" and prefixVars == "exTrack_":
-                                        #    print "Getting BDT score", sc_prefix + prefixVars + "dilepBDT" + postfix, vars[sc_prefix + prefixVars + "dilepBDT" + postfix][0]
-                                            #print bdt_vars_maps
+                                        #    print("Getting BDT score", sc_prefix + prefixVars + "dilepBDT" + postfix, vars[sc_prefix + prefixVars + "dilepBDT" + postfix][0])
+                                            #print(bdt_vars_maps)
                                     else:
                                         vars[sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix][0] = -1
                                         #counting +=1
@@ -335,21 +335,21 @@ def main():
                                         if signal and getattr(tree, sc_prefix + "exclusiveTrack"  + postfix) == 1:
                                             gens = [i for i in range(tree.GenParticles.size())]
                                             min, minCan = analysis_ntuples.minDeltaRGenParticles(getattr(tree, sc_prefix + "lepton" + postfix), gens, tree.GenParticles)
-                                            #print min, minCan
+                                            #print(min, minCan)
                                             pdgId = tree.GenParticles_ParentId[minCan]
                                             if minCan is None or min > 0.05:
-                                             #   print "BAD GEN LEPTON!!!"
+                                             #   print("BAD GEN LEPTON!!!")
                                                 pdgId = 0
                                             #else:
-                                            #    print "GOOD LEPTON ", pdgId
+                                            #    print("GOOD LEPTON ", pdgId)
                                             vars[sc_prefix + "leptonParentPdgId" + phaseStr + postfix][0] = pdgId
                                             min, minCan = analysis_ntuples.minDeltaRGenParticles(getattr(tree, sc_prefix + "track"+ postfix), gens, tree.GenParticles)
                                             pdgId = tree.GenParticles_ParentId[minCan]
                                             if min > 0.05:
-                                                #print "BAD GEN TRACK!!!"
+                                                #print("BAD GEN TRACK!!!")
                                                 pdgId = 0
                                             #else:
-                                            #    print "GOOD TRACK ", pdgId
+                                            #    print("GOOD TRACK ", pdgId)
                                             vars[sc_prefix + "trackParentPdgId" + phaseStr + postfix][0] = pdgId
                                         else:
                                             vars[sc_prefix + "leptonParentPdgId" + phaseStr + postfix][0] = -1
@@ -378,7 +378,7 @@ def main():
             
     tree.Write("tEvent",TObject.kOverwrite)
         
-    print "DONE SKIMMING counting=" + str(counting)
+    print("DONE SKIMMING counting=" + str(counting))
     iFile.Close()
 
 main()

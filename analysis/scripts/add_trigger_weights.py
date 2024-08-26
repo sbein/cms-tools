@@ -26,7 +26,7 @@ force = args.force
 def main():
     
     triggerFileName = os.path.expandvars("$CMSSW_BASE/src/cms-tools/lib/susy-trig-plots.root")
-    print "Opening trigger file: " + triggerFileName
+    print("Opening trigger file: " + triggerFileName)
     
     triggerFile = TFile(triggerFileName, "read")
     tEffhMetMhtRealXMet2016 = triggerFile.Get('tEffhMetMhtRealXMet;1')
@@ -50,13 +50,13 @@ def main():
     fileList = glob(input_dir + "/*");
     for f in fileList:
         if os.path.isdir(f): continue
-        print "processing file " + f 
+        print("processing file " + f )
         f = TFile(f, "update")
         t = f.Get("tEvent")
         
         if t.GetBranchStatus("tEffhMetMhtRealXMet2016"):
             if not force:
-                print "This tree already has efficiencies! Skipping..."
+                print("This tree already has efficiencies! Skipping...")
                 f.Close()
                 continue
         
@@ -67,7 +67,7 @@ def main():
         nentries = t.GetEntries();
         if t.GetBranchStatus("Weight"):
             if not force:
-                print "This tree is already weighted! Skipping..."
+                print("This tree is already weighted! Skipping...")
             else:
                 branch = t.GetBranch("Weight")
                 branch.Reset()
@@ -75,16 +75,16 @@ def main():
                 for ientry in range(nentries):
                     branch.Fill()
                 t.Write("tEvent",TObject.kOverwrite)
-                print "Done"
+                print("Done")
             f.Close()
             continue
     
         newBranch = t.Branch("Weight",var_Weight,"Weight/D");
         for ientry in range(nentries):
             newBranch.Fill()
-        print "Writing Tree"
+        print("Writing Tree")
         t.Write("tEvent",TObject.kOverwrite)
-        print "Done"
+        print("Done")
         f.Close()
 
 main()

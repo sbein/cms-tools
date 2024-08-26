@@ -10,7 +10,7 @@ parser = OptionParser()
 if len(args)>0:
     configurations = args
 else:
-    print "Run with \n$ ./www-create-pics.py www-subfolder path/to/folder/to/upload"
+    print("Run with \n$ ./www-create-pics.py www-subfolder path/to/folder/to/upload")
     quit()
 
 www_folder = "plots"
@@ -31,13 +31,13 @@ os.system("cp -r %s/* %s/" % (input_folder, output_path))
 
 html = ""
 
-print "globing", output_path + "/*.pdf"
-print glob.glob(output_path + "/*.pdf")
+print("globing", output_path + "/*.pdf")
+print(glob.glob(output_path + "/*.pdf"))
 
 for ifile in sorted(glob.glob(output_path + "/*.pdf")):
     if "_log.pdf" in ifile:
         continue
-    print ifile
+    print(ifile)
     outfile = ifile.split("/")[-1]
     
     os.system("convert %s/%s %s/%s" % (output_path, outfile, output_path, outfile.replace(".pdf", ".png")))

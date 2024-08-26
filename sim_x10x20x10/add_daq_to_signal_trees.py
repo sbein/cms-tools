@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -61,7 +61,7 @@ add_observable_script = utils.TOOLS_BASE_PATH + "/analysis/scripts/add_dqa_obser
 
 print(("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
 
-condor_file="/tmp/condor_submut." + datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
+condor_file="/tmp/condor_submit." + datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
 print("condor submit file:", condor_file)
 
 def main():
@@ -72,6 +72,7 @@ universe = vanilla
 should_transfer_files = IF_NEEDED
 executable = /bin/bash
 notification = Never
+request_memory = 16 GB
 ''')
     
     print("Adding histograms.")
@@ -82,7 +83,7 @@ notification = Never
         filename = os.path.basename(f).split(".")[0]
 
         command = add_observable_script + " -i " + f
-        print("Perorming:", command)
+        print("Performing:", command)
     
         #system(command)
         condor_f.write("arguments = " + condor_wrapper + " " + command + "\n")
@@ -92,6 +93,7 @@ notification = Never
             
 
     condor_f.close()
+    print('submitting:', "condor_submit " + condor_file)
     system("condor_submit " + condor_file)
 main()
 

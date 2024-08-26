@@ -45,8 +45,8 @@ if args.bg:
 no_norm = args.no_norm
 all = args.all
 
-print "No norm=" + str(no_norm)
-print "All=" + str(all)
+print("No norm=" + str(no_norm))
+print("All=" + str(all))
 
 tmp_dir = "/afs/desy.de/user/n/nissanuv/nfs/tmp/"
 
@@ -62,12 +62,12 @@ if args.cat:
 else:
     cat = ""
 
-print "lepNum", lepNum, "lep", lep, "iso", iso, "ptRange", ptRange, "cat", cat
+print("lepNum", lepNum, "lep", lep, "iso", iso, "ptRange", ptRange, "cat", cat)
 
 ######## END OF CMDLINE ARGUMENTS ########
 
 dir = os.path.dirname(output_file_name)
-print "Changing directory to", dir
+print("Changing directory to", dir)
 os.chdir(dir)
 
 gROOT.SetBatch(1)
@@ -100,7 +100,7 @@ totalEvents = 0
 weights = 0
 
 bg_files = glob(bg_dir + "/*")
-print bg_files
+print(bg_files)
 
 prefix = ""
 if lepNum == "exTrack":
@@ -160,21 +160,21 @@ else:
     variablesUsed.append('track' + iso + str(ptRange) + cat)
     variablesUsed.append('trackBDT' + iso + str(ptRange) + cat)
 
-print "Variables used", variablesUsed 
+print("Variables used", variablesUsed )
 
 tmpDir = mkdtemp(prefix="nissanuv", dir="/tmp") + '/'
-print "tmpDir=",tmpDir
+print("tmpDir=",tmpDir)
 
 #if not os.path.isdir(tmpDir):
 #    os.mkdir(tmpDir)
 
 for input_file in input_files:
-    print "Opening File " + input_file
+    print("Opening File " + input_file)
     fsignal = TFile(input_file)
     #sFiles.append(fsignal)
     sTree = fsignal.Get("tEvent")
     if sTree.GetEntries() == 0:
-        print "Emtpy. Skipping"
+        print("Emtpy. Skipping")
         continue
     #for lepNum in ["reco", "exTrack"]:
         #for lep in ["Electrons", "Muons"]:
@@ -186,29 +186,29 @@ for input_file in input_files:
                     #for ptRange in ptRanges:
     if dataloaders.get(lepNum + lep + iso + str(ptRange) + cat) is None:
         dataloaders[lepNum + lep + iso + str(ptRange) + cat] = TMVA.DataLoader("dataset")
-    print "Getting", iso + str(ptRange) + cat
-     # print "Copying tree", input_file, "with", preselection
+    print("Getting", iso + str(ptRange) + cat)
+     # print("Copying tree", input_file, "with", preselection)
 #     newFile = TFile(tmp_dir + "signal_" + lepNum + lep + iso + str(ptRange) + cat + ".root", "recreate")
 #     newTree = sTree.CopyTree(preselection)
     
     # if newTree.GetEntriesFast() == 0:
-#         print "Empty tree!!!!"
+#         print("Empty tree!!!!")
 #         newFile.Close()
     #else:
-    #print "Entries copied", newTree.GetEntriesFast()
+    #print("Entries copied", newTree.GetEntriesFast())
     #newFiles.append(newFile)
     baseFileName = os.path.basename(input_file)
     newfile = TFile(tmpDir + baseFileName, "recreate");
     
-    print "old tree has", sTree.GetEntries()
+    print("old tree has", sTree.GetEntries())
     sTree.SetBranchStatus("*",0);
     for branch in variablesUsed:
-        print "Setting branch on", branch
+        print("Setting branch on", branch)
         sTree.SetBranchStatus(branch,1);
     #newSTree = sTree.CloneTree(0)
-    print "Coping tree with preselection", preselection
+    print("Coping tree with preselection", preselection)
     newSTree = sTree.CopyTree(preselection)
-    print "new tree has", newSTree.GetEntries()
+    print("new tree has", newSTree.GetEntries())
     
     if newSTree.GetEntries() == 0:
         newfile.Close()
@@ -220,7 +220,7 @@ for input_file in input_files:
     newSTree.Write("tEvent");
     newfile.Close();
     
-    print "Done copying."
+    print("Done copying.")
     #sTrees.append(newSTree)
     sTree.Delete()
     fsignal.Close() 
@@ -233,12 +233,12 @@ for input_file in input_files:
 
 for bg_file in bg_files:
     if "QCD" in bg_file:
-        print "Skipping QCD", bg_file
+        print("Skipping QCD", bg_file)
         #exit(0)
         continue
     if len(bg_file) == 0 or bg_file.isspace():
         continue
-    print "Processing", bg_file
+    print("Processing", bg_file)
     
     #if "DYJetsToLL_M-50_HT-800to1200" not in bg_file:
     #    continue
@@ -252,7 +252,7 @@ for bg_file in bg_files:
     for branch in variablesUsed:
         bTree.SetBranchStatus(branch,1);
     newBTree = bTree.CopyTree(preselection)
-    print "new tree has", newBTree.GetEntries()
+    print("new tree has", newBTree.GetEntries())
     if newBTree.GetEntries() == 0:
         newfile.Close()
         bTree.Delete()
@@ -262,7 +262,7 @@ for bg_file in bg_files:
     newfile.cd()
     newBTree.Write("tEvent");
     newfile.Close();
-    print "Done copying."
+    print("Done copying.")
     bTree.Delete()
     fbackground.Close()
     
@@ -288,16 +288,16 @@ for bg_file in bg_files:
         #            for ptRange in ptRanges:
     #bTrees.append(newBTree)
 
-    #print "Getting", iso + str(ptRange) + cat
-    #print "Copying tree", bg_file, "with", preselection
+    #print("Getting", iso + str(ptRange) + cat)
+    #print("Copying tree", bg_file, "with", preselection)
     #newFile = TFile(tmp_dir + "bg_" + lepNum + lep + iso + str(ptRange) + cat + ".root", "recreate")
     #newTree = bTree.CopyTree(preselection)
-    #print "Done copying."
+    #print("Done copying.")
     #if newTree.GetEntriesFast() == 0:
-    #    print "Empty tree!!!!"
+    #    print("Empty tree!!!!")
     #    newFile.Close()
     #else:
-    #    print "Entries copied", newTree.GetEntriesFast()
+    #    print("Entries copied", newTree.GetEntriesFast())
     #    newFiles.append(newFile)
     #    newTrees.append(newTree)
     
@@ -404,7 +404,7 @@ factory.TestAllMethods()
 factory.EvaluateAllMethods()
 outputFile.Close()
 
-print "deleting tmp dir", tmpDir
+print("deleting tmp dir", tmpDir)
 shutil.rmtree(tmpDir)
 exit(0)
 

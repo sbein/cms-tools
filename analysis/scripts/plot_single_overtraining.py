@@ -132,15 +132,15 @@ if phase == "Phase 1":
 if not output_file:
     output_file = "overtraining_" + category + "_" + lepton + "_" + phase.replace(" ", "_") + postfix_to_plot + ".pdf"
 
-print "===================="
-print "Running for input: " + input
-print "method", method
-print "category", category
-print "===================="
+print("====================")
+print("Running for input: " + input)
+print("method", method)
+print("category", category)
+print("====================")
 
 def main():
 
-    print "Plotting observable"
+    print("Plotting observable")
     c2 = TCanvas("c2")
     plotting = plotutils.Plotting()
     currStyle = plotting.setStyle()

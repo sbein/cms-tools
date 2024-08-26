@@ -33,14 +33,14 @@ else:
 no_norm = args.no_norm
 all = args.all
 
-print "No norm=" + str(no_norm)
-print "All=" + str(all)
+print("No norm=" + str(no_norm))
+print("All=" + str(all))
 
 	
 ######## END OF CMDLINE ARGUMENTS ########
 
 dir = os.path.dirname(output_file_name)
-print "Changing directory to", dir
+print("Changing directory to", dir)
 os.chdir(dir)
 
 #output_file_name_object = os.path.splitext(output_file_name)[0] + "Object.root"
@@ -68,12 +68,12 @@ sFiles = []
 sTrees = []
 
 for input_file in input_files:
-    print "Opening File " + input_file
+    print("Opening File " + input_file)
     fsignal = TFile(input_file)
     sFiles.append(fsignal)
     sTree = fsignal.Get('tEvent')
     if sTree.GetEntries() == 0:
-        print "Emtpy. Skipping"
+        print("Emtpy. Skipping")
         continue
     sTrees.append(sTree)
     dataloader.AddSignalTree(sTree, 1)
@@ -83,7 +83,7 @@ for bg_file in bg_files:
     bgFiles.append(fbackground)
     bTree = fbackground.Get('tEvent')
     if bTree.GetEntries() == 0:
-        print "Emtpy. Skipping"
+        print("Emtpy. Skipping")
         continue
     bTrees.append(bTree)
     dataloader.AddBackgroundTree(bTree, 1)

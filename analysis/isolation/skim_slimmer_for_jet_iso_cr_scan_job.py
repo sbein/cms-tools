@@ -29,8 +29,8 @@ args = parser.parse_args()
 input_file = args.input_file[0]
 output_file = args.output_file[0]
 
-print "input_file", input_file
-print "output_file", output_file
+print("input_file", input_file)
+print("output_file", output_file)
 
 
 ######## END OF CMDLINE ARGUMENTS ########
@@ -167,8 +167,8 @@ for iso in ["CorrJetNoMultIso"]:
 
 preselection += "(" + " || ".join(twoLeptonsConds) + ")"
 
-print "Preselection:"
-print preselection
+print("Preselection:")
+print(preselection)
 
 condor_wrapper = os.path.expandvars("$CMSSW_BASE/src/cms-tools/analysis/scripts/condor_wrapper.sh")
 
@@ -178,7 +178,7 @@ condor_file="/tmp/condor_submut." + datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
 print("condor submit file:", condor_file)
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     # if not os.path.isdir(output_dir):
 #         os.mkdir(output_dir)
@@ -187,33 +187,33 @@ def main():
     
     #for filename in files:
     
-    print "Opening", input_file
+    print("Opening", input_file)
     #baseFileName = os.path.basename(input_file)
     #output_file = output_dir + "/" + baseFileName
-    print "output_file", output_file
+    print("output_file", output_file)
     
     if os.path.isfile(output_file):
-        print "File exits. Skipping", output_file
+        print("File exits. Skipping", output_file)
         exit(0)
 
     f = TFile(input_file)
     c = f.Get('tEvent')
     if c.GetEntries() == 0:
-        print "Emtpy. Skipping"
+        print("Emtpy. Skipping")
         f.Close()
         exit(0)
 
-    print "old tree has", c.GetEntries()
+    print("old tree has", c.GetEntries())
     c.SetBranchStatus("*",0);
     for branch in variablesUsed:
-        #print "Setting branch on", branch
+        #print("Setting branch on", branch)
         c.SetBranchStatus(branch,1)
     newfile = TFile(output_file,'recreate')
     newTree = c.CopyTree(preselection)
-    print "new tree has", newTree.GetEntries()
+    print("new tree has", newTree.GetEntries())
     
     if newTree.GetEntries() == 0:
-        print "Resulting tree is empty. Skipping."
+        print("Resulting tree is empty. Skipping.")
         f.Close()
         newTree.Delete()
         newfile.Close()
@@ -224,12 +224,12 @@ def main():
     newTree.Write("tEvent");
     newfile.Close();
 
-    print "Done copying."
+    print("Done copying.")
 
     c.Delete()
     f.Close() 
     
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
 main()
 exit(0)

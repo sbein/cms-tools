@@ -50,11 +50,11 @@ if args.input:
 
 signal_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/lepton_track/single/"
 
-print "Running for input: " + input
+print("Running for input: " + input)
 
 def main():
 
-    print "Plotting observable"
+    print("Plotting observable")
 
     c1 = TCanvas("c1", "c1", 800, 800)
     c1.SetBottomMargin(0.16)
@@ -75,8 +75,8 @@ def main():
     signal_files = [f for f in files if signal_files_re.match(f)]
     bg_files = [f for f in files if bg_files_re.match(f)]
     
-    print signal_files
-    print bg_files
+    print(signal_files)
+    print(bg_files)
     
     sh = utils.UOFlowTH1F("sh", "", 100, 2, 26)
     bh = utils.UOFlowTH1F("bh", "", 100, 2, 26)
@@ -85,14 +85,14 @@ def main():
     
     for (fs, hs) in [(signal_files, sh),(bg_files, bh)]:
         for file in fs:
-            print "Processing " + file
+            print("Processing " + file)
             f = TFile(file)
             c = f.Get('tEvent')
             nentries = c.GetEntries()
-            print 'Analysing', nentries, "entries"
+            print('Analysing', nentries, "entries")
             for ientry in range(nentries):
                 if ientry % 1000 == 0:
-                    print "Processing " + str(ientry)
+                    print("Processing " + str(ientry))
                 c.GetEntry(ientry)
                 hs.Fill(c.lepton.Pt())
     

@@ -50,7 +50,7 @@ memory = []
 def plot_rocs():
     dirs = glob(inputDir + "/*")
     dirs.sort()
-    print dirs
+    print(dirs)
 
     c2 = TCanvas("c2")
     c1 = TCanvas("c1")
@@ -90,7 +90,7 @@ def plot_rocs():
 
         name = os.path.basename(dir)
 
-        print "Processing " + name
+        print("Processing " + name)
 
         file = [dir]
         c2.cd()
@@ -182,9 +182,9 @@ def plot_rocs():
             needToDraw = False;
 
     if needToDraw:
-        print "HERE"
+        print("HERE")
         for id in range(pId, 5):
-            print "Clearing pad " + str(id)
+            print("Clearing pad " + str(id))
             pad = histPad.cd(id)
             pad.Clear()
         c1.Print(outputFile);

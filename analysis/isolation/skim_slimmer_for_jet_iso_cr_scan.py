@@ -90,10 +90,10 @@ else:
         output_dir_stdout = base_dir + "/data/skim/stdout"
         output_dir_stderr = base_dir + "/data/skim/stderr"
 
-print "input_dir", input_dir
-print "output_dir", output_dir
-print "output_dir_stdout", output_dir_stdout
-print "output_dir_stderr", output_dir_stderr
+print("input_dir", input_dir)
+print("output_dir", output_dir)
+print("output_dir_stdout", output_dir_stdout)
+print("output_dir_stderr", output_dir_stderr)
 
 if not os.path.isdir(output_dir):
     os.mkdir(output_dir)
@@ -111,7 +111,7 @@ condor_wrapper = os.path.expandvars("$CMSSW_BASE/src/cms-tools/analysis/scripts/
 slimmer_script = os.path.expandvars("$CMSSW_BASE/src/cms-tools/analysis/isolation/skim_slimmer_for_jet_iso_cr_scan_job.py")
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     condor_file="/tmp/condor_submut." + datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
     print("condor submit file:", condor_file)
@@ -129,14 +129,14 @@ notification = Never
 
     
     for filename in files:
-        print "Opening", filename
+        print("Opening", filename)
         baseFileName = os.path.basename(filename)
         baseFileNameNoStem = '.'.join(os.path.basename(filename).split('.')[:-1])
         output_file = output_dir + "/" + baseFileName
-        print "output_file", output_file
+        print("output_file", output_file)
         
         if os.path.isfile(output_file):
-            print "File exits. Skipping", output_file
+            print("File exits. Skipping", output_file)
             continue
         
         command = slimmer_script + " -i " + filename + " -o " + output_file
@@ -150,7 +150,7 @@ notification = Never
     
     condor_f.close()
     system("condor_submit " + condor_file)
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
 main()
 exit(0)

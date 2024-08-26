@@ -11,7 +11,7 @@ echo OLD_PWD=$PWD
 
 # CMS ENV
 #cd ~/CMSSW_11_3_1/src
-cd /nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_11_3_1/src/
+cd /nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_13_3_3/src/
 
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh

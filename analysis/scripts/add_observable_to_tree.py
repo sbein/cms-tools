@@ -37,7 +37,7 @@ fileList = [input_file]
 
 for filename in fileList:
     if os.path.isdir(filename): continue
-    print "processing file " + filename
+    print("processing file " + filename)
     f = TFile(filename, "update")
     
     t = f.Get("tEvent")
@@ -64,7 +64,7 @@ for filename in fileList:
                         obsStr = newObservableStrs[0] + postfix
                         if t.GetBranchStatus(obsStr):
                             if not force:
-                                print "Tree", filename ,"already has", obsStr, "! Skipping..."
+                                print("Tree", filename ,"already has", obsStr, "! Skipping...")
                                 shouldSkipTree = True
                             else:
                                 rewriteTree = True
@@ -80,11 +80,11 @@ for filename in fileList:
     obsMem = {}
     branches = {}
     
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
     
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         t.GetEntry(ientry)
         
         for iso in utils.leptonIsolationList:
@@ -112,7 +112,7 @@ for filename in fileList:
                                     obsMem[obsStr] = np.zeros(1,dtype=float)
             
                                     if t.GetBranchStatus(obsStr):
-                                        print "Restting branch", obsStr
+                                        print("Restting branch", obsStr)
                                         branch = t.GetBranch(obsStr)
                                         branch.Reset()
                                         branch.SetAddress(obsMem[obsStr])
@@ -141,12 +141,12 @@ for filename in fileList:
                                     #obsMem[obsStr][0] = analysis_tools.PreciseMtautau(t.MET, t.METPhi, getattr(t, "leptons"  + postfix)[0], getattr(t, "leptons"  + postfix)[1])
                                 else:
                                     obsMem[obsStr][0] = -1
-                                    #print "NOT TWO LEPTONS", "twoLeptons"  + postfix, getattr(t, "twoLeptons"  + postfix), getattr(t, "leptons"  + postfix).size()
+                                    #print("NOT TWO LEPTONS", "twoLeptons"  + postfix, getattr(t, "twoLeptons"  + postfix), getattr(t, "leptons"  + postfix).size())
                                     #obsMem[obsStr][0] = -2
                                 branches[obsStr].Fill()
    
     t.Write("tEvent",TObject.kOverwrite)
-    print "Done"
+    print("Done")
     f.Close()
 
 

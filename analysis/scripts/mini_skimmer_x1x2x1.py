@@ -43,7 +43,7 @@ signal = args.signal
 bg = args.bg
 sc = args.sc
 
-print "SAME CHARGE=", sc
+print("SAME CHARGE=", sc)
 
 input_file = None
 if args.input_file:
@@ -58,7 +58,7 @@ if (bg and signal) or not (bg or signal):
     bg = False
 
 
-print "output file: |" + output_file + "|"
+print("output file: |" + output_file + "|")
 
 ######## END OF CMDLINE ARGUMENTS ########
 
@@ -67,7 +67,7 @@ def main():
     #file = TFile(input_file, "read")
     
     c = TChain('TreeMaker2/PreSelection')
-    print "Opening", input_file
+    print("Opening", input_file)
     c.Add(input_file)
     
     #c = file.Get("tEvent")
@@ -80,7 +80,7 @@ def main():
     
     for ientry in range(nentries):
         if ientry % 100 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         c.GetEntry(ientry)
         
         # var_MinDeltaPhiMetJets = analysis_ntuples.eventMinDeltaPhiMetJets25Pt2_4Eta(c.Jets, c.MET, c.METPhi)
@@ -100,7 +100,7 @@ def main():
         if not analysis_ntuples.hasHighPtJpsiMuon(24, c.Muons, c.Muons_passIso, c.Muons_tightID):
             continue
         
-        #print "After"
+        #print("After")
         
         highPtLepton = c.Muons[0]
         
@@ -143,7 +143,7 @@ def main():
             if foundMuon:
                 inFirstMuonIteration = False
     
-    print "Creating file", output_file
+    print("Creating file", output_file)
     
     fnew = TFile(output_file,'recreate')
     

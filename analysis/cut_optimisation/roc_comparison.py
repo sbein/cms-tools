@@ -36,10 +36,10 @@ parser.add_argument('-rgs', '--rgs', nargs='*', help='RGS Input File', required=
 parser.add_argument('-o', '--output', nargs=1, help='Output File', required=False)
 args = parser.parse_args()
 
-print args
+print(args)
 
 bdt_files = args.bdt
-print bdt_files
+print(bdt_files)
 #exit(0)
 mlp_files = args.mlp
 rgs_files = args.rgs
@@ -77,7 +77,7 @@ def get_TMVA_effs(tmva_output_file):
 memory = []
 
 def plot_rocs():
-	#print bdt_files
+	#print(bdt_files)
 	#exit(0)
 	(testBGHists, trainBGHists, testSignalHists, trainSignalHists, methods, names) = cut_optimisation.get_bdt_hists(bdt_files)
 	cut_optimisation.get_mlp_hists(mlp_files, testBGHists, trainBGHists, testSignalHists, trainSignalHists, methods, names)
@@ -138,9 +138,9 @@ def plot_rocs():
 
 		h.Draw("same")
 		
-		print "highestZ=" + str(highestZ)
-		print "highestS=" + str(highestS)
-		print "highestB=" + str(highestB)
+		print("highestZ=" + str(highestZ))
+		print("highestS=" + str(highestS))
+		print("highestB=" + str(highestB))
  
 		hHighestZ = TGraph()
 		hHighestZ.SetPoint(0, highestS/ST, 1-highestB/BT)
@@ -175,7 +175,7 @@ def plot_rocs():
 		
 		name = os.path.basename(rgs_dir)
 
-		print "Opening pickle!"
+		print("Opening pickle!")
 		with open(rgs_dir + "/output.pickle", "rb") as f:
 			data = pickle.load(f)
 			RgsTs = data[0]
@@ -183,10 +183,10 @@ def plot_rocs():
 			sCount = data[2]
 			bCount = data[3]
 	
-		print "===========  RGS =============="
-		print "Totals RGS " + name + ":"
-		print "Signal: " + str(RgsTs)
-		print "Background: " + str(RgsTb)
+		print("===========  RGS ==============")
+		print("Totals RGS " + name + ":")
+		print("Signal: " + str(RgsTs))
+		print("Background: " + str(RgsTb))
 		
 		color = colors[colorInx]
 		colorInx += 1
@@ -214,9 +214,9 @@ def plot_rocs():
 			fb = b / RgsTb
 			h.Fill(fs, 1-fb)
 			
-			#print "----------------------------"
-			#print "Fraction Signal: " + str(fs)
-			#print "Fraction Background: " + str(fb)
+			#print("----------------------------")
+			#print("Fraction Signal: " + str(fs))
+			#print("Fraction Background: " + str(fb))
 		
 			Z = 0
 			if s+b:
@@ -228,11 +228,11 @@ def plot_rocs():
 				bestRgsS = s
 				bestRgsB = b
 	
-		print "Best RGS Z=" + str(bestRgsZ)
-		print "Best RGS FS=" + str(bestRgsFs)
-		print "Best RGS FB=" + str(bestRgsFb)
-		print "Best RGS s=" + str(bestRgsS)
-		print "Best RGS b=" + str(bestRgsB)
+		print("Best RGS Z=" + str(bestRgsZ))
+		print("Best RGS FS=" + str(bestRgsFs))
+		print("Best RGS FB=" + str(bestRgsFb))
+		print("Best RGS s=" + str(bestRgsS))
+		print("Best RGS b=" + str(bestRgsB))
 	
 		# include point with highest Z RGS
 

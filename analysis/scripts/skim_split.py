@@ -40,14 +40,14 @@ if args.input_file:
 ######## END OF CMDLINE ARGUMENTS ########
 
 chain = TChain('tEvent')
-print "Going to open the file"
-print input_file
+print("Going to open the file")
+print(input_file)
 chain.Add(input_file)
-print "After opening"
+print("After opening")
 tree = chain.CloneTree(0)
 
 nentries = chain.GetEntriesFast()
-print 'Analysing', nentries, "entries"
+print('Analysing', nentries, "entries")
 
 max_per_file = 15000
 filenum = 1
@@ -56,15 +56,15 @@ output_file = os.path.splitext(input_file)[0]
 fnew = TFile(output_file + "_" + str(filenum) + ".root",'recreate')
 new_entries = False
 
-print "Starting loop."
+print("Starting loop.")
 
 for ientry in range(nentries):
     if ientry % 5000 == 0:
-        print "Processing " + str(ientry) + " out of " + str(nentries)
+        print("Processing " + str(ientry) + " out of " + str(nentries))
     if ientry != 0 and ientry % max_per_file == 0:
-        print "Done copying. Writing to file"
+        print("Done copying. Writing to file")
         tree.Write('tEvent')
-        print "Done writing to file."
+        print("Done writing to file.")
         tree.Reset()
         fnew.Close()
         filenum +=1
@@ -75,9 +75,9 @@ for ientry in range(nentries):
     new_entries = True
 
 if new_entries:
-    print "Done copying. Writing to file"
+    print("Done copying. Writing to file")
     tree.Write('tEvent')
-    print "Done writing to file."
+    print("Done writing to file.")
     fnew.Close()
 
 os.remove(input_file)

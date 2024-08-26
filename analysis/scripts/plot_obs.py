@@ -1,6 +1,6 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
-from ROOT import *
+import ROOT
 from glob import glob
 from sys import exit
 import argparse
@@ -19,10 +19,10 @@ import plot_params
 import plotutils
 from ctypes import *
 
-gROOT.SetBatch(True)
-gStyle.SetOptStat(0)
+ROOT.gROOT.SetBatch(True)
+ROOT.gStyle.SetOptStat(0)
 
-gSystem.Load('LumiSectMap_C')
+ROOT.gSystem.Load('LumiSectMap_C')
 from ROOT import LumiSectMap
 
 #lumi = 5746.370
@@ -98,8 +98,8 @@ def funcGaussian(x,par):
     return par[0]*TMath.Exp(-(x[0]-par[1])*(x[0]-par[1])/(2*par[2]*par[2]))
 
 def funcFullModel(x,par):
-    #print "HERE", x[0], par[0], par[1], par[2], par[3], par[4]
-    #print x[0], (x[0]-par[1])*(x[0]-par[1]), (2*par[2]*par[2])
+    #print("HERE", x[0], par[0], par[1], par[2], par[3], par[4])
+    #print(x[0], (x[0]-par[1])*(x[0]-par[1]), (2*par[2]*par[2]))
     return par[0]*TMath.Exp(-(x[0]-par[1])*(x[0]-par[1])/(2*par[2]*par[2]))+par[3]+par[4]*x[0]
 
 def funcDoubleGaussian(x,par):
@@ -107,13 +107,13 @@ def funcDoubleGaussian(x,par):
 
 # 7 params
 def funcFullModelDoubleGaussian(x,par):
-    #print "HERE", x[0], par[0], par[1], par[2], par[3], par[4]
-    #print x[0], (x[0]-par[1])*(x[0]-par[1]), (2*par[2]*par[2])
+    #print("HERE", x[0], par[0], par[1], par[2], par[3], par[4])
+    #print(x[0], (x[0]-par[1])*(x[0]-par[1]), (2*par[2]*par[2]))
     return par[0]*TMath.Exp(-(x[0]-par[1])*(x[0]-par[1])/(2*par[2]*par[2]))+ par[3]*TMath.Exp(-(x[0]-par[1])*(x[0]-par[1])/(2*par[4]*par[4])) + par[5]+par[6]*x[0]
 
 def funcFullModelDoubleGaussianQuadratic(x,par):
-    #print "HERE", x[0], par[0], par[1], par[2], par[3], par[4]
-    #print x[0], (x[0]-par[1])*(x[0]-par[1]), (2*par[2]*par[2])
+    #print("HERE", x[0], par[0], par[1], par[2], par[3], par[4])
+    #print(x[0], (x[0]-par[1])*(x[0]-par[1]), (2*par[2]*par[2]))
     return par[0]*TMath.Exp(-(x[0]-par[1])*(x[0]-par[1])/(2*par[2]*par[2]))+ par[3]*TMath.Exp(-(x[0]-par[1])*(x[0]-par[1])/(2*par[4]*par[4])) + par[5]+par[6]*x[0] + par[7]*x[0]*x[0] + par[8]*x[0]*x[0]*x[0] + par[9]*x[0]*x[0]*x[0]*x[0]
 
 
@@ -136,15 +136,15 @@ def funcFullModelLorentzianQuadratic(x,par):
     return (0.5*par[0]*par[1]/TMath.Pi()) / TMath.Max( 1.e-10,(x[0]-par[2])*(x[0]-par[2]) + .25*par[1]*par[1]) + par[3]+par[4]*x[0] + par[5]*x[0]*x[0] + par[6]*x[0]*x[0]*x[0] + par[7]*x[0]*x[0]*x[0]*x[0]
 
 def funcCrystalBall(x, par):
-    #print x, par[0], par[1], par[2], par[3]
+    #print(x, par[0], par[1], par[2], par[3])
     return par[4]*ROOT.Math.crystalball_function(x[0], par[0], par[1], par[2], par[3])
 
 def funcFullModelCrystalBallQuadratic(x, par):
-    #print x, par[0], par[1], par[3], par[4]
+    #print(x, par[0], par[1], par[3], par[4])
     return par[4]*ROOT.Math.crystalball_function(x[0], par[0], par[1], par[2], par[3]) + par[5]+par[6]*x[0]+par[7]*x[0]*x[0] + par[8]*x[0]*x[0]*x[0] + par[9]*x[0]*x[0]*x[0]*x[0]
 
 def funcFullModelCrystalBallQuadratic2(x, par):
-    #print x, par[0], par[1], par[3], par[4]
+    #print(x, par[0], par[1], par[3], par[4])
     return par[4]*ROOT.Math.crystalball_function(x[0], par[0], par[1], par[2], par[3]) + par[5]+par[6]*x[0]+par[7]*x[0]*x[0] + par[8]*x[0]*x[0]*x[0] + par[9]*x[0]*x[0]*x[0]*x[0] + par[10]*x[0]*x[0]*x[0]*x[0]*x[0] + par[11]*x[0]*x[0]*x[0]*x[0]*x[0]*x[0]
 
 
@@ -166,7 +166,7 @@ def createPlots(rootfiles, type, histograms, weight=1):
             if ignore_file in os.path.basename(f):
                 print("File", f, "in ignore list. Skipping...")
                 continue
-        rootFile = TFile(f)
+        rootFile = ROOT.TFile(f)
         print("HERE!")
         exit(0)
         c = rootFile.Get('tEvent')
@@ -192,8 +192,8 @@ def createPlots(rootfiles, type, histograms, weight=1):
                     histName =  cut["name"] + "_" + hist_def["obs"] + "_" + type
                     hist = histograms[histName]
                     if type != "data":
-                        #print "Weight=", c.Weight
-                        #print "weight=", weight
+                        #print("Weight=", c.Weight)
+                        #print("weight=", weight)
                         if hist_def.get("func") is not None:
                             hist.Fill(hist_def["func"](c), c.Weight * weight)
                         else:
@@ -234,13 +234,13 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
         c = None
         if plot_par.use_bdt_file_as_input:
         
-            #rootFile = TFile(f)
+            #rootFile = ROOT.TFile(f)
             #c = rootFile.Get('dataset/TestTree')
             #trainTree = rootFile.Get('dataset/TrainTree')
             #print("test tree has", c.GetEntries())
             #print("train tree has", trainTree.GetEntries())
             
-            c = TChain()
+            c = ROOT.TChain()
             c.AddFile(f,-1,'dataset/TestTree')
             c.AddFile(f,-1,'dataset/TrainTree')
             
@@ -255,7 +255,7 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
             #print("after merge", c.GetEntries())
             
         else:
-            rootFile = TFile(f)
+            rootFile = ROOT.TFile(f)
             c = rootFile.Get('tEvent')
             ###c.Show(0)
         #print("After block", c.GetEntries())
@@ -361,7 +361,7 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
             
                             #print(("drawString", drawString))
 
-                            #print "conditionStr", conditionStr
+                            #print("conditionStr", conditionStr)
             
                             if plot_par.plot_log_x and plot_par.plot_real_log_x and "invMass" in hist_def["obs"]:
                                 print("Using getRealLogxHistogramFromTree")
@@ -377,9 +377,9 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
             
                             if hist is None:
                                 continue
-                            #print "Bins for new histogram is:", hist.GetXaxis().GetNbins()
+                            #print("Bins for new histogram is:", hist.GetXaxis().GetNbins())
                             #if "leptonF" in histName:
-                            #    print "Made leptonFlavour for", histName, hist.GetXaxis().GetNbins()
+                            #    print("Made leptonFlavour for", histName, hist.GetXaxis().GetNbins())
                             hist.GetXaxis().SetTitle("")
                             hist.SetTitle("")
                             hist.Sumw2()
@@ -409,7 +409,7 @@ def createCRPads(pId, ratioPads, twoRations = False):
     histLowY = 0.3
     if twoRations:
         histLowY = 0.30
-    histCPad = TPad("pad" + str(pId),"pad" + str(pId),0,histLowY,1,1)
+    histCPad = ROOT.TPad("pad" + str(pId),"pad" + str(pId),0,histLowY,1,1)
     histCPad.SetBottomMargin(0.03)
     #24/2
     #histCPad.SetLeftMargin(0.13)
@@ -417,12 +417,12 @@ def createCRPads(pId, ratioPads, twoRations = False):
     
     #histCPad.SetBottomMargin(0.16)
     if twoRations:
-        histRPad = TPad("rpad" + str(pId),"rpad" + str(pId),0,0,1,0.15)
+        histRPad = ROOT.TPad("rpad" + str(pId),"rpad" + str(pId),0,0,1,0.15)
         histRPad.SetLeftMargin(0.13)
-        histR2Pad = TPad("r2pad" + str(pId),"r2pad" + str(pId),0,0.15,1,0.3)
+        histR2Pad = ROOT.TPad("r2pad" + str(pId),"r2pad" + str(pId),0,0.15,1,0.3)
         histR2Pad.SetLeftMargin(0.13)
     else:
-        histRPad = TPad("rpad" + str(pId),"rpad" + str(pId),0,0,1,0.3)
+        histRPad = ROOT.TPad("rpad" + str(pId),"rpad" + str(pId),0,0,1,0.3)
         #24/2
         histRPad.SetTopMargin(0)
         histRPad.SetBottomMargin( 0.35 )
@@ -574,11 +574,11 @@ def plotRatio(c1, pad, memory, numHist, denHist, hist_def, numLabel = "Data", de
     
     rdataHist.Draw("p")
     rdataHist.Draw("same e0")
-    line = TLine(rdataHist.GetXaxis().GetXmin(),1,rdataHist.GetXaxis().GetXmax(),1);
-    line.SetLineColor(kRed);
+    line = ROOT.TLine(rdataHist.GetXaxis().GetXmin(),1,rdataHist.GetXaxis().GetXmax(),1);
+    line.SetLineColor(ROOT.kRed);
     line.Draw("SAME");
     
-    # tl = TLatex()
+    # tl = ROOT.TLatex()
 #     tl.SetNDC()
 #     print((tl.GetTextSize()))
 #     tl.SetTextSize(0.15) 
@@ -590,14 +590,14 @@ def plotRatio(c1, pad, memory, numHist, denHist, hist_def, numLabel = "Data", de
     
     #tl.DrawLatex(.1,.01,"error = " + "{:.2f}".format(100 * fit_only_signal_integral_error[hist_def["obs"]] / fit_only_signal_integral[hist_def["obs"]]) + "%")
     if plot_par.stamp_scale_factor:
-        tl = TLatex()
+        tl = ROOT.TLatex()
         tl.SetNDC()
         tl.SetTextSize(0.15) 
         tl.SetTextFont(42)
         tl.DrawLatex(.15,.8, "sf = " + "{:.3f}".format(rdataHist.GetBinContent(1)) + " err = " +  "{:.3f}".format(rdataHist.GetBinError(1)))
     
     if plot_par.stamp_ratio_integral:
-        tl = TLatex()
+        tl = ROOT.TLatex()
         tl.SetNDC()
         tl.SetTextSize(0.15) 
         tl.SetTextFont(42)
@@ -608,16 +608,16 @@ def plotRatio(c1, pad, memory, numHist, denHist, hist_def, numLabel = "Data", de
     c1.Modified()
     
     if plot_par.fit_linear_ratio_plot:
-        fLine = TF1('fLine', funcBackground, -1, 1, 2)
+        fLine = ROOT.TF1('fLine', funcBackground, -1, 1, 2)
         fLine.SetParameter(0, 1)
         fLine.SetParameter(1, 0)
         fLine.SetLineWidth(2)
-        fLine.SetLineColor(kBlue)
+        fLine.SetLineColor(ROOT.kBlue)
         fitresult = rdataHist.Fit(fLine, 's0', 'same',-1,1)
         chi2perndof = fLine.GetChisquare()/fLine.GetNDF()
         print("chi2perndof", chi2perndof)
         fLine.Draw("SAME")
-        tl = TLatex()
+        tl = ROOT.TLatex()
         tl.SetNDC()
         tl.SetTextSize(0.15) 
         tl.SetTextFont(42)
@@ -682,7 +682,7 @@ def createAllHistograms(histograms, sumTypes):
             exit(0)
             
     if not plot_par.plot_rand:
-        c2 = TCanvas("c2")
+        c2 = ROOT.TCanvas("c2")
         c2.cd()
         
         if not plot_par.plot_fast:
@@ -726,7 +726,7 @@ def createAllHistograms(histograms, sumTypes):
             weight = utils.LUMINOSITY
             
         # if plot_par.plot_data and plot_par.plot_sc:
-#             print "CREATING SC CATEGORY!", plot_par.sc_data_dir
+#             print("CREATING SC CATEGORY!", plot_par.sc_data_dir)
 #             if len(plot_par.sc_data_dir) > 0:
 #                 dataFiles = glob(plot_par.sc_data_dir + "/*")
 #                 createPlotsFast(dataFiles, ["data"], histograms, 1, "sc", [""], plot_par)
@@ -812,7 +812,7 @@ def createAllHistograms(histograms, sumTypes):
                         createPlots(dataFiles, typesArr, histograms, 1, "data-bg", condArr, plot_par)
                 
             else:
-                #print "*****"
+                #print("*****")
                 #exit(0)
                 for type in sumTypes:
                     if utils.existsInCoumpoundType(type):
@@ -851,13 +851,13 @@ def createAllHistograms(histograms, sumTypes):
                             print(("**Couldn't find file for " + cType))
                         
             # if plot_par.plot_sc:
-#                 print "CREATING SC CATEGORY!"
+#                 print("CREATING SC CATEGORY!")
 #             
 #                 bgFilesToPlot = []
 #                 if plot_par.choose_bg_files and plot_par.choose_bg_files_for_sc:
 #                     for bgChooseType in plot_par.choose_bg_files_list:
 #                         if utils.isCoumpoundType(bgChooseType):
-#                             print bgChooseType, "is a compound type!"
+#                             print(bgChooseType, "is a compound type!")
 #                             bgFilesToPlot.extend(utils.getFilesForCompoundType(bgChooseType, plot_par.sc_bg_dir))
 #                         else:
 #                             bgFilesToPlot.extend(glob(plot_par.sc_bg_dir + "/*" + bgChooseType + "_*.root"))
@@ -928,17 +928,17 @@ def normaliseBgTypes(histograms):
                                     
     
 # if hist_def.get("scale") is not None and hist_def["scale"] == "width":
-#                                 print "Scale(1, width)"
+#                                 print("Scale(1, width)")
 #                                 hist.Scale(1, "width")
 
 def saveHistogramsToFile(histograms):
-    nFile = TFile(plot_par.histrograms_file, "recreate")
+    nFile = ROOT.TFile(plot_par.histrograms_file, "recreate")
     for k in histograms:
         histograms[k].Write(k)
     nFile.Close()
 
 def loadAllHistograms(histograms):
-    nFile = TFile(plot_par.histrograms_file, "read")
+    nFile = ROOT.TFile(plot_par.histrograms_file, "read")
     keys = nFile.GetListOfKeys()
     for key in keys:
         name = key.GetName()#histogram name
@@ -1044,7 +1044,7 @@ def main():
     print(("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
     
     #deltaM = utils.getDmFromFileName(plot_par.signal_dir[0])
-    #print "deltaM=" + deltaM
+    #print("deltaM=" + deltaM)
     plotting = None
     if plot_par.plot_ratio or plot_par.plot_custom_ratio > 0:
         plotting = plotutils.Plotting(800,800)
@@ -1057,10 +1057,10 @@ def main():
     if plot_par.padLeftMargin > 0:
         currStyle.SetPadLeftMargin(plot_par.padLeftMargin)
     
-    #gROOT.SetStyle("tdrStyle")
-    #gROOT.ForceStyle()
+    #ROOT.gROOT.SetStyle("tdrStyle")
+    #ROOT.gROOT.ForceStyle()
     
-    gStyle.SetOptFit(0)
+    ROOT.gStyle.SetOptFit(0)
     
     histograms = {}
     sumTypes = {}
@@ -1155,11 +1155,11 @@ def main():
     histPad = None
     t = None
     if plot_par.plot_title and not large_version:
-        titlePad = TPad("titlePad", "",0.0,0.93,1.0,1.0)
-        histPad = TPad("histPad", "",0.0,0.0,1.0,0.93)
+        titlePad = ROOT.TPad("titlePad", "",0.0,0.93,1.0,1.0)
+        histPad = ROOT.TPad("histPad", "",0.0,0.0,1.0,0.93)
         print((utils.bcolors.BOLD + utils.bcolors.RED + "titlePad.Draw()" + utils.bcolors.ENDC))
         titlePad.Draw()
-        t = TPaveText(0.0,0.93,1.0,1.0,"NB")
+        t = ROOT.TPaveText(0.0,0.93,1.0,1.0,"NB")
         t.SetFillStyle(0)
         t.SetLineColor(0)
         t.SetTextFont(40);
@@ -1175,7 +1175,7 @@ def main():
     
     canvasFile = None
     if plot_par.create_canvas:
-        canvasFile = TFile("canvas_" + output_file.split(".")[0] + ".root", "recreate")
+        canvasFile = ROOT.TFile("canvas_" + output_file.split(".")[0] + ".root", "recreate")
     
     if not create_png:
         c1.Print(output_file+"[");
@@ -1261,7 +1261,7 @@ def main():
             #print("*", ratioPads)
             #print(histCPad, histRPad)
             #exit(0)
-            hs = THStack(str(plot_num),"")
+            hs = ROOT.THStack(str(plot_num),"")
             plot_num += 1
             memory.append(hs)
             types = []
@@ -1287,7 +1287,7 @@ def main():
             
             if plot_par.plot_efficiency and plot_par.bg_retag:
                 for efficiency in plot_par.efficiencies:
-                    #print efficiency
+                    #print(efficiency)
                     numerator = 0
                     denominator = 0
                     for type in efficiency["numerator"]:
@@ -1375,7 +1375,7 @@ def main():
                         
                         if len(object_retag_name) > 0:
                             try: plotutils.setHistColorFillLine(sigHist, plot_par.colorPalette[cP], 0.35)#SB set up the try catch
-                            except: sigHist.SetFillColor(kViolet); sigHist.SetFillStyle(1001)#SB
+                            except: sigHist.SetFillColor(ROOT.kViolet); sigHist.SetFillStyle(1001)#SB
                             cP += 1
                         else:
                             plotutils.setHistColorFillLine(sigHist, plot_par.signalCp[i], 1)
@@ -1398,7 +1398,7 @@ def main():
                     dataHist.SetMinimum(plot_par.log_minimum)
                 else:
                     dataHist.SetMinimum(0)
-                dataHist.SetMarkerStyle(kFullCircle)
+                dataHist.SetMarkerStyle(ROOT.kFullCircle)
                 if large_version:
                     dataHist.SetMarkerSize(1)
                 else:
@@ -1500,7 +1500,7 @@ def main():
                 legend_text_size = hist_def["legendTextSize"]
             legend = None
             if plot_par.plot_legend:
-                legend = TLegend(legend_coordinates["x1"],legend_coordinates["y1"],legend_coordinates["x2"],legend_coordinates["y2"])
+                legend = ROOT.TLegend(legend_coordinates["x1"],legend_coordinates["y1"],legend_coordinates["x2"],legend_coordinates["y2"])
                 if hist_def.get("legendCol") is not None:
                     legend_columns = hist_def["legendCol"]
                 legend.SetNColumns(legend_columns)
@@ -1542,7 +1542,7 @@ def main():
 #                         newBgHist.SetMarkerColorAlpha(lineC, 0.9)
 #         
                     if legend is not None:
-                        #print "Adding to legend " + hist.GetName().split("_")[-1]
+                        #print("Adding to legend " + hist.GetName().split("_")[-1])
                         if plot_par.plot_point:
                             legend.AddEntry(newBgHist, "SM Background", 'p')
                         else:
@@ -1551,7 +1551,7 @@ def main():
                     newBgHist = plotutils.styledStackFromStack(hs, memory, legend, "", typesInx, True, plot_par.plot_point, plot_par.bgReTaggingNames, plot_par.colorPalette)
                     
                     #Will hang otherwise!
-                    SetOwnership(newBgHist, False)
+                    ROOT.SetOwnership(newBgHist, False)
                     #newBgHist.SetFillColorAlpha(fillC, 0.35)
                     
                     if "dilepBDT" in hist_def["obs"]:
@@ -1574,11 +1574,11 @@ def main():
                     newBgHist.SetMinimum(0)
                 
                 # h = newBgHist.GetStack().Last()
-#                 h.SetMarkerColorAlpha(kBlack, 1)
-#                 h.SetMarkerStyle(kOpenCross)
-#                 h.SetLineColor(kBlack)
+#                 h.SetMarkerColorAlpha(ROOT.kBlack, 1)
+#                 h.SetMarkerStyle(ROOT.kOpenCross)
+#                 h.SetLineColor(ROOT.kBlack)
 #                 h.Draw("p e same")
-                #print "newBgHist", newBgHist
+                #print("newBgHist", newBgHist)
                 #exit(0)
                 #if (foundBg and plot_par.solid_bg) or newBgHist.GetNhists() > 0:
                 #    utils.histoStyler(newBgHist)
@@ -1710,7 +1710,7 @@ def main():
 #                 significance = 0.1*sigNum/math.sqrt(bgNum)
                 print(("cutName ", cutName, "sig", significance))
                 if not large_version and plot_par.plot_significance:
-                    pt = TPaveText(.60,.1,.95,.2, "NDC")
+                    pt = ROOT.TPaveText(.60,.1,.95,.2, "NDC")
                     pt.SetFillColor(0)
                     pt.SetTextAlign(11)
                     pt.SetBorderSize(0)
@@ -1722,7 +1722,7 @@ def main():
                     pt.Draw()
             
             if plot_par.plot_efficiency and plot_par.bg_retag:
-                pt = TPaveText(.50,.55,.85,.65, "NDC")
+                pt = ROOT.TPaveText(.50,.55,.85,.65, "NDC")
                 pt.SetFillColor(0)
                 pt.SetTextAlign(11)
                 pt.SetBorderSize(0)
@@ -1782,7 +1782,7 @@ def main():
                         scDataHist.SetMarkerSize(1)
                     else:
                         scDataHist.SetMarkerSize(0.5)
-                    scDataHist.SetMarkerColor(kRed)
+                    scDataHist.SetMarkerColor(ROOT.kRed)
                     print((utils.bcolors.BOLD + utils.bcolors.RED + "scDataHist.Draw(P SAME)" + utils.bcolors.ENDC))
                     scDataHist.Draw("P SAME")
                     if legend is not None:
@@ -1791,9 +1791,9 @@ def main():
                 
                 if plot_par.plot_bg:
                     scBgHistName = "sc_" + cut["name"] + "_" + hist_def["obs"] + "_bg"
-                    #print "------------------------"
-                    #print "looking for", scBgHistName
-                    #print histograms
+                    #print("------------------------")
+                    #print("looking for", scBgHistName)
+                    #print(histograms)
                 
                     scBgHist = histograms[scBgHistName]
                     
@@ -1877,22 +1877,22 @@ def main():
                 if plot_par.fit_inv_mass_jpsi_func == "gauss":
                     sigParNum = 3
                     if linear_fit:
-                        fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModel, lowedge, highedge, 5)
+                        fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModel, lowedge, highedge, 5)
                         parNum = 5
                     else:
-                        fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelQuadratic, lowedge, highedge, 8)
+                        fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelQuadratic, lowedge, highedge, 8)
                         parNum = 8
                     fFullModel.SetNpx(500);
                     
                     # jpsiBin = fitHist.FindBin(3.096916)
 #                     maxJpsiPeak = fitHist.GetBinContent(jpsiBin)
-#                     print "jpsiBin", jpsiBin, "maxJpsiPeak", maxJpsiPeak
+#                     print("jpsiBin", jpsiBin, "maxJpsiPeak", maxJpsiPeak)
 #                     for i in range(jpsiBin-2, jpsiBin+2):
 #                         if i < 1 or  i > fitHist.GetNbinsX():
 #                             continue
-#                         print "Getting jpsi bin at", i, fitHist.GetBinContent(i)
+#                         print("Getting jpsi bin at", i, fitHist.GetBinContent(i))
 #                         maxJpsiPeak = max(maxJpsiPeak, fitHist.GetBinContent(i))
-#                     print "maxJpsiPeak", maxJpsiPeak
+#                     print("maxJpsiPeak", maxJpsiPeak)
                     #fFullModel.FixParameter(0,maxJpsiPeak)
                     fFullModel.SetParameter(1,3.096916)
                     fFullModel.SetParLimits(1,3.09,3.105)
@@ -1901,10 +1901,10 @@ def main():
                 elif plot_par.fit_inv_mass_jpsi_func == "lorentzian":
                     sigParNum = 3
                     if linear_fit:
-                        fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelLorentzian, lowedge, highedge, 5)
+                        fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelLorentzian, lowedge, highedge, 5)
                         parNum = 5
                     else:
-                        fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelLorentzianQuadratic, lowedge, highedge, 8)
+                        fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelLorentzianQuadratic, lowedge, highedge, 8)
                         parNum = 8
                     fFullModel.SetNpx(500);
                     fFullModel.SetParameter(2, 3.096916)
@@ -1913,10 +1913,10 @@ def main():
                 elif plot_par.fit_inv_mass_jpsi_func == "doubleGaussian":
                     sigParNum = 5
                     if linear_fit:
-                        fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelDoubleGaussian, lowedge, highedge, 7)
+                        fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelDoubleGaussian, lowedge, highedge, 7)
                         parNum = 7
                     else:
-                        fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelDoubleGaussianQuadratic, lowedge, highedge, 10)
+                        fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelDoubleGaussianQuadratic, lowedge, highedge, 10)
                         parNum = 10
                     fFullModel.SetNpx(500);
                     
@@ -1980,7 +1980,7 @@ def main():
                     
                     sigParNum = 4
                     if linear_fit:
-                        fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelLorentzian, lowedge, highedge, 5)
+                        fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelLorentzian, lowedge, highedge, 5)
                         parNum = 5
                     else:
                         sigParNum = 5
@@ -1994,16 +1994,16 @@ def main():
                         parNum = bg_degree + sigParNum + 1
                         print(("parNum", parNum))
                         if parNum == 10:
-                            fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelCrystalBallQuadratic, lowedge, highedge, 10)
+                            fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelCrystalBallQuadratic, lowedge, highedge, 10)
                         elif parNum == 12:
                             # (alpha, n sigma, mu)
-                            fFullModel = TF1('fFullModel' + hist_def["obs"], funcFullModelCrystalBallQuadratic2, lowedge, highedge, 12)
+                            fFullModel = ROOT.TF1('fFullModel' + hist_def["obs"], funcFullModelCrystalBallQuadratic2, lowedge, highedge, 12)
                         
                         
                     fFullModel.SetNpx(500);
                     
 
-                    #print "ignoreParams", ignoreParams
+                    #print("ignoreParams", ignoreParams)
                     #exit(0)
                     
                     for i in range(len(cbPars)):
@@ -2028,7 +2028,7 @@ def main():
                 fit_funcs["fFullModel" + hist_def["obs"]] = fFullModel
                 # s option creates the result
                 fFullModel.SetLineWidth(2)
-                fFullModel.SetLineColor(kRed)
+                fFullModel.SetLineColor(ROOT.kRed)
                 fitresult = fitHist.Fit(fFullModel,'s0','same', lowedge, highedge)
                 
                 
@@ -2044,21 +2044,21 @@ def main():
                 fSignalOnlyModel = None
                 
                 if plot_par.fit_inv_mass_jpsi_func == "gauss":
-                    fSignal = TF1('fSignal' + hist_def["obs"], funcGaussian, lowedge, highedge, 3)
-                    fSignalOnlyModel = TF1('fSignal' + hist_def["obs"], funcGaussian, lowedge, highedge, 3)
+                    fSignal = ROOT.TF1('fSignal' + hist_def["obs"], funcGaussian, lowedge, highedge, 3)
+                    fSignalOnlyModel = ROOT.TF1('fSignal' + hist_def["obs"], funcGaussian, lowedge, highedge, 3)
                     fSignalOnlyModel.SetParameter(1,3.096916)
                     fSignalOnlyModel.SetParLimits(1,3.09,3.105)
                     fSignalOnlyModel.SetParameter(2,0.1)
                     fSignalOnlyModel.SetParLimits(2,0.05,0.2)
                 elif plot_par.fit_inv_mass_jpsi_func == "lorentzian":
-                    fSignal = TF1('fSignal' + hist_def["obs"], funcLorentzian, lowedge, highedge, 3)
-                    fSignalOnlyModel = TF1('fSignal' + hist_def["obs"], funcLorentzian, lowedge, highedge, 3)
+                    fSignal = ROOT.TF1('fSignal' + hist_def["obs"], funcLorentzian, lowedge, highedge, 3)
+                    fSignalOnlyModel = ROOT.TF1('fSignal' + hist_def["obs"], funcLorentzian, lowedge, highedge, 3)
                     fSignalOnlyModel.SetParameter(2, 3.096916)
                     fSignalOnlyModel.SetParLimits(2,3.05, 3.15)
                     fSignalOnlyModel.SetParameter(1, 0.1)
                 elif plot_par.fit_inv_mass_jpsi_func == "doubleGaussian":
-                    fSignal = TF1('fSignal' + hist_def["obs"], funcDoubleGaussian, lowedge, highedge, 5)
-                    fSignalOnlyModel = TF1('fSignal' + hist_def["obs"], funcDoubleGaussian, lowedge, highedge, 5)
+                    fSignal = ROOT.TF1('fSignal' + hist_def["obs"], funcDoubleGaussian, lowedge, highedge, 5)
+                    fSignalOnlyModel = ROOT.TF1('fSignal' + hist_def["obs"], funcDoubleGaussian, lowedge, highedge, 5)
                     
                     fSignalOnlyModel.SetParameter(0,10)
                     fSignalOnlyModel.SetParLimits(0,0.01,10000)
@@ -2071,8 +2071,8 @@ def main():
                     fSignalOnlyModel.SetParLimits(2,0.005,0.1)
                     fSignalOnlyModel.SetParLimits(4,0.005,0.1)
                 elif plot_par.fit_inv_mass_jpsi_func == "crystalBall":
-                    fSignal = TF1('fSignal' + hist_def["obs"], funcCrystalBall, lowedge, highedge, 5)
-                    fSignalOnlyModel = TF1('fSignal' + hist_def["obs"], funcCrystalBall, lowedge, highedge, 5)
+                    fSignal = ROOT.TF1('fSignal' + hist_def["obs"], funcCrystalBall, lowedge, highedge, 5)
+                    fSignalOnlyModel = ROOT.TF1('fSignal' + hist_def["obs"], funcCrystalBall, lowedge, highedge, 5)
                     
                     crystalBallInitialConditionsName = hist_def["obs"]
                     if "reco" in hist_def["obs"]:
@@ -2128,36 +2128,36 @@ def main():
                 cms.Print()
                 
                 
-                #print "cm.GetSub(0,", sigParNum - 1, parNum - sigParNum, parNum-1,") * cm.GetSub(",parNum - sigParNum, parNum-1, parNum - sigParNum, parNum-1,") * cm.GetSub(",parNum - sigParNum, parNum-1, 0, sigParNum - 1
+                #print("cm.GetSub(0,", sigParNum - 1, parNum - sigParNum, parNum-1,") * cm.GetSub(",parNum - sigParNum, parNum-1, parNum - sigParNum, parNum-1,") * cm.GetSub(",parNum - sigParNum, parNum-1, 0, sigParNum - 1)
                 
                 #A = cm.GetSub(0, sigParNum - 1, parNum - sigParNum, parNum-1)
-                A = TMatrixD(sigParNum,parNum-sigParNum)
+                A = ROOT.TMatrixD(sigParNum,parNum-sigParNum)
                 cm.GetSub(0, sigParNum - 1, sigParNum, parNum-1,A)
-                #print "A"
+                #print("A")
                 #A.Print()
                 
-                B = TMatrixD(parNum-sigParNum,parNum-sigParNum)
+                B = ROOT.TMatrixD(parNum-sigParNum,parNum-sigParNum)
                 cm.GetSub(sigParNum, parNum-1, sigParNum, parNum-1,B)
-                #print "B"
+                #print("B")
                 #B.Print()
                 print("B.Invert")
                 B.InvertFast()
                 #B.Print()
                 
-                C = TMatrixD(parNum-sigParNum,sigParNum)
+                C = ROOT.TMatrixD(parNum-sigParNum,sigParNum)
                 cm.GetSub(sigParNum, parNum-1, 0, sigParNum - 1,C)
-                #print "C"
+                #print("C")
                 #C.Print()
                 
                 #Mul = A * B * C
                 
-                Mul = TMatrixD(sigParNum,parNum - sigParNum)
+                Mul = ROOT.TMatrixD(sigParNum,parNum - sigParNum)
                 Mul.Mult(A,B)
-                #print "Mul"
+                #print("Mul")
                 #Mul.Print()
-                Mul2 = TMatrixD(sigParNum,sigParNum)
+                Mul2 = ROOT.TMatrixD(sigParNum,sigParNum)
                 Mul2.Mult(Mul,C)
-                #print "Mul2"
+                #print("Mul2")
                 #Mul2.Print()
                 
                 #cms.Print()
@@ -2178,9 +2178,9 @@ def main():
                 fit_signal_integral_error[hist_def["obs"]] = sIntegralError / fitHist.GetBinWidth(fitHist.FindBin(3.0))
                 
                 if linear_fit:
-                    fBg = TF1('fBg' + hist_def["obs"], funcBackground, lowedge, highedge, 2)
+                    fBg = ROOT.TF1('fBg' + hist_def["obs"], funcBackground, lowedge, highedge, 2)
                 else:
-                    fBg = TF1('fBg' + hist_def["obs"], funcBackgroundQuadratic2, lowedge, highedge, 7)
+                    fBg = ROOT.TF1('fBg' + hist_def["obs"], funcBackgroundQuadratic2, lowedge, highedge, 7)
                 fit_funcs["fBg" + hist_def["obs"]] = fBg
                 bgIndex = 3
                 if plot_par.fit_inv_mass_jpsi_func == "doubleGaussian" or plot_par.fit_inv_mass_jpsi_func == "crystalBall":
@@ -2220,7 +2220,7 @@ def main():
                 
                 if jpsiHist is not None:
                     fSignalOnlyModel.SetLineWidth(2)
-                    fSignalOnlyModel.SetLineColor(kBlue)
+                    fSignalOnlyModel.SetLineColor(ROOT.kBlue)
                     fitresultSignalOnly = jpsiHist.Fit(fSignalOnlyModel,'s0','same', lowedge, highedge)
                     print((utils.bcolors.BOLD + utils.bcolors.RED + "fSignalOnlyModel.Draw(SAME)" + utils.bcolors.ENDC))
                     fSignalOnlyModel.Draw("SAME")
@@ -2245,7 +2245,7 @@ def main():
                     print(("Error %:", 100 * fit_only_signal_integral_error[hist_def["obs"]] / fit_only_signal_integral[hist_def["obs"]]))
                     print("----")
                     
-                    tl = TLatex()
+                    tl = ROOT.TLatex()
                     tl.SetNDC()
                     print((tl.GetTextSize()))
                     tl.SetTextSize(0.05) 
@@ -2265,7 +2265,7 @@ def main():
                     
                 
                 fSignal.SetLineWidth(2)
-                fSignal.SetLineColor(kBlue)
+                fSignal.SetLineColor(ROOT.kBlue)
                 print((utils.bcolors.BOLD + utils.bcolors.RED + "fSignal.Draw(SAME)" + utils.bcolors.ENDC))
                 if jpsiHist is None:
                     fSignal.Draw("SAME")
@@ -2273,7 +2273,7 @@ def main():
                         legend.AddEntry(fSignal, "J/#psi", 'l')
                     
                 fBg.SetLineWidth(2)
-                fBg.SetLineColor(kBlack)
+                fBg.SetLineColor(ROOT.kBlack)
                 print((utils.bcolors.BOLD + utils.bcolors.RED + "fBg.Draw(SAME)" + utils.bcolors.ENDC))
                 if jpsiHist is None:
                     fBg.Draw("SAME")
@@ -2308,7 +2308,7 @@ def main():
                 
                 if jpsiHist is None:
                 
-                    tl = TLatex()
+                    tl = ROOT.TLatex()
                     tl.SetNDC()
                     print((tl.GetTextSize()))
                     tl.SetTextSize(0.05) 
@@ -2347,20 +2347,20 @@ def main():
             
             c1.Update()
             
-            #print "**", ratioPads
+            #print("**", ratioPads)
             
             if plot_par.plot_ratio or plot_par.plot_custom_ratio > 0:
                 
                 if plot_par.plot_sc:
-                    #print "Going to plot for ", histRPad, dataHist, scDataHist, hist_def
+                    #print("Going to plot for ", histRPad, dataHist, scDataHist, hist_def)
                     
-                    #print "***********", pId, ratioPads
+                    #print("***********", pId, ratioPads)
                     if plot_par.plot_bg:
                         stackSum = None
                         if plot_par.solid_bg:
                             stackSum = newBgHist
                         else:
-                            #print newBgHist, newBgHist.GetNhists(), newBgHist.GetStack()
+                            #print(newBgHist, newBgHist.GetNhists(), newBgHist.GetStack())
                             if newBgHist.GetNhists() > 0:
                                 stackSum = newBgHist.GetStack().Last().Clone("stackSum")
                                 memory.append(stackSum)
@@ -2378,7 +2378,7 @@ def main():
                             plotRatio(c1, histR2Pad, memory, dataHist, scDataHist, hist_def, plot_par.ratio_label, plot_par.sc_ratio_label, False, plot_par.plot_reverse_ratio)
                     elif plot_par.plot_data:
                         plotRatio(c1, histRPad, memory, dataHist, scDataHist, hist_def, plot_par.ratio_label, plot_par.sc_ratio_label, True, plot_par.plot_reverse_ratio)
-                    #print "-------", pId, ratioPads
+                    #print("-------", pId, ratioPads)
                 else:
                     if plot_par.plot_custom_ratio > 0:
                         bgHists = hs.GetHists()
@@ -2403,7 +2403,7 @@ def main():
                                         if plot_par.solid_bg:
                                             stackSum = newBgHist
                                         else:
-                                            #print newBgHist, newBgHist.GetNhists(), newBgHist.GetStack()
+                                            #print(newBgHist, newBgHist.GetNhists(), newBgHist.GetStack())
                                             if newBgHist.GetNhists() > 0:
                                                 stackSum = newBgHist.GetStack().Last().Clone("stackSum")
                                                 memory.append(stackSum)
@@ -2470,7 +2470,7 @@ def main():
                             #plotRatio(c1, pad, memory, numHist, denHist, hist_def, numLabel = "Data", denLabel = "BG",setXtitle = True, revRatio = False, styleRefHist = None):
                             plotRatio(c1, histRPad, memory, dataHist, stackSum, hist_def)
             
-            #print "***", ratioPads
+            #print("***", ratioPads)
             print(calculated_lumi)
             lumiStr = "{:.1f}".format(calculated_lumi) if plot_par.labelLumi.get(plot_par.plot_kind) is None else "{:.1f}".format(plot_par.labelLumi[plot_par.plot_kind])
             
@@ -2495,9 +2495,9 @@ def main():
                     #c1.cd()
                     print((utils.bcolors.BOLD + utils.bcolors.OKGREEN + "histCPad.cd()" + utils.bcolors.ENDC))
                     histCPad.cd()
-                #print(gPad)
+                #print(ROOT.gPad)
                 #exit(0) 
-                plotting.stampPlot(gPad, lumiStr, labelText, cmsLocation, showLumi)
+                plotting.stampPlot(ROOT.gPad, lumiStr, labelText, cmsLocation, showLumi)
                 #plotting.stampPlot(lumiStr, labelText, cmsLocation, showLumi)
                 
                 if create_png:
@@ -2512,7 +2512,7 @@ def main():
             else:
                 print((utils.bcolors.BOLD + utils.bcolors.OKGREEN + "pad.cd()" + utils.bcolors.ENDC))
                 pad.cd()
-                plotting.stampPlot(gPad, lumiStr, labelText, cmsLocation, showLumi)
+                plotting.stampPlot(ROOT.gPad, lumiStr, labelText, cmsLocation, showLumi)
             
             if create_png:
                 c1.Clear()
@@ -2531,7 +2531,7 @@ def main():
                 needToDraw = False;
             
             
-            #print "****", ratioPads
+            #print("****", ratioPads)
             if large_version:
                 pad = c1
             else:
@@ -2578,7 +2578,7 @@ def main():
                 if large_version or ratioPads.get(pId) is None:
                     if (plot_par.plot_sc and plot_par.plot_data and plot_par.plot_bg) or plot_par.plot_custom_ratio > 1:
                         histCPad, histRPad, histR2Pad = createCRPads(pId, ratioPads, True)
-                        #print "After:", histCPad, histRPad, histR2Pad
+                        #print("After:", histCPad, histRPad, histR2Pad)
                     else:
                         histCPad, histRPad = createCRPads(pId, ratioPads)
                 else:
@@ -2586,8 +2586,8 @@ def main():
                     histRPad = ratioPads[pId][1]
                     if (plot_par.plot_sc and plot_par.plot_data and plot_par.plot_bg) or plot_par.plot_custom_ratio > 1:
                         histR2Pad = ratioPads[pId][2]
-                    #print "Was trying to get Id", pId, ratioPads
-                    #print "After in here", histCPad, histRPad, histR2Pad
+                    #print("Was trying to get Id", pId, ratioPads)
+                    #print("After in here", histCPad, histRPad, histR2Pad)
                 print(("Assigning ", histCPad))
                 pad = histCPad
                 print((utils.bcolors.BOLD + utils.bcolors.OKGREEN + "pad.cd()" + utils.bcolors.ENDC))
@@ -2726,7 +2726,7 @@ def main():
                                         if plot_par.solid_bg:
                                             stackSum = newBgHist
                                         else:
-                                            #print newBgHist, newBgHist.GetNhists(), newBgHist.GetStack()
+                                            #print(newBgHist, newBgHist.GetNhists(), newBgHist.GetStack())
                                             if newBgHist.GetNhists() > 0:
                                                 stackSum = newBgHist.GetStack().Last().Clone("stackSum")
                                                 memory.append(stackSum)
@@ -2818,7 +2818,7 @@ def main():
                     #c1.cd()
                     print((utils.bcolors.BOLD + utils.bcolors.OKGREEN + "histCPad.cd()" + utils.bcolors.ENDC))
                     histCPad.cd()
-                plotting.stampPlot(gPad, lumiStr, labelText, cmsLocation, showLumi)
+                plotting.stampPlot(ROOT.gPad, lumiStr, labelText, cmsLocation, showLumi)
                 #utils.stamp_plot(lumiStr, labelText, cmsLocation, showLumi)
                 if create_png:
                     filename = (cut["name"] + "_" + hist_def["obs"])
@@ -2834,7 +2834,7 @@ def main():
             else:
                 print((utils.bcolors.BOLD + utils.bcolors.OKGREEN + "pad.cd()" + utils.bcolors.ENDC))
                 pad.cd()
-                plotting.stampPlot(gPad, lumiStr, labelText, cmsLocation, showLumi)
+                plotting.stampPlot(ROOT.gPad, lumiStr, labelText, cmsLocation, showLumi)
                 #utils.stamp_plot(lumiStr, labelText, cmsLocation, showLumi)
             
             pId += 1
@@ -2884,12 +2884,12 @@ def main():
         print(("fit_only_signal_integral", fit_only_signal_integral))
         print(("fit_only_signal_integral_error", fit_only_signal_integral_error))
     
-        #print "fit_bg_integral", fit_bg_integral
+        #print("fit_bg_integral", fit_bg_integral)
     
         print("============== FIT SUMMARY ==============")
     
         print(",JPsi Hist Count,Full Fit JPsi Integral,Full Fit Chis,Full Fit JPsi Integral Error,JPsi Fit Integral,JPsi Fit Integral Chis,JPsi Fit Integral Error,JPsi Hist Count ID,Full Fit JPsi Integral ID,Full Fit Chis ID,Full Fit JPsi Integral Error ID,JPsi Fit Integral ID,JPsi Fit Integral ID Chis,JPsi Fit Integral ID Error,ID Efficiency,ID Efficiency Signal Fit,ID Efficiency Hist Count, Low Error, Up Error")
-        #print ",fit_hist_integral,hist_signal_integral,fit_full_integral,fit_full_integral_chi_s,fit_signal_integral,fit_signal_integral_error,fit_only_signal_integral,fit_bg_integral,fit_hist_integral_reco,hist_signal_integral_reco,fit_full_integral_reco,fit_full_integral_chi_s_reco,fit_signal_integral_reco,fit_signal_integral_error_reco,fit_only_signal_integral_reco,fit_bg_integral_reco,fit_hist_integral_id,hist_signal_integral_id,fit_full_integral_id,fit_full_integral_chi_s_id,fit_signal_integral_id,fit_signal_integral_error_id,fit_only_signal_integral_id,fit_bg_integral_id,reco_eff,reco_eff_signal,reco_eff_hist,id_eff,id_eff_signal,id_eff_hist"
+        #print(",fit_hist_integral,hist_signal_integral,fit_full_integral,fit_full_integral_chi_s,fit_signal_integral,fit_signal_integral_error,fit_only_signal_integral,fit_bg_integral,fit_hist_integral_reco,hist_signal_integral_reco,fit_full_integral_reco,fit_full_integral_chi_s_reco,fit_signal_integral_reco,fit_signal_integral_error_reco,fit_only_signal_integral_reco,fit_bg_integral_reco,fit_hist_integral_id,hist_signal_integral_id,fit_full_integral_id,fit_full_integral_chi_s_id,fit_signal_integral_id,fit_signal_integral_error_id,fit_only_signal_integral_id,fit_bg_integral_id,reco_eff,reco_eff_signal,reco_eff_hist,id_eff,id_eff_signal,id_eff_hist")
     
         for hist_def in plot_par.histograms_defs:
             if "reco_" in hist_def["obs"] or "id_" in hist_def["obs"] or "iso_" in hist_def["obs"]:
@@ -2901,15 +2901,15 @@ def main():
             eff_error_low = 0
             eff_error_high = 0
         
-            #print hist_def["obs"] + "," + str(fit_hist_integral[hist_def["obs"]]) + "," + str(hist_signal_integral[hist_def["obs"]]) + "," +  str(fit_full_integral[hist_def["obs"]]) + "," +  str(fit_full_integral_chi_s[hist_def["obs"]]) + "," + str(fit_signal_integral[hist_def["obs"]]) + "," + str(fit_signal_integral_error[hist_def["obs"]]) + "," + str(fit_only_signal_integral[hist_def["obs"]]) + "," + str(fit_bg_integral[hist_def["obs"]])  + "," + str(fit_hist_integral["reco_" + hist_def["obs"]]) + "," + str(fit_full_integral["reco_" + hist_def["obs"]]) + "," + str(fit_full_integral_chi_s["reco_" + hist_def["obs"]])  + "," + str(hist_signal_integral["reco_" + hist_def["obs"]])+ "," + str(fit_signal_integral["reco_" + hist_def["obs"]])+ "," + str(fit_signal_integral_error["reco_" + hist_def["obs"]])+ "," + str(fit_only_signal_integral["reco_" + hist_def["obs"]]) + "," + str(fit_bg_integral["reco_" + hist_def["obs"]])    + "," + str(fit_hist_integral["id_" + hist_def["obs"]])+ "," + str(hist_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_full_integral["id_" + hist_def["obs"]]) + "," + str(fit_full_integral_chi_s["id_" + hist_def["obs"]]) + "," + str(fit_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_signal_integral_error["id_" + hist_def["obs"]])+ "," + str(fit_only_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_bg_integral["id_" + hist_def["obs"]]) + "," + str(fit_signal_integral["reco_" + hist_def["obs"]]/fit_signal_integral[hist_def["obs"]]) + "," + str(fit_only_signal_integral["reco_" + hist_def["obs"]]/fit_only_signal_integral[hist_def["obs"]])  + "," + str(hist_signal_integral["reco_" + hist_def["obs"]]/hist_signal_integral[hist_def["obs"]]) + "," + str(fit_signal_integral["id_" + hist_def["obs"]]/fit_signal_integral[hist_def["obs"]]) + "," + str(fit_only_signal_integral["id_" + hist_def["obs"]]/fit_only_signal_integral[hist_def["obs"]])  + "," + str(hist_signal_integral["id_" + hist_def["obs"]]/hist_signal_integral[hist_def["obs"]]) 
-            #print ",                      JPsi Hist Count                                      ,          Full Fit JPsi Integral                                        , Full Fit Chis                     Full Fit JPsi Integral Error,                              JPsi Fit Integral,                                       JPsi Fit Integral Chis,                                         JPsi Fit Integral Error,                                    JPsi Hist Count Reco,                                   Full Fit JPsi Integral Reco,                                      Full Fit Chis Reco,                                        Full Fit JPsi Integral Error Reco,                              JPsi Fit Integral Reco,                                            ,JPsi Fit Integral Reco Chis,                                          JPsi Fit Integral Reco Error,                                          JPsi Hist Count ID,                                                 Full Fit JPsi Integral ID                             Full Fit Chis ID,                                          Full Fit JPsi Integral Error ID,                               JPsi Fit Integral ID,                                          JPsi Fit Integral ID Chis,                                          JPsi Fit Integral ID Error,                                       Reco Efficiency,Reco Efficiency Signal Fit,Reco Efficiency Hist Count,ID Efficiency,ID Efficiency Signal Fit,ID Efficiency Hist Count"
+            #print(hist_def["obs"] + "," + str(fit_hist_integral[hist_def["obs"]]) + "," + str(hist_signal_integral[hist_def["obs"]]) + "," +  str(fit_full_integral[hist_def["obs"]]) + "," +  str(fit_full_integral_chi_s[hist_def["obs"]]) + "," + str(fit_signal_integral[hist_def["obs"]]) + "," + str(fit_signal_integral_error[hist_def["obs"]]) + "," + str(fit_only_signal_integral[hist_def["obs"]]) + "," + str(fit_bg_integral[hist_def["obs"]])  + "," + str(fit_hist_integral["reco_" + hist_def["obs"]]) + "," + str(fit_full_integral["reco_" + hist_def["obs"]]) + "," + str(fit_full_integral_chi_s["reco_" + hist_def["obs"]])  + "," + str(hist_signal_integral["reco_" + hist_def["obs"]])+ "," + str(fit_signal_integral["reco_" + hist_def["obs"]])+ "," + str(fit_signal_integral_error["reco_" + hist_def["obs"]])+ "," + str(fit_only_signal_integral["reco_" + hist_def["obs"]]) + "," + str(fit_bg_integral["reco_" + hist_def["obs"]])    + "," + str(fit_hist_integral["id_" + hist_def["obs"]])+ "," + str(hist_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_full_integral["id_" + hist_def["obs"]]) + "," + str(fit_full_integral_chi_s["id_" + hist_def["obs"]]) + "," + str(fit_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_signal_integral_error["id_" + hist_def["obs"]])+ "," + str(fit_only_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_bg_integral["id_" + hist_def["obs"]]) + "," + str(fit_signal_integral["reco_" + hist_def["obs"]]/fit_signal_integral[hist_def["obs"]]) + "," + str(fit_only_signal_integral["reco_" + hist_def["obs"]]/fit_only_signal_integral[hist_def["obs"]])  + "," + str(hist_signal_integral["reco_" + hist_def["obs"]]/hist_signal_integral[hist_def["obs"]]) + "," + str(fit_signal_integral["id_" + hist_def["obs"]]/fit_signal_integral[hist_def["obs"]]) + "," + str(fit_only_signal_integral["id_" + hist_def["obs"]]/fit_only_signal_integral[hist_def["obs"]])  + "," + str(hist_signal_integral["id_" + hist_def["obs"]]/hist_signal_integral[hist_def["obs"]]) )
+            #print(",                      JPsi Hist Count                                      ,          Full Fit JPsi Integral                                        , Full Fit Chis                     Full Fit JPsi Integral Error,                              JPsi Fit Integral,                                       JPsi Fit Integral Chis,                                         JPsi Fit Integral Error,                                    JPsi Hist Count Reco,                                   Full Fit JPsi Integral Reco,                                      Full Fit Chis Reco,                                        Full Fit JPsi Integral Error Reco,                              JPsi Fit Integral Reco,                                            ,JPsi Fit Integral Reco Chis,                                          JPsi Fit Integral Reco Error,                                          JPsi Hist Count ID,                                                 Full Fit JPsi Integral ID                             Full Fit Chis ID,                                          Full Fit JPsi Integral Error ID,                               JPsi Fit Integral ID,                                          JPsi Fit Integral ID Chis,                                          JPsi Fit Integral ID Error,                                       Reco Efficiency,Reco Efficiency Signal Fit,Reco Efficiency Hist Count,ID Efficiency,ID Efficiency Signal Fit,ID Efficiency Hist Count")
         
         
             # eff_error_low = 0
     #         eff_error_high = 0
     #         if fit_signal_integral["id_" + hist_def["obs"]]/fit_signal_integral[hist_def["obs"]] < 1:
-    #             totalHist  = TH1F("totalHist" + hist_def["obs"], "", 1, 0, 1)
-    #             passedHist = TH1F("passedHist" + hist_def["obs"], "", 1, 0, 1)
+    #             totalHist  = ROOT.TH1F("totalHist" + hist_def["obs"], "", 1, 0, 1)
+    #             passedHist = ROOT.TH1F("passedHist" + hist_def["obs"], "", 1, 0, 1)
     #             totalHist.SetBinContent(1, fit_signal_integral[hist_def["obs"]])
     #             totalHist.SetBinError(1, fit_signal_integral_error[hist_def["obs"]])
     #             
@@ -2920,12 +2920,12 @@ def main():
     #             #TEfficiency.bla = False
     #             
     #             pEff = TEfficiency(passedHist, totalHist)
-    #             #pEff.SetStatisticOption(kBBayesian)
-    #             print "UsesBayesianStat", pEff.UsesBayesianStat()
+    #             #pEff.SetStatisticOption(ROOT.kBBayesian)
+    #             print("UsesBayesianStat", pEff.UsesBayesianStat())
     #             eff_error_low = pEff.GetEfficiencyErrorLow(1)
     #             eff_error_high = pEff.GetEfficiencyErrorUp(1)
     #             
-    #             print "eff_error_low", eff_error_low, "eff_error_high", eff_error_high
+    #             print("eff_error_low", eff_error_low, "eff_error_high", eff_error_high)
     #             
         
             print((hist_def["obs"] + "," + str(hist_signal_integral[hist_def["obs"]]) + "," + str(fit_signal_integral[hist_def["obs"]])  + "," + str(fit_full_integral_chi_s[hist_def["obs"]]) + "," + str(fit_signal_integral_error[hist_def["obs"]]) + "," + str(fit_only_signal_integral[hist_def["obs"]])  + "," + str(fit_only_signal_integral_chi_s[hist_def["obs"]]) + "," + str(fit_only_signal_integral_error[hist_def["obs"]]) + "," +  str(hist_signal_integral["id_" + hist_def["obs"]]) + ","  + str( fit_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_full_integral_chi_s["id_" + hist_def["obs"]]) + "," + str(fit_signal_integral_error["id_" + hist_def["obs"]]) + "," + str(fit_only_signal_integral["id_" + hist_def["obs"]]) + "," + str(fit_only_signal_integral_chi_s["id_" + hist_def["obs"]]) + "," + str(fit_only_signal_integral_error["id_" + hist_def["obs"]]) + ","  + str(fit_signal_integral["id_" + hist_def["obs"]]/fit_signal_integral[hist_def["obs"]]) + "," + str(fit_only_signal_integral["id_" + hist_def["obs"]]/fit_only_signal_integral[hist_def["obs"]])  + "," + str(hist_signal_integral["id_" + hist_def["obs"]]/hist_signal_integral[hist_def["obs"]])  + "," + str(eff_error_low) + "," + str(eff_error_high))) 

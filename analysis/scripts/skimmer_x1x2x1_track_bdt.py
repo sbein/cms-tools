@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -95,38 +95,38 @@ def fillInNonTrackInfo(c, postfix, prefix):
         filledBlankEvents += 1
     for stringObs in analysis_observables.exclusiveTrackObservablesStringList:
         exTrackVars[prefix + stringObs + postfix] = cppyy.gbl.std.string("")
-        #print "*"
-        #print branches[stringObs + postfix]
-        #print "**"
-        #print exTrackVars[stringObs + postfix]
+        #print("*")
+        #print(branches[stringObs + postfix])
+        #print("**")
+        #print(exTrackVars[stringObs + postfix])
         #branches[stringObs + postfix].ResetAddress()
         c.SetBranchAddress(prefix + stringObs + postfix, exTrackVars[prefix + stringObs + postfix])
         #branches[stringObs + postfix].SetAddress(exTrackVars[stringObs + postfix])
-        #print "**"
+        #print("**")
         branches[prefix + stringObs + postfix].Fill()
-        #print "***"
+        #print("***")
     for DTypeObs in analysis_observables.commonObservablesDTypesList:
         exTrackVars[prefix + "exTrack_" + DTypeObs + postfix][0] = -1
-        #print "****"
+        #print("****")
         branches[prefix + "exTrack_" + DTypeObs + postfix].Fill()
-        #print "*****"
+        #print("*****")
     for DTypeObs in analysis_observables.exclusiveTrackObservablesDTypesList:
         if DTypeObs == "exclusiveTrack" or DTypeObs == "trackZ":
             exTrackVars[prefix + DTypeObs + postfix][0] = 0
-            #print "******"
+            #print("******")
         else:
             exTrackVars[prefix + DTypeObs + postfix][0] = -1
-            #print "******"
+            #print("******")
         branches[prefix + DTypeObs + postfix].Fill()         
-        #print "*******"
+        #print("*******")
     for CTypeObs in analysis_observables.exclusiveTrackObservablesClassList:
         exTrackVars[prefix + CTypeObs + postfix] = eval(analysis_observables.exclusiveTrackObservablesClassList[CTypeObs])()
-        #print "********"
+        #print("********")
         c.SetBranchAddress(prefix + CTypeObs + postfix, exTrackVars[prefix + CTypeObs + postfix])
         #branches[CTypeObs + postfix].SetAddress(exTrackVars[CTypeObs + postfix])
-        #print "*********"
+        #print("*********")
         branches[prefix + CTypeObs + postfix].Fill()
-        #print "**********"
+        #print("**********")
 
 def main():
     
@@ -295,9 +295,9 @@ def main():
         
                                 if ll is None:
                                     # NOT TWO TRACKS
-                                    #print "**** BEFORE FILL ***" 
+                                    #print("**** BEFORE FILL ***" )
                                     fillInNonTrackInfo(c, postfix, prefix)
-                                    #print "**** AFTER FILL ***"
+                                    #print("**** AFTER FILL ***")
                                     continue
                         
                                 if jpsi:
@@ -408,9 +408,9 @@ def main():
                             
                                 if highestOppositeTrackScore is None:
                                     fillInNonTrackInfo(c, postfix, prefix)
-                                    #print "2"
+                                    #print("2")
                                     continue
-                                #print "REAL ONE"
+                                #print("REAL ONE")
                                 afterAtLeastOneTrack += 1
                                 afterMonoTrack += 1
                     
@@ -488,7 +488,7 @@ def main():
                                 global filledEvents
                                 if prefix == "" and postfix == analysis_selections.jetIsos["Muons"]:
                                     filledEvents += 1
-                                #print "HERE!!!"
+                                #print("HERE!!!")
                                 for stringObs in analysis_observables.exclusiveTrackObservablesStringList:
                                     c.SetBranchAddress(prefix + stringObs + postfix, exTrackVars[prefix + stringObs + postfix])
                                     #branches[stringObs + postfix].SetAddress(exTrackVars[stringObs + postfix])
@@ -501,7 +501,7 @@ def main():
                                     c.SetBranchAddress(prefix + CTypeObs + postfix, exTrackVars[prefix + CTypeObs + postfix])
                                     #branches[CTypeObs + postfix].SetAddress(exTrackVars[CTypeObs + postfix])
                                     branches[prefix + CTypeObs + postfix].Fill()
-                            #print "AFTER!!!"
+                            #print("AFTER!!!")
 
     c.Write("tEvent",TObject.kOverwrite)
     

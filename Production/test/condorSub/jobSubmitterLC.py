@@ -63,26 +63,26 @@ class jobSubmitterLC(jobSubmitter):
         job = protoJob()
         job.name = "leptonCollection"
         self.generatePerJob(job)
-        print "Wanted dicts", self.dicts
-        print "Wanted files", self.fileList
+        print("Wanted dicts", self.dicts)
+        print("Wanted files", self.fileList)
         self.timenow = int(time.time())
         files = []
         nFiles = 0
         if self.fileList is None or len(self.fileList) == 0:
-            print "Getting files in SlimmedProduction...", self.input
+            print("Getting files in SlimmedProduction...", self.input)
             status, out = commands.getstatusoutput('eval `scram unsetenv -sh`; gfal-ls ' + self.input)
             #out = "Run2016H-17Jul2018-v1.SingleElectron_FCB308E4-E88A-E811-93CB-1866DA890A68.root"
-            print out
-            print "Getting files existing in LeptonCollection...", leptonCollectionPath
+            print(out)
+            print("Getting files existing in LeptonCollection...", leptonCollectionPath)
             status, existingOut = commands.getstatusoutput('eval `scram unsetenv -sh`;gfal-ls ' + leptonCollectionPath)
             existingFiles = existingOut.split("\n")
             #existingFiles = []
-            print existingFiles
+            print(existingFiles)
             
             for file in out.split("\n"):
-                #print "checking", file
+                #print("checking", file)
                 if file in existingFiles:
-                    #print "File", file, " alreading exists. Skipping."
+                    #print("File", file, " alreading exists. Skipping.")
                     continue
                 if self.dicts is not None and len(self.dicts) > 0:
                     shouldProcess = False
@@ -92,15 +92,15 @@ class jobSubmitterLC(jobSubmitter):
                             break
                     if not shouldProcess:
                         continue
-                print "Adding file=" + file
+                print("Adding file=" + file)
                 files.append(file)
                 nFiles += 1
-                print "len(files)", len(files), "self.nFilesPerJob", self.nFilesPerJob, "nFiles", nFiles, "self.nFiles", self.nFiles
+                print("len(files)", len(files), "self.nFilesPerJob", self.nFilesPerJob, "nFiles", nFiles, "self.nFiles", self.nFiles)
                 if len(files) < self.nFilesPerJob and nFiles < self.nFiles:
-                    print "***"
+                    print("***")
                     continue
-                print "----"
-                print "Adding job..."
+                print("----")
+                print("Adding job...")
             
                 job.njobs += 1
                 if self.count and not self.prepare:
@@ -122,19 +122,19 @@ class jobSubmitterLC(jobSubmitter):
                     break
         else:
             for file in self.fileList:
-                print "Adding file=" + file
+                print("Adding file=" + file)
                 files.append(file)
                 nFiles += 1
                 job.njobs += 1
                 job.nums.append(job.njobs-1)
                 self.generateSubmissionForFiles(job, files)
         if len(files) > 0 and (self.fileList is None or len(self.fileList) == 0):
-            print "---- REMAINING JOBS"
-            print "Adding job..."
+            print("---- REMAINING JOBS")
+            print("Adding job...")
             job.njobs += 1
             job.nums.append(job.njobs-1)
             self.generateSubmissionForFiles(job, files)
         
         job.queue = "-queue "+str(job.njobs)
-        print "Job queue", job.queue
+        print("Job queue", job.queue)
         self.protoJobs.append(job)

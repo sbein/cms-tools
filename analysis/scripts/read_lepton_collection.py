@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser(description='Create skims for x1x2x1 process.')
 parser.add_argument('-i', '--input_file', nargs=1, help='Input Filename', required=False)
 args = parser.parse_args()
 
-print args
+print(args)
 
 input_file = None
 if args.input_file:
@@ -32,10 +32,10 @@ def main():
     f = TFile(input_file,'read')
     
     leptonCollectionMap = f.Get("leptonCollectionMap")
-    print "Size=", leptonCollectionMap.getSize()
-    #print leptonCollectionMap.leptonCollectionMap
+    print("Size=", leptonCollectionMap.getSize())
+    #print(leptonCollectionMap.leptonCollectionMap)
     #for a in leptonCollectionMap.leptonCollectionMap:
-    #    print a.first[0], a.first[1], a.first[2]
+    #    print(a.first[0], a.first[1], a.first[2])
     f.Close()
 
 main()

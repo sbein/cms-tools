@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -45,20 +45,20 @@ for filename in fileList:
     if os.path.isdir(filename): continue
     #tstruct = time.localtime(os.path.getmtime(filename))
     #if tstruct.tm_year != 2024:
-    #    print "old file... skipping... " + filename
+    #    print("old file... skipping... " + filename)
     #    continue
-    print "processing file " + filename
+    print("processing file " + filename)
     f = TFile(filename, "update")
     numOfEvents = 0
     if sam and (not phase1):
         point = "_".join(os.path.basename(filename).split("_")[2:4])
         point_files = glob(input_dir + "/*" + point + "*"+thing2grab+"*")
-        print "point", point, "has", len(point_files), "files"
+        print("point", point, "has", len(point_files), "files")
         numOfEvents = 20000 * len(point_files)
     else:
         h = f.Get("hHt")
         numOfEvents = h.Integral(-1,99999999)+0.000000000001
-    print "Number of event:", numOfEvents
+    print("Number of event:", numOfEvents)
 
     t = f.Get("tEvent")
     t.GetEntry(0)
@@ -66,16 +66,16 @@ for filename in fileList:
     cs = 1
     if not data:
         cs = t.CrossSection
-        print "CrossSection:", cs
+        print("CrossSection:", cs)
         weight = cs/numOfEvents
-        print "weight:", weight
+        print("weight:", weight)
 
     var_Weight = np.zeros(1,dtype=float)
     var_Weight[0] = weight
     nentries = t.GetEntries();
     if t.GetBranchStatus("Weight"):
         if not force:
-            print "This tree is already weighted! Skipping..."
+            print("This tree is already weighted! Skipping...")
         else:
             branch = t.GetBranch("Weight")
             branch.Reset()
@@ -83,14 +83,14 @@ for filename in fileList:
             for ientry in range(nentries):
                 branch.Fill()
             t.Write("tEvent",TObject.kOverwrite)
-            print "Done"
+            print("Done")
         f.Close()
         continue
 
     newBranch = t.Branch("Weight",var_Weight,"Weight/D");
     for ientry in range(nentries):
         newBranch.Fill()
-    print "Writing Tree"
+    print("Writing Tree")
     t.Write("tEvent",TObject.kOverwrite)
-    print "Done"
+    print("Done")
     f.Close()

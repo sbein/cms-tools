@@ -227,23 +227,23 @@ typeTranslation = {
 class UOFlowTH1F(TH1F):
     epsilon = 0.0000000001
     def Fill(self, x, weight=1):
-        #print "Called UOFlowTH1F Fill"
+        #print("Called UOFlowTH1F Fill")
         super(UOFlowTH1F, self).Fill(min(max(x,self.GetXaxis().GetBinLowEdge(1)+self.epsilon),self.GetXaxis().GetBinLowEdge(self.GetXaxis().GetNbins()+1)-self.epsilon),weight)
 
 class UOFlowTH2F(TH1F):
     epsilon = 0.0000000001
     def Fill(self, x, y, weight=1):
-        #print "Called UOFlowTH1F Fill"
+        #print("Called UOFlowTH1F Fill")
         super(UOFlowTH2F, self).Fill(min(max(x,h.GetXaxis().GetBinLowEdge(1)+epsilon),h.GetXaxis().GetBinLowEdge(h.GetXaxis().GetNbins()+1)-epsilon), min(max(y,h.GetYaxis().GetBinLowEdge(1)+epsilon),h.GetYaxis().GetBinLowEdge(h.GetYaxis().GetNbins()+1)-epsilon),weight)
 
 def isCoumpoundType(key):
-    #print "Looking for:" + key + "|:
+    #print("Looking for:" + key + "|:)
     if key in compoundTypes:
         return True
     return False
 
 def existsInCoumpoundType(key):
-    #print "Looking for:" + key + "|:
+    #print("Looking for:" + key + "|:)
     for cType in compoundTypes:
         if key in compoundTypes[cType]:
             return True
@@ -252,18 +252,18 @@ def existsInCoumpoundType(key):
 def getFilesForCompoundType(cType, directory):
     print("In getFilesForCompoundType", cType, directory)
     bgFiles = []
-    #print compoundTypes[cType]
+    #print(compoundTypes[cType])
     for miniType in compoundTypes[cType]:
         #if miniType not in sumTypes:
-        #    print "skipping", miniType, "because not in", sumTypes
+        #    print("skipping", miniType, "because not in", sumTypes)
         #    continue
-        #print "globbing", miniType
+        #print("globbing", miniType)
         #if "ST_" in miniType:
-            #print "In ST***"
-            #print "Globing " + directory + "/" + miniType + ".root"
+            #print("In ST***")
+            #print("Globing " + directory + "/" + miniType + ".root")
         #    bgFiles.extend(glob(directory + "/" + miniType + ".root"))
         #else:
-            #print "Globing " + directory + "/" + miniType + "_*.root"
+            #print("Globing " + directory + "/" + miniType + "_*.root")
         #This line is to solve the ST problem that sometimes it comes without an underscore
         bgFiles.extend(glob(directory + "/" + miniType + ".root"))
         bgFiles.extend(glob(directory + "/" + miniType + "_*.root"))
@@ -348,18 +348,18 @@ def fillth1(h,x, weight=1):
     h.Fill(min(max(x,h.GetXaxis().GetBinLowEdge(1)+epsilon),h.GetXaxis().GetBinLowEdge(h.GetXaxis().GetNbins()+1)-epsilon),weight)
  
 def fillHistWithCuts(key, value, hists, cutsDef, type, event, weight=1, eventParams={}):
-    #print "Filling key=" + key
+    #print("Filling key=" + key)
     for cutName in cutsDef:
         if cutName == "none":
             hists[key].Fill(value, weight)
-            #print "Fill " + key + " weight=" + str(weight)
+            #print("Fill " + key + " weight=" + str(weight))
             continue
         cut = cutsDef[cutName]
         if cuts.applyCut(cut, event, eventParams, type, cutName):
-            #print "Fill " + key + "_" + cutName + " weight=" + str(weight)
+            #print("Fill " + key + "_" + cutName + " weight=" + str(weight))
             hists[key + "_" + cutName].Fill(value, weight)#new filling with over/under flow!
         #else:
-        #	print "Not filling " + key + "_" + cutName
+        #	print("Not filling " + key + "_" + cutName)
 
 def getBgOrder(file):
     basename = os.path.basename(file).split(".")[0]
@@ -502,16 +502,16 @@ def getJsonLumiSection(lumiSecs):
         for a in v: 
             lumis.append(a)
         lumis.sort()
-        #print "Before:"
-        #print lumis
+        #print("Before:")
+        #print(lumis)
         for lumisec in lumis:
             if len(lumiSecsDict[k]) > 0 and lumisec == lumiSecsDict[k][-1][-1]+1:
                 lumiSecsDict[k][-1][-1] = lumisec
             else:
                 lumiSecsDict[k].append([lumisec, lumisec])
-        #print "After:"
-        #print lumiSecsDict[k]
-    #print "End:"
+        #print("After:")
+        #print(lumiSecsDict[k])
+    #print("End:")
     return json.dumps(lumiSecsDict)
 
 def get_lumi_from_bril(json_file_name, cern_username, retry=False):
@@ -546,8 +546,8 @@ def get_lumi_from_bril(json_file_name, cern_username, retry=False):
 
 def calculateLumiFromLumiSecs(lumiSecs):
     json = getJsonLumiSection(lumiSecs)
-    #print "Json:"
-    #print json
+    #print("Json:")
+    #print(json)
     timestamp = int(time.time())
     tmpJsonFile = "/tmp/tmp_json_" + str(timestamp) + ".json"
     with open(tmpJsonFile, "w") as fo:
@@ -571,14 +571,14 @@ def mkhistlogx(name, title, nbins, xmin, xmax):
     logxmax = TMath.Log10(xmax)
     
     binwidth = (logxmax-logxmin)/nbins
-    #print "logxmin", logxmin, "logxmax", logxmax, "binwidth", binwidth
+    #print("logxmin", logxmin, "logxmax", logxmax, "binwidth", binwidth)
     xbins = array.array('d',[0]*(nbins+1))##might need to be defined out as 0's
     #xbins[0] = TMath.Power(10,logxmin)#xmin
     for i in range(0,nbins+1):
         binval = xmin + TMath.Power(10,logxmin+i*binwidth)
-        #print "bin", i, "val", binval
+        #print("bin", i, "val", binval)
         xbins[i] = xmin + TMath.Power(10,logxmin+i*binwidth)    
-    #print 'xbins', xbins        
+    #print('xbins', xbins        )
     h = TH1F(name,title,nbins,xbins);
     h.Sumw2()
     return h
@@ -663,21 +663,21 @@ def getHistogramFromTree(name, tree, obs, bins, minX, maxX, condition, overflow=
 #         letters = string.ascii_lowercase
 #         result_str = ''.join(random.choice(letters) for i in range(6))
 #         tmpName += result_str
-#         print "new tmp name is", tmpName
+#         print("new tmp name is", tmpName)
     if predefBins:
         binsStr = ">>" + tmpName
         tree.Draw(obs + binsStr, condition, "e")
     else:
         if bins is not None:
             binsStr = ">>" + tmpName + "(" + str(bins) + ","
-            #print """tree.Draw(""" + obs + binsStr + str(minX) + "," + str(maxX) + ")", condition+""")"""
+            #print("""tree.Draw(""" + obs + binsStr + str(minX) + "," + str(maxX) + ")", condition+""")""")
             if twoD:
                 print("tree.Draw(" + obs + binsStr + str(minX) + "," + str(maxX) + "," + str(binsY) + "," + str(minBinsY) + "," + str(maxBinsY) +"))")
                 tree.Draw(obs + binsStr + str(minX) + "," + str(maxX) + "," + str(binsY) + "," + str(minBinsY) + "," + str(maxBinsY) +")", condition, "e")
             else:
                 tree.Draw(obs + binsStr + str(minX) + "," + str(maxX) + ")", condition, "e")
-            #print obs + binsStr + str(minX) + "," + str(maxX) + ")"
-            #print condition
+            #print(obs + binsStr + str(minX) + "," + str(maxX) + ")")
+            #print(condition)
         else:
             tree.Draw(obs + ">>" + tmpName, condition, "e")
     hist = tree.GetHistogram().Clone(name)
@@ -721,7 +721,7 @@ def madHtCheck(current_file_name, madHT):
        ("HT-1200To2500_" in current_file_name and (madHT<1200 or madHT>2500)) or \
        ("HT-1500To2000_" in current_file_name and (madHT<1500 or madHT>2000)) or \
        ("HT-2500ToInf_" in current_file_name and madHT<2500):
-        #print "MADHT FALSE"
+        #print("MADHT FALSE")
         return False
     else:
         return True
@@ -809,7 +809,7 @@ def calcSignificance(sigHist, bgHist, ignoreCrossSection = False):
     cs = 1
     if not ignoreCrossSection:
         cs = 0.1
-    #print "binsNumber=", binsNumber
+    #print("binsNumber=", binsNumber)
     for bin in range(1, binsNumber + 1):
         if accumulate:
             sigNum += sigHist.GetBinContent(bin)
@@ -825,10 +825,10 @@ def calcSignificance(sigHist, bgHist, ignoreCrossSection = False):
                 sigNum += sigHist.Integral(bin, binsNumber)
                 bgErr = 0.2 * bgNum
                 sig = math.sqrt(sig**2 + (cs * (sigNum / math.sqrt(bgNum + bgErr**2)))**2)
-                #print "**sigNum=", sigNum, "bgNum=", bgNum, "sig=", sig
+                #print("**sigNum=", sigNum, "bgNum=", bgNum, "sig=", sig)
                 break
             else:
-                #print "sigNum=", sigNum, "bgNum=", bgNum, "sig=", 0.1 * (sigNum / math.sqrt(bgNum))
+                #print("sigNum=", sigNum, "bgNum=", bgNum, "sig=", 0.1 * (sigNum / math.sqrt(bgNum)))
                 bgErr = 0.2 * bgNum
                 sig = math.sqrt(sig**2 + (cs * (sigNum / math.sqrt(bgNum + bgErr**2)))**2)
     return sig
@@ -853,11 +853,11 @@ def calcSignificanceNoAcc(sigHist, bgHist, ignoreCrossSection = False):
     bgNum = 0
     #accumulate = False
     binsNumber = sigHist.GetNbinsX()
-    #print "binsNumber", binsNumber
+    #print("binsNumber", binsNumber)
     cs = 1
     if not ignoreCrossSection:
         cs = 0.1
-    #print "binsNumber=", binsNumber
+    #print("binsNumber=", binsNumber)
     for bin in range(1, binsNumber + 1):
         #if accumulate:
         #    sigNum += sigHist.GetBinContent(bin)
@@ -877,10 +877,10 @@ def calcSignificanceNoAcc(sigHist, bgHist, ignoreCrossSection = False):
         #    sigNum += sigHist.Integral(bin, binsNumber)
         #    bgErr = 0.2 * bgNum
         #    sig = math.sqrt(sig**2 + (cs * (sigNum / math.sqrt(bgNum + bgErr**2)))**2)
-            #print "**sigNum=", sigNum, "bgNum=", bgNum, "sig=", sig
+            #print("**sigNum=", sigNum, "bgNum=", bgNum, "sig=", sig)
         #    break
         #else:
-            #print "sigNum=", sigNum, "bgNum=", bgNum, "sig=", 0.1 * (sigNum / math.sqrt(bgNum))
+            #print("sigNum=", sigNum, "bgNum=", bgNum, "sig=", 0.1 * (sigNum / math.sqrt(bgNum)))
         bgErr = 0.2 * bgNum
         sig = math.sqrt(sig**2 + (cs * (sigNum / math.sqrt(sigNum + bgNum + bgErr**2)))**2)
         #sig = math.sqrt(sig**2 + (cs * (sigNum / math.sqrt(bgNum + bgErr**2)))**2)
@@ -931,7 +931,7 @@ def calcSignificanceLlhdSingleCount(sigHist, bgHist):
     lhdH0 = 1
     lhdH1 = 1
     
-    #print "binsNumber=", binsNumber
+    #print("binsNumber=", binsNumber)
     for bin in range(1, binsNumber + 1):
         if accumulate:
             sigNum += sigHist.GetBinContent(bin)          
@@ -954,10 +954,10 @@ def calcSignificanceLlhdSingleCount(sigHist, bgHist):
                 if lhdH1 / lhdH0 != 1 and calcZ(lhdH1, lhdH0) > 0:
                     print("OOOOOOPPPPS!", "lhdH1", lhdH1, "lhdH0", lhdH0, "sigNum", sigNum, "bgNum", bgNum, "bgError", bgError, "Z", calcZ(lhdH1, lhdH0))
                 #sig += 0.1 * (sigNum / math.sqrt(bgNum))
-                #print "**sigNum=", sigNum, "bgNum=", bgNum, "sig=", sig
+                #print("**sigNum=", sigNum, "bgNum=", bgNum, "sig=", sig)
                 break
             else:
-                #print "sigNum=", sigNum, "bgNum=", bgNum, "sig=", 0.1 * (sigNum / math.sqrt(bgNum))
+                #print("sigNum=", sigNum, "bgNum=", bgNum, "sig=", 0.1 * (sigNum / math.sqrt(bgNum)))
                 if lhdH1 / lhdH0 != 1 and calcZ(lhdH1, lhdH0) > 0:
                     print("BEFORE OOOOOOPPPPS!", "lhdH1", lhdH1, "lhdH0", lhdH0, "sigNum", sigNum, "bgNum", bgNum, "bgError", bgError, "Z", calcZ(lhdH1, lhdH0))
                 

@@ -62,5 +62,5 @@ class jobSubmitterTest(jobSubmitter):
                         argfile.write(args)
         
         job.queue = "-queue "+str(job.njobs)
-        print "Job queue", job.queue
+        print("Job queue", job.queue)
         self.protoJobs.append(job)

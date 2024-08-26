@@ -77,7 +77,7 @@ signals = [
 ######## END OF CMDLINE ARGUMENTS ########
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     fnew = TFile(output_file,'recreate')
     c1 = TCanvas("c1", "c1", 800, 800)
@@ -85,20 +85,20 @@ def main():
 
     i = 0
     
-    print "Getting signals..."
+    print("Getting signals...")
     signal_histograms = {}
     for signal_file in signals:
         signal_files = glob(signal_dir + "/higgsino_" + signal_file + "Chi20Chipm*.root")
-        print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
+        print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
         for filename in signal_files:
-            print "Opening", filename  
+            print("Opening", filename  )
             if sam:
                 deltaM = utils.getPointFromSamFileName(filename)
             else:
-                print filename
+                print(filename)
                 deltaM = utils.getPointFromFileName(filename)  
     
-            print "deltaM=" + deltaM
+            print("deltaM=" + deltaM)
             f = TFile(filename)
             c = f.Get('tEvent')
 
@@ -134,11 +134,11 @@ def main():
     
     bg_1t_hist = {}
     
-    print "Getting BG..."
+    print("Getting BG...")
     bg_files = glob(bg_dir + "/*")
     for filename in bg_files:#glob():
-        print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
-        print "Opening", filename
+        print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
+        print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
         

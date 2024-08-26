@@ -176,7 +176,7 @@ def main():
         tEvent.Branch(extraOb, extraObs[extraOb],extraOb + "/" + utils.typeTranslation[extraObsDef[extraOb]])
     
     for flatOb in analysis_observables.commonFlatObs:
-        print "tEvent.Branch(" + flatOb + "," +  "flatObs[flatOb]" + "," + flatOb + "/" + utils.typeTranslation[analysis_observables.commonFlatObs[flatOb]] + ")"
+        print("tEvent.Branch(" + flatOb + "," +  "flatObs[flatOb]" + "," + flatOb + "/" + utils.typeTranslation[analysis_observables.commonFlatObs[flatOb]] + ")")
         tEvent.Branch(flatOb, flatObs[flatOb],flatOb + "/" + utils.typeTranslation[analysis_observables.commonFlatObs[flatOb]])
     
     if bg:
@@ -234,7 +234,7 @@ def main():
             if CorrJetObs == "CorrJetIso":
                  ptRanges = utils.leptonCorrJetIsoPtRange
             for ptRange in ptRanges:
-                print "tEvent.Branch(" + lep + "_pass" + CorrJetObs + str(ptRange), 'std::vector<' + str(utils.leptonsCorrJetVecList[CorrJetObs]) + '>', leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)], ")"
+                print("tEvent.Branch(" + lep + "_pass" + CorrJetObs + str(ptRange), 'std::vector<' + str(utils.leptonsCorrJetVecList[CorrJetObs]) + '>', leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)], ")")
                 tEvent.Branch(lep + "_pass" +  CorrJetObs + str(ptRange), 'std::vector<' + utils.leptonsCorrJetVecList[CorrJetObs] + '>', leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)])
     
     
@@ -243,13 +243,13 @@ def main():
     baseFileName = os.path.basename(input_file)
     
     c = TChain('TreeMaker2/PreSelection')
-    print "Opening", input_file
+    print("Opening", input_file)
     c.Add(input_file)
     #c = chain.CloneTree()
     #chain = None
-    print "Creating " + output_file
+    print("Creating " + output_file)
     fnew = TFile(output_file,'recreate')
-    print "Created."
+    print("Created.")
 
     hHt = TH1F('hHt','hHt',1,0,1)
     hHtAfterMadHt = TH1F('hHtAfterMadHt','hHtAfterMadHt',1,0,1)
@@ -260,16 +260,16 @@ def main():
     currLeptonCollectionFileMapFile = None
     
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
     
-    print "Starting Loop"
+    print("Starting Loop")
     
     passedEvents = 0
     passedJPsi = 0
     
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
         
         ### MADHT ###
@@ -296,13 +296,13 @@ def main():
             if highPtJpsiMuon is None:
                 continue
 
-        # print "c.tracks[0].X()", c.tracks[0].X(), "c.tracks[0].Y()", c.tracks[0].Y(), "c.tracks[0].Z()", c.tracks[0].Z(), "c.tracks[0].M()", c.tracks[0].M()
-#         print "c.tracks[0].Pt()", c.tracks[0].Pt(), "c.tracks[0].Eta()", c.tracks[0].Eta(), "c.tracks[0].Phi()", c.tracks[0].Phi()
+        # print("c.tracks[0].X()", c.tracks[0].X(), "c.tracks[0].Y()", c.tracks[0].Y(), "c.tracks[0].Z()", c.tracks[0].Z(), "c.tracks[0].M()", c.tracks[0].M())
+#         print("c.tracks[0].Pt()", c.tracks[0].Pt(), "c.tracks[0].Eta()", c.tracks[0].Eta(), "c.tracks[0].Phi()", c.tracks[0].Phi())
 #         new = TLorentzVector()
 #         new.SetXYZM(c.tracks[0].X(), c.tracks[0].Y(), c.tracks[0].Z(), 0.1057)
 #         
-#         print "new.X()", new.X(), "new.Y()", new.Y(), "new.Z()", new.Z(), "new.M()", new.M()
-#         print "new.Pt()", new.Pt(), "new.Eta()", new.Eta(), "new.Phi()", new.Phi()
+#         print("new.X()", new.X(), "new.Y()", new.Y(), "new.Z()", new.Z(), "new.M()", new.M())
+#         print("new.Pt()", new.Pt(), "new.Eta()", new.Eta(), "new.Phi()", new.Phi())
 #         
 #         exit(0)
 #         
@@ -343,32 +343,32 @@ def main():
         
         if replace_lepton_collection:
             if currLeptonCollectionMap is None or not currLeptonCollectionMap.contains(c.RunNum, c.LumiBlockNum, c.EvtNum):
-                print "NEED NEW LEPTON COLLECTION..."
+                print("NEED NEW LEPTON COLLECTION...")
                 if currLeptonCollectionMap is not None:
                     currLeptonCollectionMap.Delete()
                     currLeptonCollectionMap = None
                 currLeptonCollection = None
                 currLeptonCollectionFileMapFile = utils.getLeptonCollectionFileMapFile(baseFileName)
                 if currLeptonCollectionFileMapFile is None:
-                    print "FATAL: could not open LeptonCollectionFileMapFile"
+                    print("FATAL: could not open LeptonCollectionFileMapFile")
                     exit(1)
-                print "currLeptonCollectionFileMapFile", currLeptonCollectionFileMapFile
+                print("currLeptonCollectionFileMapFile", currLeptonCollectionFileMapFile)
                 currLeptonCollectionFileMap = utils.getLeptonCollectionFileMap(currLeptonCollectionFileMapFile, c.RunNum, c.LumiBlockNum, c.EvtNum)
-                print "Got currLeptonCollectionFileMap"
+                print("Got currLeptonCollectionFileMap")
                 if currLeptonCollectionFileMap is None:
-                    print "FATAL: could not find file map. continuing..."
+                    print("FATAL: could not find file map. continuing...")
                     exit(1) 
                 currLeptonCollectionFileName = currLeptonCollectionFileMap.get(c.RunNum, c.LumiBlockNum, c.EvtNum)
                 currLeptonCollectionFileMap.Delete()
                 currLeptonCollectionFileMap = None
-                print "currLeptonCollectionFileName=", currLeptonCollectionFileName
+                print("currLeptonCollectionFileName=", currLeptonCollectionFileName)
                 
                 currLeptonCollectionMap = utils.getLeptonCollection(currLeptonCollectionFileName)
-                print "currLeptonCollectionMap=", currLeptonCollectionMap
+                print("currLeptonCollectionMap=", currLeptonCollectionMap)
                 currLeptonCollectionFileMapFile.Close()
             
             if currLeptonCollectionMap is None:
-                print "FATAL: could not find lepton map for ",c.RunNum, c.LumiBlockNum, c.EvtNum, " continuing..."
+                print("FATAL: could not find lepton map for ",c.RunNum, c.LumiBlockNum, c.EvtNum, " continuing...")
                 exit(1)
             
             takeLeptonsFrom = currLeptonCollectionMap.get(c.RunNum, c.LumiBlockNum, c.EvtNum)
@@ -441,7 +441,7 @@ def main():
                 
                 foundJpsi = True
                 
-                #print "foundJpsi!!!"
+                #print("foundJpsi!!!")
                 
                 calcDiObs["tagMuon"].push_back(i)
                 calcDiObs["probeTrack"].push_back(j)
@@ -452,8 +452,8 @@ def main():
                 muon = muonsObs["Muons"][i]
                 
                 invMass = (mTrack + muon).M()
-                #print "From outside: invMass", invMass
-                #print "---"
+                #print("From outside: invMass", invMass)
+                #print("---")
                 
                 calcDiObs["invMass"].push_back(invMass)
                 calcDiObs["dileptonPt"].push_back(abs((mTrack + muon).Pt()))
@@ -496,7 +496,7 @@ def main():
         
         passedJPsi += 1
         
-        #print "passedJPsi", passedJPsi
+        #print("passedJPsi", passedJPsi)
         
         for i in range(len(trackObs["tracks"])):
             t = trackObs["tracks"][i]
@@ -521,7 +521,7 @@ def main():
                 calcDiObs["Muons_ti"].push_back(minCan)
         
         for calcDiOb in calcDiObsDef:
-            #print "tEvent.SetBranchAddress(" + calcDiOb + ", " + str(calcDiObs[calcDiOb]) + ")"
+            #print("tEvent.SetBranchAddress(" + calcDiOb + ", " + str(calcDiObs[calcDiOb]) + ")")
             tEvent.SetBranchAddress(calcDiOb, calcDiObs[calcDiOb])
         
         if data:
@@ -660,7 +660,7 @@ def main():
                     for ptRange in utils.leptonCorrJetIsoPtRange:
                         tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs + str(ptRange), leptonsCorrJetVars[lep + "_pass" + CorrJetObs + str(ptRange)])
                 else:
-                    #print lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs]
+                    #print(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
                     tEvent.SetBranchAddress(lep + "_pass" + CorrJetObs, leptonsCorrJetVars[lep + "_pass" + CorrJetObs])
         
         #### END OF JET ISOLATION
@@ -674,9 +674,9 @@ def main():
     hHtAfterMadHt.Write()
     if data:
         lumiSecs.Write("lumiSecs")
-    print 'just created', fnew.GetName()
-    print "passedEvents", passedEvents
-    print "passedJPsi", passedJPsi
+    print('just created', fnew.GetName())
+    print("passedEvents", passedEvents)
+    print("passedJPsi", passedJPsi)
     fnew.Close()
         
         

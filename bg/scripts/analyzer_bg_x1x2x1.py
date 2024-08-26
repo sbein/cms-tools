@@ -41,7 +41,7 @@ def printTree(particleRef, shouldTrimTree = False, space=0):
 	delim = ""
 	if space > 0:
 		delim = "|- "
-	print ("|  " * space) + delim + str(particle.pdgId()) + "(" + str(particle.status()) + ")" + "(" + str(particle.isLastCopy()) + ")"
+	print(("|  " * space) + delim + str(particle.pdgId()) + "(" + str(particle.status()) + ")" + "(" + str(particle.isLastCopy()) + ")")
 	if particle.numberOfDaughters() == 0:
 		return
 	for p in range(particle.numberOfDaughters()):
@@ -80,12 +80,12 @@ def handleX10X20X10Cand(event, nj, weight):
 			utils.fillHistWithCuts("LPhi2J", lep.Phi(), histList, cutsDef, "ntuples", event, weight)
 	
 	if nL == 2:
-		print "2 leptons elec=" + str(event.Electrons.size()) + " muo=" + str(event.Muons.size())
+		print("2 leptons elec=" + str(event.Electrons.size()) + " muo=" + str(event.Muons.size()))
 		if event.Electrons.size() == 2 and event.Electrons_charge[0] * event.Electrons_charge[1] < 0:
-			print "*"
+			print("*")
 			handleX10X20X10DiLepton(event.Electrons[0], event.Electrons[1], event, nj, weight)
 		elif event.Muons.size() == 2 and event.Muons_charge[0] * event.Muons_charge[1] < 0:
-			print "**"
+			print("**")
 			handleX10X20X10DiLepton(event.Muons[0], event.Muons[1], event, nj, weight)
 
 def handleX10X20X10DiLepton(l1, l2, event, nj, weight):
@@ -134,7 +134,7 @@ def handleX10X20X10NLGen(event, weight):
 				else:
 					utils.fillHistWithCuts("MatchLep", 0, histList, cutsDef, "ntuples", event, weight)
 			else:
-				#print "No minR"
+				#print("No minR")
 				utils.fillHistWithCuts("MatchLep", 0, histList, cutsDef, "ntuples", event, weight)
 			if l1 is None:
 				l1 = ipart
@@ -184,11 +184,11 @@ c = TChain("TreeMaker2/PreSelection");
 c.Add(input_file)
 
 nentries = c.GetEntries()
-print "nentries=" + str(nentries)
+print("nentries=" + str(nentries))
 
 for ientry in range(nentries) :
 	if ientry % 10000 == 0 :
-		print "processing entry" , ientry, "out of", nentries
+		print("processing entry" , ientry, "out of", nentries)
 	c.GetEntry(ientry)
 	weight = c.CrossSection
 	nj = handleX10X20X10Jets(c, weight)

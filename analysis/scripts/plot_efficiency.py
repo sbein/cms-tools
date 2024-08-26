@@ -85,15 +85,15 @@ def main():
         nonRecoIsoTracks =  {'7.39': 3072, '0.51': 1, '5.63': 2359, '4.30': 1680, '1.92': 177, '0.18': 0, '9.73': 3553, '2.51': 505, '1.13': 8, '12.84': 3745, '0.30': 0, '0.86': 4, '3.28': 991, '1.47': 68}
     for input_file in signal_files:
         break
-        print "Opening", input_file
+        print("Opening", input_file)
         file = TFile(input_file)
         c = file.Get('tEvent')
         
         dm = input_file.split("mu100_dm")[1].split("Chi20")[0].replace("p", ".")
-        print "dm=" + str(dm)
+        print("dm=" + str(dm))
     
         nentries = c.GetEntries()
-        print 'Analysing', nentries, "entries"
+        print('Analysing', nentries, "entries")
 
         afterPreselection = 0
         numOfGenLeptons = 0
@@ -107,10 +107,10 @@ def main():
         numOfTwoRecoTracks = 0
         numOfTwoRecoIsoTracks = 0
     
-        print "Starting Loop"
+        print("Starting Loop")
         for ientry in range(nentries):
             if ientry % 1000 == 0:
-                print "Processing " + str(ientry) + " out of " + str(nentries)
+                print("Processing " + str(ientry) + " out of " + str(nentries))
             c.GetEntry(ientry)
 
             ### PRECUTS ###
@@ -119,7 +119,7 @@ def main():
 #         
 #             nj, btags, ljet = analysis_ntuples.numberOfJets25Pt2_4Eta_Loose(c)
 #             if ljet is None:
-#                 #print "No ljet:",ljet 
+#                 #print("No ljet:",ljet )
 #                 continue
 #         
 #             if analysis_ntuples.minDeltaPhiMetJets25Pt2_4Eta(c) < 0.4: continue
@@ -153,7 +153,7 @@ def main():
                 minT, minCanT = analysis_ntuples.minDeltaRLepTracks(l, c)
                 foundTrack = minT is not None and minT < 0.01 and c.GenParticles_PdgId[i] * c.tracks_charge[minCanT] < 0
                 if foundTrack:
-                    #print "GenParticles_PdgId[i]=", c.GenParticles_PdgId[i], " tracks_charge[minCanT]=", c.tracks_charge[minCanT]
+                    #print("GenParticles_PdgId[i]=", c.GenParticles_PdgId[i], " tracks_charge[minCanT]=", c.tracks_charge[minCanT])
                     numOfTracks += 1
                     if c.tracks_trkRelIso[minCanT] < 0.1:
                         numOfIsoTracks += 1
@@ -206,13 +206,13 @@ def main():
         nonRecoIsoTracks[dm] = numOfNonRecoIsoTracks
         
     
-    print "genLeptons =", genLeptons
-    print "recoLeptons =", recoLeptons
-    print "recoSosLeptons =", recoSosLeptons
-    print "tracks = ", tracks
-    print "isoTracks = ", isoTracks
-    print "nonRecoTracks = ", nonRecoTracks
-    print "nonRecoIsoTracks = ", nonRecoIsoTracks
+    print("genLeptons =", genLeptons)
+    print("recoLeptons =", recoLeptons)
+    print("recoSosLeptons =", recoSosLeptons)
+    print("tracks = ", tracks)
+    print("isoTracks = ", isoTracks)
+    print("nonRecoTracks = ", nonRecoTracks)
+    print("nonRecoIsoTracks = ", nonRecoIsoTracks)
     
     multiGraph = TMultiGraph()
     legend = None
@@ -228,7 +228,7 @@ def main():
         eff = float(j)/genLeptons[i]
         x.append(float(i))
         y.append(eff) 
-    print n, x, y
+    print(n, x, y)
     genLeptonsGraph = TGraph(n, x, y)
     genLeptonsGraph.SetMarkerColor(kRed)
     genLeptonsGraph.SetMarkerStyle(20)
@@ -245,7 +245,7 @@ def main():
         eff = float(j)/genLeptons[i]
         x.append(float(i))
         y.append(eff)
-    print n, x, y
+    print(n, x, y)
     tracksGraph = TGraph(n, x, y)
     tracksGraph.SetMarkerColor(kGreen)
     tracksGraph.SetMarkerStyle(20)
@@ -265,7 +265,7 @@ def main():
         eff = float(j)/genLeptons[i]
         x.append(float(i))
         y.append(eff)
-    print n, x, y
+    print(n, x, y)
     isoTracksGraph = TGraph(n, x, y)
     isoTracksGraph.SetMarkerColor(kGreen)
     isoTracksGraph.SetMarkerStyle(21)
@@ -284,7 +284,7 @@ def main():
         eff = float(j)/genLeptons[i]
         x.append(float(i))
         y.append(eff)
-    print n, x, y
+    print(n, x, y)
     recoLeptonsGraph = TGraph(n, x, y)
     recoLeptonsGraph.SetMarkerColor(kBlue)
     recoLeptonsGraph.SetMarkerStyle(20)
@@ -301,7 +301,7 @@ def main():
         eff = float(j)/genLeptons[i]
         x.append(float(i))
         y.append(eff)
-    print n, x, y
+    print(n, x, y)
     recoSosLeptonsGraph = TGraph(n, x, y)
     recoSosLeptonsGraph.SetMarkerColor(kTeal-7)
     recoSosLeptonsGraph.SetMarkerStyle(20)
@@ -318,7 +318,7 @@ def main():
         eff = float(j)/genLeptons[i]
         x.append(float(i))
         y.append(eff)
-    print n, x, y
+    print(n, x, y)
     nonRecoTracksGraph = TGraph(n, x, y)
     nonRecoTracksGraph.SetMarkerColor(kRed)
     nonRecoTracksGraph.SetMarkerStyle(20)
@@ -337,7 +337,7 @@ def main():
         eff = float(j)/genLeptons[i]
         x.append(float(i))
         y.append(eff)
-    print n, x, y
+    print(n, x, y)
     nonRecoIsoTracksGraph = TGraph(n, x, y)
     nonRecoIsoTracksGraph.SetMarkerColor(kRed)
     nonRecoIsoTracksGraph.SetMarkerStyle(21)

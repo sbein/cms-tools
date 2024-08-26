@@ -126,7 +126,7 @@ else:
 
 sumTypes = {}
 
-print "Adding histograms."
+print("Adding histograms.")
 fileList = glob(SINGLE_OUTPUT + "/*");
 
 if data_lepton_collection:
@@ -136,21 +136,21 @@ if data_lepton_collection:
     file = "Run2016_SingleElectron.root"
     tmp_dir = "/afs/desy.de/user/n/nissanuv/nfs"
     #file = "Run2016_MET.root"
-    print "***NUMBER:" + str(len(files_glob))
-    #print files_glob
-    print "Checking " + WORK_DIR + "/" + os.path.basename(file)
+    print("***NUMBER:" + str(len(files_glob)))
+    #print(files_glob)
+    print("Checking " + WORK_DIR + "/" + os.path.basename(file))
     if os.path.exists(WORK_DIR + "/" + os.path.basename(file)):
-        print "File " + WORK_DIR + "/" + os.path.basename(file) + " exists..."
+        print("File " + WORK_DIR + "/" + os.path.basename(file) + " exists...")
         exit(1)
 
     command = "./merge_lepton_collection_map.py -o " + tmp_dir + "/" + file + " -i " + SINGLE_OUTPUT + "/*"
-    print "Perorming:", command 
+    print("Perorming:", command )
     system(command)
     command = "(eval `scram unsetenv -sh`; gfal-copy " + tmp_dir + "/" + file + " " + "srm://dcache-se-cms.desy.de" + WORK_DIR + ")"
-    print "Perorming:", command 
+    print("Perorming:", command )
     system(command)
     command = "rm " + tmp_dir + "/" + file
-    print "Perorming:", command 
+    print("Perorming:", command )
     #system(command)
 else:
     for f in fileList:
@@ -172,21 +172,21 @@ else:
             #if type == "TT":
             #    sumTypes[type][types[1]] = True
             #else:
-            print types
+            print(types)
             types[2] = types[2].split("AOD")[0]
             sumTypes[type][types[1] + "_" + types[2]] = True
             #else:
             #    sumTypes[type][types[1]] = True
 
-    print sumTypes 
+    print(sumTypes )
 
     for type in sumTypes:
-        print type
+        print(type)
         if bg:
             for typeRange in sumTypes[type]:
-                print "-----"
-                print typeRange
-                print "-----"
+                print("-----")
+                print(typeRange)
+                print("-----")
                 #continue
                 command = None
                 file = ""
@@ -209,50 +209,50 @@ else:
                     command = "hadd -f " + file + " " + files
                 if lepton_collection:
                     #command = "mkdir tmp"
-                    #print "Perorming:", command 
+                    #print("Perorming:", command )
                     #system(command)
                     #command = "gfal-copy -f srm://dcache-se-cms.desy.de/" + files + " ./tmp/"
-                    #print "Perorming:", command 
+                    #print("Perorming:", command )
                     #system(command)
-                    print files
+                    print(files)
                     files_glob = glob(files)
-                    print "***NUMBER:" + str(len(files_glob)) + " " + type + "_" + typeRange
-                    #print files_glob
-                    print "Checking " + WORK_DIR + "/" + os.path.basename(file)
+                    print("***NUMBER:" + str(len(files_glob)) + " " + type + "_" + typeRange)
+                    #print(files_glob)
+                    print("Checking " + WORK_DIR + "/" + os.path.basename(file))
                     if os.path.exists(WORK_DIR + "/" + os.path.basename(file)):
-                        print "File " + WORK_DIR + "/" + os.path.basename(file) + " exists..."
+                        print("File " + WORK_DIR + "/" + os.path.basename(file) + " exists...")
                         continue
                 
                     command = "./merge_lepton_collection_map.py -o " + file + " -i " + files
-                    print "Perorming:", command 
+                    print("Perorming:", command )
                     system(command)
                     command = "gfal-copy -f " + file + " " + "srm://dcache-se-cms.desy.de" + WORK_DIR
-                    print "Perorming:", command 
+                    print("Perorming:", command )
                     system(command)
                     command = "rm -rf ./tmp"
-                    print "Perorming:", command 
+                    print("Perorming:", command )
                     system(command)
                 else:
                     if os.path.exists(file):
-                        print "File", file, " exists. Skipping"
+                        print("File", file, " exists. Skipping")
                     else:
-                        print "Perorming:", command 
+                        print("Perorming:", command )
                         system(command)
                 
         elif signal_ntuples:          
-            print "-------"
+            print("-------")
             command = "hadd -f " + OUTPOUT_TYPE_SUM + "/" + type + "_1.root " + SINGLE_OUTPUT + "/" + type + "_*.root"
-            print "Perorming:", command
+            print("Perorming:", command)
             system(command)
             command = "gfal-copy " + OUTPOUT_TYPE_SUM + "/" + type + "_1.root " + " srm://dcache-se-cms.desy.de" + WORK_DIR
-            print "Perorming:", command
+            print("Perorming:", command)
             system(command)
             command = "rm " + OUTPOUT_TYPE_SUM + "/" + type + "_1.root "
-            print "Perorming:", command
+            print("Perorming:", command)
             system(command)
         else:
             command = "hadd -f " + OUTPOUT_TYPE_SUM + "/" + type + ".root " + SINGLE_OUTPUT + "/" + type + "_*.root"
-            print "Perorming:", command 
+            print("Perorming:", command )
             #system(command)
 
 exit(0)

@@ -39,7 +39,7 @@ signal = args.signal
 bg = args.bg
 sc = args.sc
 
-print "SAME CHARGE=", sc
+print("SAME CHARGE=", sc)
 
 input_file = None
 if args.input_file:
@@ -58,15 +58,15 @@ def main():
     c = file.Get("tEvent")
     
     #c = TChain('TreeMaker2/PreSelection')
-    print "Opening", input_file
+    print("Opening", input_file)
     #c.Add(input_file)
     
     nentries = c.GetEntries()
-    print "File has", nentries, "entries"
+    print("File has", nentries, "entries")
     
     for ientry in range(nentries):
         if ientry % 100 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         c.GetEntry(ientry)
         #analysis_ntuples.printTrigNames(c, "MhtMet6pack")
         analysis_ntuples.printTrigNames(c, "SingleMuon")

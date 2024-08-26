@@ -72,10 +72,10 @@ def do_significance_plot(h_significance, h_mva_bdt_effB, h_mva_bdt_effS, eff_sg,
 	canvas_significance.SaveAs(output_filename)
 
 def plot_significance():
-	print "Getting best TMVA significance..."
+	print("Getting best TMVA significance...")
 
 	# get TMVA histograms
-	print "Opening file", input_dir + "/output.root"
+	print("Opening file", input_dir + "/output.root")
 	fin = TFile(input_dir + "/output.root")
 	
 	trainTree = fin.Get("dataset/TrainTree")
@@ -97,10 +97,10 @@ def plot_significance():
 # 	testBgHistBDT = testTree.GetHistogram().Clone()
 # 	testBgHistBDT.SetDirectory(0)
 # 	
-# 	print trainSignalHistBDT.Integral()
-# 	print testSignalHistBDT.Integral()
-# 	print trainBgHistBDT.Integral()
-# 	print testBgHistBDT.Integral()
+# 	print(trainSignalHistBDT.Integral())
+# 	print(testSignalHistBDT.Integral())
+# 	print(trainBgHistBDT.Integral())
+# 	print(testBgHistBDT.Integral())
 # 	
 # 	return
 	
@@ -121,7 +121,7 @@ def plot_significance():
 	minX = max(testBgHistBDT.GetXaxis().GetXmin(), testSignalHistBDT.GetXaxis().GetXmin(), trainSignalHistBDT.GetXaxis().GetXmin(), trainBgHistBDT.GetXaxis().GetXmin())
 	maxX = min(testBgHistBDT.GetXaxis().GetXmax(), testSignalHistBDT.GetXaxis().GetXmax(), trainSignalHistBDT.GetXaxis().GetXmax(), trainBgHistBDT.GetXaxis().GetXmax())
 	
-	print minX, maxX
+	print(minX, maxX)
 	
 	testTree.Draw("BDT>>hsqrt(10000," + str(minX) + "," + str(maxX) + ")", "weight * (classID==0)")
 	testSignalHistBDT = testTree.GetHistogram().Clone()
@@ -136,13 +136,13 @@ def plot_significance():
 	trainBgHistBDT = trainTree.GetHistogram().Clone()
 	trainBgHistBDT.SetDirectory(0)
 	
- 	print "testSignalHistBDT"
- 	print testSignalHistBDT.Integral(), testSignalHistBDT.GetNbinsX(), testSignalHistBDT.GetXaxis().GetXmin(), testSignalHistBDT.GetXaxis().GetXmax()
- 	print "testBgHistBDT"
- 	print testBgHistBDT.Integral(), testBgHistBDT.GetNbinsX(), testBgHistBDT.GetXaxis().GetXmin(), testBgHistBDT.GetXaxis().GetXmax()
+ 	print("testSignalHistBDT")
+ 	print(testSignalHistBDT.Integral(), testSignalHistBDT.GetNbinsX(), testSignalHistBDT.GetXaxis().GetXmin(), testSignalHistBDT.GetXaxis().GetXmax())
+ 	print("testBgHistBDT")
+ 	print(testBgHistBDT.Integral(), testBgHistBDT.GetNbinsX(), testBgHistBDT.GetXaxis().GetXmin(), testBgHistBDT.GetXaxis().GetXmax())
 
 	numOfBins = testBgHistBDT.GetNbinsX()
-	print "numOfBins=" , numOfBins
+	print("numOfBins=" , numOfBins)
 	
 	# custom histograms
 	
@@ -157,13 +157,13 @@ def plot_significance():
 		if (S+B)>0:
 			sign = 1.0 * S/math.sqrt(S+B)
 			h_significance.SetBinContent(i, sign)
-			#print "========"
-			#print i, sign
-			#print testSignalHistBDT.GetBinCenter(i), testBgHistBDT.GetBinCenter(i)
-			#print S,B
+			#print("========")
+			#print(i, sign)
+			#print(testSignalHistBDT.GetBinCenter(i), testBgHistBDT.GetBinCenter(i))
+			#print(S,B)
 			h_significance.SetBinError(i, 0)
 	
-	print h_significance.GetXaxis().GetXmin(), h_significance.GetXaxis().GetXmax()
+	print(h_significance.GetXaxis().GetXmin(), h_significance.GetXaxis().GetXmax())
 	
 	maxBin = h_significance.GetMaximumBin()
 	
@@ -179,8 +179,8 @@ def plot_significance():
 # 	ST = 2 * testSignalHistBDT.Integral()
 # 	BT = 2 * testBgHistBDT.Integral()
 	
-	print "(S,B)=(" + str(S) + "," + str(B) + ")"
-	print "(ST,BT)=(" + str(ST) + "," + str(BT) + ")"
+	print("(S,B)=(" + str(S) + "," + str(B) + ")")
+	print("(ST,BT)=(" + str(ST) + "," + str(BT) + ")")
 	
 	max_cut_value = h_significance.GetBinCenter(maxBin)
 	Z = h_significance.GetBinContent(maxBin)

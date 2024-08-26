@@ -52,28 +52,28 @@ def haddMultiple(inputTuple):
 
     # Grab our arguments
     (outFile, startNum, endNum, totalNum, verbosity, inFiles) = inputTuple
-    #print outFile, startNum, endNum, totalNum, verbosity, inFiles
+    #print(outFile, startNum, endNum, totalNum, verbosity, inFiles)
 
     # Set verbosity
     args = ["hadd", outFile] + inFiles
     if verbosity >= 1:
-        print "Calling hadd"
-        print "\tOutput:", outFile
-        print "\tInput:"
+        print("Calling hadd")
+        print("\tOutput:", outFile)
+        print("\tInput:")
         for f in inFiles:
-            print "\t\t", f
+            print("\t\t", f)
 
     # Call hadd
     retcode = None
     if verbosity >= 0:
-        print "Now hadding files %i-%i of %i." % (startNum, endNum, totalNum)
+        print("Now hadding files %i-%i of %i." % (startNum, endNum, totalNum))
     if verbosity >= 2:
         retcode = call(args)
     else:
         retcode = call(args, stdout=open(devnull, 'wb'))
     # Check to makesure that hadd did not throw an error
     if retcode != 0:
-        print "Error from hadd!"
+        print("Error from hadd!")
         exit(retcode)
 
 
@@ -99,7 +99,7 @@ class hadd:
     def run(self):
         """ Combine files by looping over them """
         if not self.quiet:
-            print "Combining files"
+            print("Combining files")
 
         i = 0
         inFiles = list(self.inFiles)  # deep copies the list
@@ -115,7 +115,7 @@ class hadd:
             # If we have one file left, we're done
             if len(inFiles) == 1:
                 if not self.quiet:
-                    print "Copying final file:", inFiles[0], "-->", self.outfile
+                    print("Copying final file:", inFiles[0], "-->", self.outfile)
                 copy2(inFiles[0], self.outfile)
                 break
             else:
@@ -140,21 +140,21 @@ class hadd:
     def __printInAndOut(self):
         """ Print the input files, and output file """
         if not self.quiet:
-            print "Output file:", out_file
-            print "Input files:"
+            print("Output file:", out_file)
+            print("Input files:")
             for f in in_files:
-                print "\t", f
-            print "Number of files to hadd at once:", self.nAtOnce
+                print("\t", f)
+            print("Number of files to hadd at once:", self.nAtOnce)
 
     def __checkOutFile(self):
         """ Check if the output file exists, if so exit if we don't force
         overwrite """
         if not self.force_overwrite and isfile(self.outfile):
-            print "Output file already exists! File:", self.outfile
+            print("Output file already exists! File:", self.outfile)
             exit(1)  # Other error
         elif self.force_overwrite and isfile(self.outfile):
             if not self.quiet:
-                print "Output file already exists; it will be overwritten! File:", self.outfile
+                print("Output file already exists; it will be overwritten! File:", self.outfile)
 
     def __tuplizeFiles(self, writeDir, inFiles):
         """ Takes the input list and writes a specialized tuple of them """
@@ -203,7 +203,7 @@ class hadd:
     def __setTmpDir(self, tmpdir):
         """ Set up a temporary directory to hold intermediate files """
         if self.verbose:
-            print "Making temporary directory:",
+            print("Making temporary directory:",)
 
         if tmpdir == None:
             self.tmpdir = mkdtemp(prefix="ahadd_") + '/'
@@ -211,7 +211,7 @@ class hadd:
             self.tmpdir = mkdtemp(prefix="ahadd_", dir=tmpdir) + '/'
 
         if self.verbose:
-            print self.tmpdir
+            print(self.tmpdir)
 
 ##### START OF CODE
 if __name__ == '__main__':
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     # Check if hadd exists
     from distutils.spawn import find_executable
     if find_executable("hadd") is None:
-        print "Can not find hadd."
+        print("Can not find hadd.")
         exit(2)
 
     # Set default jobs number
@@ -238,9 +238,9 @@ if __name__ == '__main__':
     parser.add_option("-n", "--n-files-at-once", action="store", type="int", dest="nAtOnce", default=20, help="combine this many files at one time [defualt 20]")
     parser.add_option("-t", "--temp-dir", action="store", type="string", dest="tmp_dir", default=None, help="location to store temporary intermediate files")
     parser.add_option("-s", "--save-temp", action="store_true", dest="save_tmp", default=False, help="save temporary files, otherwise they are cleaned up when the program exits [default false]")
-    parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False, help="print some extra status messages to stdout [default false]")
-    parser.add_option("-q", "--quiet", action="store_true", dest="quiet", default=False, help="do not print any status messages to stdout [default false]")
-    parser.add_option("-V", "--very-verbose", action="store_true", dest="vverbose", default=False, help="print everything, even the output from hadd [default false]")
+    parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False, help="print(some extra status messages to stdout [default false]"))
+    parser.add_option("-q", "--quiet", action="store_true", dest="quiet", default=False, help="do not print(any status messages to stdout [default false]"))
+    parser.add_option("-V", "--very-verbose", action="store_true", dest="vverbose", default=False, help="print(everything, even the output from hadd [default false]"))
     parser.add_option("-f", "--force-overwrite", action="store_true", dest="force_overwrite", default=False, help="Overwrite the output file if it exists [default false]")
     parser.add_option("-j", "--jobs", action="store", type="int", dest="nJobs", default=NJOBS, help="use this many subprocess [default cpu_count*1.5 = %i]" % NJOBS)
 
@@ -262,12 +262,12 @@ if __name__ == '__main__':
     out_file = None
     if len(args) == 2:  # One input file means we can just copy it
         if not options.quiet:
-            print "Only one input file; running a simple copy!"
-            print "Copying final file:", args[1], "-->", args[0]
+            print("Only one input file; running a simple copy!")
+            print("Copying final file:", args[1], "-->", args[0])
         copy2(args[1], args[0])
         exit(0)
     elif len(args) <= 1:
-        print "Not enough arguments on the command line. Exiting."
+        print("Not enough arguments on the command line. Exiting.")
         exit(2)  # Not enough commands
     else:
         out_file = args[0]
@@ -275,7 +275,7 @@ if __name__ == '__main__':
 
     ## Check that the number of files to hadd each step is sane
     if options.nAtOnce <= 1:
-        print "Requested to hadd 1 or fewer files per iteration; this will never converge."
+        print("Requested to hadd 1 or fewer files per iteration; this will never converge.")
         exit(1)  # Other error
 
     ## Set up and run hadd

@@ -37,7 +37,7 @@ parser.add_argument('-sam', '--sam', dest='sam', help='Sam Samples', action='sto
 parser.add_argument('-jpsi_muons', '--jpsi_muons', dest='jpsi_muons', help='JPSI Muons Skim', action='store_true')
 args = parser.parse_args()
 
-print args
+print(args)
 
 signal = args.signal
 bg = args.bg
@@ -60,11 +60,11 @@ jpsi_muons = args.jpsi_muons
 
 if jpsi_muons or jpsi_electrons:
     jpsi = True
-    print "Got JPSI"
+    print("Got JPSI")
     if jpsi_muons:
-        print "MUONS"
+        print("MUONS")
     else:
-        print "ELECTRONS"
+        print("ELECTRONS")
 
 ######## END OF CMDLINE ARGUMENTS ########
 
@@ -89,12 +89,12 @@ def main():
     vars["BtagsDeepMedium"] = np.zeros(1,dtype=int)
     
     if tree.GetBranchStatus("BDT"):
-        print "Reseting branch", "BDT"
+        print("Reseting branch", "BDT")
         branches["BDT"] = tree.GetBranch("BDT")
         branches["BDT"].Reset()
         tree.SetBranchAddress("BDT", vars["BDT"])
     else:
-        print "Branching", "BDT"
+        print("Branching", "BDT")
         branches["BDT"] = tree.Branch("BDT", 'std::vector<double>', vars["BDT"])
         tree.SetBranchAddress("BDT", vars["BDT"])
         
@@ -108,26 +108,26 @@ def main():
     
     bdt_weights = bdt + "/dataset/weights/TMVAClassification_BDT.weights.xml"
     bdt_vars = cut_optimisation.getVariablesFromXMLWeightsFile(bdt_weights)
-    print "bdt_vars", bdt_vars
+    print("bdt_vars", bdt_vars)
     bdt_vars_map = cut_optimisation.getVariablesMemMap(bdt_vars)
-    print "bdt_vars_map", bdt_vars_map
+    print("bdt_vars_map", bdt_vars_map)
     bdt_specs = cut_optimisation.getSpecSpectatorFromXMLWeightsFile(bdt_weights)
-    print "bdt_specs", bdt_specs
+    print("bdt_specs", bdt_specs)
     bdt_specs_map = cut_optimisation.getSpectatorsMemMap(bdt_specs)
-    print "bdt_specs_map", bdt_specs_map
+    print("bdt_specs_map", bdt_specs_map)
     bdt_reader = cut_optimisation.prepareReader(bdt_weights, bdt_vars, bdt_vars_map, bdt_specs, bdt_specs_map)
 
     bdt_vars_maps["BDT"] = bdt_vars_map
     bdt_specs_maps["BDT"] = bdt_specs_map
     bdt_readers["BDT"] = bdt_reader
 
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
     
     iFile.cd()
 
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         tree.GetEntry(ientry)
         
         c = tree
@@ -152,26 +152,26 @@ def main():
                 vars["BDT"].push_back(1)
             else:
                 for k, v in bdt_vars_maps["BDT"].items():
-                    #print "********"
+                    #print("********")
                     if analysis_ntuples.commonFlatObs.get(k) is not None:
                         v[0] = eval("tree." + k)
                     elif analysis_ntuples.muonsObs.get(k) is not None:
                         if analysis_ntuples.muonsObs.get(k) == "bool":
                             v[0] = bool(eval("tree." + k)[tagMuonIdx])
                         else:
-                            #print "eval(tree." + k + ")", eval("tree." + k + "[" + str(tagMuonIdx) + "]"), tagMuonIdx
+                            #print("eval(tree." + k + ")", eval("tree." + k + "[" + str(tagMuonIdx) + "]"), tagMuonIdx)
                             v[0] = eval("tree." + k)[tagMuonIdx]
                     elif utils.commonObservablesDTypesList.get(k) is not None:
                         v[0] = eval("tree." + k)[i]
                     elif "tagMuon" in k:
-                        #print "eval(" + k + ")", eval(k)
+                        #print("eval(" + k + ")", eval(k))
                         v[0]  = eval(k)
                     else:
-                        print "WTF", k
+                        print("WTF", k)
                         exit(1)
                 bdt_score = bdt_readers["BDT"].EvaluateMVA("BDT")
-                #print bdt_specs_maps["BDT"]
-                #print "bdt_score", bdt_score
+                #print(bdt_specs_maps["BDT"])
+                #print("bdt_score", bdt_score)
                 vars["BDT"].push_back(bdt_score)
             
         tree.SetBranchAddress("BDT", vars["BDT"])
@@ -180,7 +180,7 @@ def main():
        
     tree.Write("tEvent",TObject.kOverwrite)
         
-    print "DONE SKIMMING"
+    print("DONE SKIMMING")
     iFile.Close()
 
 main()

@@ -33,17 +33,17 @@ if args.output_file:
 	
 ######## END OF CMDLINE ARGUMENTS ########
 
-print "About to clone tree"
+print("About to clone tree")
 
 chain = TChain('TreeMaker2/PreSelection')
-print "Going to open the file"
-print input_file
+print("Going to open the file")
+print(input_file)
 chain.Add(input_file)
-print "After opening"
+print("After opening")
 tree = chain.CloneTree(0)
 
 nentries = chain.GetEntriesFast()
-print 'Analysing', nentries, "entries"
+print('Analysing', nentries, "entries")
 
 max_per_file = 50000
 filenum = 1
@@ -55,11 +55,11 @@ new_entries = False
 
 for ientry in range(nentries):
 	if ientry % 5000 == 0:
-		print "Processing " + str(ientry)
+		print("Processing " + str(ientry))
 	if ientry != 0 and ientry % max_per_file == 0:
-		print "Done copying. Writing to file"
+		print("Done copying. Writing to file")
 		tree.Write('PreSelection')
-		print "Done writing to file."
+		print("Done writing to file.")
 		tree.Reset()
 		fnew.Close()
 		filenum +=1
@@ -72,7 +72,7 @@ for ientry in range(nentries):
 	new_entries = True
 
 if new_entries:
-	print "Done copying. Writing to file"
+	print("Done copying. Writing to file")
 	tree.Write('PreSelection')
-	print "Done writing to file."
+	print("Done writing to file.")
 	fnew.Close()

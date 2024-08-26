@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -30,7 +30,7 @@ lumiSecs = LumiSectMap()
 
 
 
-#print "glob_str", glob_str
+#print("glob_str", glob_str)
 
 #data_files = glob(glob_str)
 

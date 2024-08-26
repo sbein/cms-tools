@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -123,7 +123,7 @@ for point in points:
             break
         else:
             files_list = " ".join([f for f in chunk if f is not None])
-            command = "python ahadd.py -f " + output_file + " " + files_list
+            command = "python3 ahadd.py -f " + output_file + " " + files_list
             print("Running cmd: " + command)
             i += 1
             system(command)

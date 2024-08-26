@@ -37,16 +37,16 @@ parser.add_argument('-data', '--data', dest='data', help='Data', action='store_t
 parser.add_argument('-tl', '--tl', dest='two_leptons', help='Two Leptons', action='store_true')
 args = parser.parse_args()
 
-print args
+print(args)
 
 madHTgt = None
 madHTlt = None
 if args.madHTgt:
     madHTgt = int(args.madHTgt[0])
-    print "Got madHT lower bound of " + str(madHTgt)
+    print("Got madHT lower bound of " + str(madHTgt))
 if args.madHTlt:
     madHTlt = int(args.madHTlt[0])
-    print "Got madHT upper bound of " + str(madHTlt)
+    print("Got madHT upper bound of " + str(madHTlt))
 
 
 signal = args.signal
@@ -55,7 +55,7 @@ data = args.data
 two_leptons = args.two_leptons
 
 if two_leptons:
-    print "RUNNING TWO LEPTONS!"
+    print("RUNNING TWO LEPTONS!")
 
 input_file = None
 if args.input_file:
@@ -79,13 +79,13 @@ def main():
     from lib import utils
     
     chain = TChain('TreeMaker2/PreSelection')
-    print "Opening", input_file
+    print("Opening", input_file)
     chain.Add(input_file)
     c = chain.CloneTree()
     chain = None
-    print "Creating " + output_file
+    print("Creating " + output_file)
     fnew = TFile(output_file,'recreate')
-    print "Created."
+    print("Created.")
 
     hHt = TH1F('hHt','hHt',100,0,3000)
     hHtWeighted = TH1F('hHtWeighted','hHtWeighted',100,0,3000)
@@ -254,7 +254,7 @@ def main():
     
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     count = 0
     afterPreselection = 0
@@ -282,10 +282,10 @@ def main():
     currLeptonCollectionMap = None
     currLeptonCollectionFileMapFile = None
     
-    print "Starting Loop"
+    print("Starting Loop")
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
 
         ### MADHT ###
@@ -301,7 +301,7 @@ def main():
             lumiSecs.insert(c.RunNum, c.LumiBlockNum)
 
         hHt.Fill(c.HT)
-        #print "crossSection=" + str(crossSection)
+        #print("crossSection=" + str(crossSection))
         hHtWeighted.Fill(c.HT, crossSection)
 
         if not rightProcess:
@@ -312,7 +312,7 @@ def main():
         
         nj, btags, ljet = analysis_ntuples.numberOfJets25Pt2_4Eta_Loose(c)
         if ljet is None:
-            #print "No ljet:",ljet 
+            #print("No ljet:",ljet )
             continue
         nL = c.Electrons.size() + c.Muons.size()
         nT = c.tracks.size()
@@ -400,32 +400,32 @@ def main():
         
         if replace_lepton_collection:
             if currLeptonCollectionMap is None or not currLeptonCollectionMap.contains(c.RunNum, c.LumiBlockNum, c.EvtNum):
-                print "NEED NEW LEPTON COLLECTION..."
+                print("NEED NEW LEPTON COLLECTION...")
                 if currLeptonCollectionMap is not None:
                     currLeptonCollectionMap.Delete()
                     currLeptonCollectionMap = None
                 currLeptonCollection = None
                 currLeptonCollectionFileMapFile = utils.getLeptonCollectionFileMapFile(baseFileName)
                 if currLeptonCollectionFileMapFile is None:
-                    print "FATAL: could not open LeptonCollectionFileMapFile"
+                    print("FATAL: could not open LeptonCollectionFileMapFile")
                     exit(1)
-                print "currLeptonCollectionFileMapFile", currLeptonCollectionFileMapFile
+                print("currLeptonCollectionFileMapFile", currLeptonCollectionFileMapFile)
                 currLeptonCollectionFileMap = utils.getLeptonCollectionFileMap(currLeptonCollectionFileMapFile, c.RunNum, c.LumiBlockNum, c.EvtNum)
-                print "Got currLeptonCollectionFileMap"
+                print("Got currLeptonCollectionFileMap")
                 if currLeptonCollectionFileMap is None:
-                    print "FATAL: could not find file map. continuing..."
+                    print("FATAL: could not find file map. continuing...")
                     exit(1) 
                 currLeptonCollectionFileName = currLeptonCollectionFileMap.get(c.RunNum, c.LumiBlockNum, c.EvtNum)
                 currLeptonCollectionFileMap.Delete()
                 currLeptonCollectionFileMap = None
-                print "currLeptonCollectionFileName=", currLeptonCollectionFileName
+                print("currLeptonCollectionFileName=", currLeptonCollectionFileName)
                 
                 currLeptonCollectionMap = utils.getLeptonCollection(currLeptonCollectionFileName)
-                print "currLeptonCollectionMap=", currLeptonCollectionMap
+                print("currLeptonCollectionMap=", currLeptonCollectionMap)
                 currLeptonCollectionFileMapFile.Close()
             
             if currLeptonCollectionMap is None:
-                print "FATAL: could not find lepton map for ",c.RunNum, c.LumiBlockNum, c.EvtNum, " continuing..."
+                print("FATAL: could not find lepton map for ",c.RunNum, c.LumiBlockNum, c.EvtNum, " continuing...")
                 exit(1)
             
             takeLeptonsFrom = currLeptonCollectionMap.get(c.RunNum, c.LumiBlockNum, c.EvtNum)
@@ -543,20 +543,20 @@ def main():
 
     fnew.cd()
     tEvent.Write()
-    print 'just created', fnew.GetName()
-    print "Total: " + str(nentries)
-    print "Right Process: " + str(count)
-    print "After MET: " + str(afterMET)
-    print "After BTAGS: " + str(afterBTAGS)
-    print "After NJ: " + str(afterNj)
-    print "After Preselection: " + str(afterPreselection)
-    print "After Leptons: " + str(afterLeptons)
-    print "nL:"
-    print nLMap
-    print "nLGen:"
-    print nLGenMap
-    print "nLGenZ:"
-    print nLGenMapZ
+    print('just created', fnew.GetName())
+    print("Total: " + str(nentries))
+    print("Right Process: " + str(count))
+    print("After MET: " + str(afterMET))
+    print("After BTAGS: " + str(afterBTAGS))
+    print("After NJ: " + str(afterNj))
+    print("After Preselection: " + str(afterPreselection))
+    print("After Leptons: " + str(afterLeptons))
+    print("nL:")
+    print(nLMap)
+    print("nLGen:")
+    print(nLGenMap)
+    print("nLGenZ:")
+    print(nLGenMapZ)
 
     hHt.Write()
     hHtWeighted.Write()

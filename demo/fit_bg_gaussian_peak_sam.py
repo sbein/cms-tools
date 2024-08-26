@@ -20,7 +20,7 @@ if mode=='SV':
     canvas = infile.Get('canvas')
     lops = canvas.GetListOfPrimitives()
     for p in lops:
-        print p.GetName()
+        print(p.GetName())
     hmass = canvas.GetPrimitive('mass__1').Clone()
 if mode=='Lambda':
     infile = TFile('vertex_plots.root')
@@ -71,14 +71,14 @@ fBackground.SetParameter(1,fitresult.Parameter(4))
 nsig = fGaussian.Integral(lowedge,highedge)/hmass.GetBinWidth(1)
 nbkg = fBackground.Integral(lowedge,highedge)/hmass.GetBinWidth(1)
 
-print 'par 0 was', fGaussian.GetParameter(0)
+print('par 0 was', fGaussian.GetParameter(0))
 peak = fGaussian.GetParameter(1)
 width = fGaussian.GetParameter(2)
 nsigPeak = fGaussian.Integral(peak-width,peak+width)/hmass.GetBinWidth(1)
 nbkgPeak = fBackground.Integral(peak-width,peak+width)/hmass.GetBinWidth(1)
 
-print 'signal', nsig
-print 'bkg', nbkg
+print('signal', nsig)
+print('bkg', nbkg)
 
 hmass.GetYaxis().SetRangeUser(0.0,1.3*hmass.GetMaximum())
 
@@ -145,7 +145,7 @@ c1.Write('c_kshorts_'+mode)
 hsig.Write()
 fGaussian.Write('fsignal')
 c1.Print('kshorts_'+mode+'.png')
-print 'just created', newfile.GetName()
+print('just created', newfile.GetName())
 newfile.Close()
 
 

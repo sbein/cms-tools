@@ -69,12 +69,12 @@ plot_single = args.single
 req_cut = None
 req_obs = None
 if plot_single:
-    print "Printing Single Plot"
+    print("Printing Single Plot")
     if args.cut is None:
-        print "Must provide cut with single option."
+        print("Must provide cut with single option.")
         exit(0)
     if args.obs is None:
-        print "Must provide obs with single option."
+        print("Must provide obs with single option.")
         exit(0)
     req_cut = args.cut[0]
     req_obs = args.obs[0]
@@ -93,8 +93,8 @@ class CustomInsertTH1F(UOFlowTH1F):
     def setInsertFunc(self, func):
         self.insertFunc = func
     def insert(self, c, lepFlavour, lep, li, track, ti, lj, params):
-        #print "In", self.GetName()
-        #print "Value", self.insertFunc(c, lepFlavour, lep, li, track, ti, lj, params)
+        #print("In", self.GetName())
+        #print("Value", self.insertFunc(c, lepFlavour, lep, li, track, ti, lj, params))
         self.Fill(self.insertFunc(c, lepFlavour, lep, li, track, ti, lj, params))
 
 def mediumId(c, lepFlavour, l, li, track, minCanT, ljet, params):
@@ -130,16 +130,16 @@ def passIso(c, lepFlavour, l, li, track, minCanT, ljet, params):
 def main():
     
 #     c = TChain('tEvent')
-#     print "Going to open the file"
-#     print input_file
+#     print("Going to open the file")
+#     print(input_file)
 #     c.Add(input_file)
     
     c = TChain('tEvent')
-    print "Opening", input_file
+    print("Opening", input_file)
     c.Add(input_file)
     
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     histograms = {"Zl" : {}, "MM" : {}}
     memory = []
@@ -205,7 +205,7 @@ def main():
         for lepType in lepTypes:
             for histDef in histoDefs:
                 name = histDef["name"] + "_" + cut["name"] + "_" + lepType
-                #print name
+                #print(name)
                 histograms[lepType][name] = CustomInsertTH1F(name, "", histDef["bins"], histDef["minX"], histDef["maxX"])
                 histograms[lepType][name].setInsertFunc(histDef["func"])
     
@@ -229,7 +229,7 @@ def main():
     
     for ientry in range(nentries):
         if ientry % 5000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
         
         #if c.tracks.size() == 0:
@@ -237,7 +237,7 @@ def main():
         
 #         rightProcess = analysis_ntuples.isX1X2X1Process(c)
 #         if not rightProcess:
-#             print "No"
+#             print("No")
 #             notCorrect += 1
 #             continue
             
@@ -264,7 +264,7 @@ def main():
 #             continue
 #         for i in  genZL:
 #             if abs(c.GenParticles_PdgId[i]) == 13:
-#                 print "WHAT"
+#                 print("WHAT")
 #                 exit(0)
         
         totalEvents += 1
@@ -279,9 +279,9 @@ def main():
             minT, minCanT = analysis_ntuples.minDeltaRLepTracks(l, c)
             if minCanT is None:
                 continue
-            #print "minT", minT, "minCanT", minCanT
+            #print("minT", minT, "minCanT", minCanT)
             if minT < 0.01 and c.GenParticles_PdgId[i] * c.tracks_charge[minCanT] < 0:
-                #print "GenParticles_PdgId[i]=", c.GenParticles_PdgId[i], " tracks_charge[minCanT]=", c.tracks_charge[minCanT]
+                #print("GenParticles_PdgId[i]=", c.GenParticles_PdgId[i], " tracks_charge[minCanT]=", c.tracks_charge[minCanT])
                 totalZlGenTracks += 1
         
         params = {}
@@ -290,7 +290,7 @@ def main():
         passedLep = 0
         
         for lepVal in [["Electrons", -11]]:#, ["Muons", -13]:#[["Muons", -13]]:#[["Electrons", -11]]:
-            #print lepVal
+            #print(lepVal)
             lepFlavour = lepVal[0]
             lepCharge = lepVal[1]
             
@@ -310,9 +310,9 @@ def main():
                 #if l.Pt() < 5:
                 #    continue
                 
-                #print iso
+                #print(iso)
                 
-                #print histograms
+                #print(histograms)
                 #exit(0)
 
                 minZ, minCanZ = analysis_ntuples.minDeltaRGenParticles(l, genZL, c.GenParticles)
@@ -341,17 +341,17 @@ def main():
                 
                 # if minT > 0.01:
 #                     if type == "Zl":
-#                         print "--------"
-#                         print "min=", min
-#                         print "type=", type
-#                         print "iso=", iso
-#                         print "passIso=", passIso
-#                         print "mediumId=", mediumID
-#                         print "tightId=", tightID
-#                         print "MT2Activity=", MT2Activity
-#                         print minT, minCanT
-#                         print "NO TRACK!!! len=", len(c.tracks) 
-#                         print "--------"
+#                         print("--------")
+#                         print("min=", min)
+#                         print("type=", type)
+#                         print("iso=", iso)
+#                         print("passIso=", passIso)
+#                         print("mediumId=", mediumID)
+#                         print("tightId=", tightID)
+#                         print("MT2Activity=", MT2Activity)
+#                         print(minT, minCanT)
+#                         print("NO TRACK!!! len=", len(c.tracks) )
+#                         print("--------")
                     #continue
                     
                 if type == "Zl":
@@ -381,7 +381,7 @@ def main():
             singleLep += 1
         
         # if passedLep != 1:
-#             print "What=", passedLep
+#             print("What=", passedLep)
         
         if passedLep == 2:
             dileptonTotal += 1
@@ -392,21 +392,21 @@ def main():
         else:
             moreTotal += 1
     
-    print "totalEvents=", totalEvents
-    print "Not Correct Procs=" + str(notCorrect)
-    print "totalZl=", totalZl
-    print "totalZlTracks=", totalZlTracks
-    print "totalGenZl=", totalGenZl
-    print "totalRecoLeps=", totalRecoLeps
-    print "totalZlGenTracks=", totalZlGenTracks
-    print "dileptonCorrect=", dileptonCorrect
-    print "singleLep=", singleLep
-    print "dileptonTotal=", dileptonTotal
-    print "singleTotal=", singleTotal
-    print "zeroTotal=", zeroTotal
-    print "moreTotal=", moreTotal
+    print("totalEvents=", totalEvents)
+    print("Not Correct Procs=" + str(notCorrect))
+    print("totalZl=", totalZl)
+    print("totalZlTracks=", totalZlTracks)
+    print("totalGenZl=", totalGenZl)
+    print("totalRecoLeps=", totalRecoLeps)
+    print("totalZlGenTracks=", totalZlGenTracks)
+    print("dileptonCorrect=", dileptonCorrect)
+    print("singleLep=", singleLep)
+    print("dileptonTotal=", dileptonTotal)
+    print("singleTotal=", singleTotal)
+    print("zeroTotal=", zeroTotal)
+    print("moreTotal=", moreTotal)
     
-    print passedCutsCount
+    print(passedCutsCount)
 
     c1 = TCanvas("c1", "c1", 800, 800)
     
@@ -457,7 +457,7 @@ def main():
         for histDef in histoDefs:
             if plot_single and req_obs != histDef["name"]:
                 continue
-            #print histDef
+            #print(histDef)
             
             for log in [True, False]:
                 if plot_single and log:
@@ -493,10 +493,10 @@ def main():
                     #h.SetMinimum(0)
                     legend.AddEntry(h, lepType, 'F')
                     if drawSame:
-                        #print "DRAW SAME", name, lepType
+                        #print("DRAW SAME", name, lepType)
                         h.Draw("HIST SAME")
                     else:
-                        #print "DRAW", name, lepType
+                        #print("DRAW", name, lepType)
                         needToDraw = True
                         h.GetXaxis().SetTitle(histDef['title'])
                         h.Draw("HIST")
@@ -513,7 +513,7 @@ def main():
         
         if needToDraw and not plot_single:
             for id in range(pId, 5):
-                print "Clearing pad " + str(id)
+                print("Clearing pad " + str(id))
                 pad = histPad.cd(id)
                 pad.Clear()
             c1.Print(OUTPUT_FILE);

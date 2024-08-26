@@ -180,6 +180,5 @@ echo "Number of jobs to be run: $job_count"
 echo "Your Condor submission file is: $output_file"
 
 
-echo $output_file
 condor_submit $output_file
 #rm $output_file

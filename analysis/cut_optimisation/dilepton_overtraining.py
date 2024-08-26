@@ -99,7 +99,7 @@ def plot_rocs():
 
         name = os.path.basename(dir)
         #cut = cuts[name]
-        print "Processing " + name
+        print("Processing " + name)
 
         file = [dir]
         c2.cd()
@@ -123,7 +123,7 @@ def plot_rocs():
         
         for mode in ([testBGHists[inx], trainBGHists[inx], testSignalHists[inx], trainSignalHists[inx], methods[inx], names[inx], ""], [testBGHistsCut[inx], trainBGHistsCut[inx], testSignalHistsCut[inx], trainSignalHistsCut[inx], methodsCut[inx], namesCut[inx], " - invMass Cut"]):
             testBGHist, trainBGHist, testSignalHist, trainSignalHist, method, name, title = mode
-            print "Title=" + title
+            print("Title=" + title)
             pad = histPad.cd(pId)
             if logScale:
                 pad.SetLogy()
@@ -205,9 +205,9 @@ def plot_rocs():
             break
 
     if needToDraw:
-        print "HERE"
+        print("HERE")
         for id in range(pId, 5):
-            print "Clearing pad " + str(id)
+            print("Clearing pad " + str(id))
             pad = histPad.cd(id)
             pad.Clear()
         c1.Print(outputFile);

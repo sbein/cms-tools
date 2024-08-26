@@ -34,16 +34,16 @@
 
 #include "TDataMember.h"
 
-// The generated code does not explicitly qualifies STL entities
-namespace std {} using namespace std;
-
 // Header files passed as explicit arguments
 #include "LeptonCollectionMap.h"
 
 // Header files passed via #pragma extra_include
 
+// The generated code does not explicitly qualify STL entities
+namespace std {} using namespace std;
+
 namespace ROOT {
-   static void *new_LeptonCollection(void *p = 0);
+   static void *new_LeptonCollection(void *p = nullptr);
    static void *newArray_LeptonCollection(Long_t size, void *p);
    static void delete_LeptonCollection(void *p);
    static void deleteArray_LeptonCollection(void *p);
@@ -52,8 +52,8 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const ::LeptonCollection*)
    {
-      ::LeptonCollection *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollection >(0);
+      ::LeptonCollection *ptr = nullptr;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollection >(nullptr);
       static ::ROOT::TGenericClassInfo 
          instance("LeptonCollection", ::LeptonCollection::Class_Version(), "LeptonCollectionMap.h", 8,
                   typeid(::LeptonCollection), ::ROOT::Internal::DefineBehavior(ptr, ptr),
@@ -68,14 +68,14 @@ namespace ROOT {
    }
    TGenericClassInfo *GenerateInitInstance(const ::LeptonCollection*)
    {
-      return GenerateInitInstanceLocal((::LeptonCollection*)0);
+      return GenerateInitInstanceLocal((::LeptonCollection*)nullptr);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollection*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollection*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 } // end of namespace ROOT
 
 namespace ROOT {
-   static void *new_LeptonCollectionArrayHasher(void *p = 0);
+   static void *new_LeptonCollectionArrayHasher(void *p = nullptr);
    static void *newArray_LeptonCollectionArrayHasher(Long_t size, void *p);
    static void delete_LeptonCollectionArrayHasher(void *p);
    static void deleteArray_LeptonCollectionArrayHasher(void *p);
@@ -85,8 +85,8 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const ::LeptonCollectionArrayHasher*)
    {
-      ::LeptonCollectionArrayHasher *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollectionArrayHasher >(0);
+      ::LeptonCollectionArrayHasher *ptr = nullptr;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollectionArrayHasher >(nullptr);
       static ::ROOT::TGenericClassInfo 
          instance("LeptonCollectionArrayHasher", ::LeptonCollectionArrayHasher::Class_Version(), "LeptonCollectionMap.h", 34,
                   typeid(::LeptonCollectionArrayHasher), ::ROOT::Internal::DefineBehavior(ptr, ptr),
@@ -102,14 +102,14 @@ namespace ROOT {
    }
    TGenericClassInfo *GenerateInitInstance(const ::LeptonCollectionArrayHasher*)
    {
-      return GenerateInitInstanceLocal((::LeptonCollectionArrayHasher*)0);
+      return GenerateInitInstanceLocal((::LeptonCollectionArrayHasher*)nullptr);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 } // end of namespace ROOT
 
 namespace ROOT {
-   static void *new_LeptonCollectionMap(void *p = 0);
+   static void *new_LeptonCollectionMap(void *p = nullptr);
    static void *newArray_LeptonCollectionMap(Long_t size, void *p);
    static void delete_LeptonCollectionMap(void *p);
    static void deleteArray_LeptonCollectionMap(void *p);
@@ -119,8 +119,8 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const ::LeptonCollectionMap*)
    {
-      ::LeptonCollectionMap *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollectionMap >(0);
+      ::LeptonCollectionMap *ptr = nullptr;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollectionMap >(nullptr);
       static ::ROOT::TGenericClassInfo 
          instance("LeptonCollectionMap", ::LeptonCollectionMap::Class_Version(), "LeptonCollectionMap.h", 47,
                   typeid(::LeptonCollectionMap), ::ROOT::Internal::DefineBehavior(ptr, ptr),
@@ -136,14 +136,14 @@ namespace ROOT {
    }
    TGenericClassInfo *GenerateInitInstance(const ::LeptonCollectionMap*)
    {
-      return GenerateInitInstanceLocal((::LeptonCollectionMap*)0);
+      return GenerateInitInstanceLocal((::LeptonCollectionMap*)nullptr);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollectionMap*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollectionMap*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 } // end of namespace ROOT
 
 namespace ROOT {
-   static void *new_LeptonCollectionFilesMap(void *p = 0);
+   static void *new_LeptonCollectionFilesMap(void *p = nullptr);
    static void *newArray_LeptonCollectionFilesMap(Long_t size, void *p);
    static void delete_LeptonCollectionFilesMap(void *p);
    static void deleteArray_LeptonCollectionFilesMap(void *p);
@@ -153,8 +153,8 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const ::LeptonCollectionFilesMap*)
    {
-      ::LeptonCollectionFilesMap *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollectionFilesMap >(0);
+      ::LeptonCollectionFilesMap *ptr = nullptr;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LeptonCollectionFilesMap >(nullptr);
       static ::ROOT::TGenericClassInfo 
          instance("LeptonCollectionFilesMap", ::LeptonCollectionFilesMap::Class_Version(), "LeptonCollectionMap.h", 61,
                   typeid(::LeptonCollectionFilesMap), ::ROOT::Internal::DefineBehavior(ptr, ptr),
@@ -170,14 +170,14 @@ namespace ROOT {
    }
    TGenericClassInfo *GenerateInitInstance(const ::LeptonCollectionFilesMap*)
    {
-      return GenerateInitInstanceLocal((::LeptonCollectionFilesMap*)0);
+      return GenerateInitInstanceLocal((::LeptonCollectionFilesMap*)nullptr);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 } // end of namespace ROOT
 
 //______________________________________________________________________________
-atomic_TClass_ptr LeptonCollection::fgIsA(0);  // static to hold class pointer
+atomic_TClass_ptr LeptonCollection::fgIsA(nullptr);  // static to hold class pointer
 
 //______________________________________________________________________________
 const char *LeptonCollection::Class_Name()
@@ -188,31 +188,31 @@ const char *LeptonCollection::Class_Name()
 //______________________________________________________________________________
 const char *LeptonCollection::ImplFileName()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)0x0)->GetImplFileName();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)nullptr)->GetImplFileName();
 }
 
 //______________________________________________________________________________
 int LeptonCollection::ImplFileLine()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)0x0)->GetImplFileLine();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)nullptr)->GetImplFileLine();
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollection::Dictionary()
 {
-   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)0x0)->GetClass();
+   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)nullptr)->GetClass();
    return fgIsA;
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollection::Class()
 {
-   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)0x0)->GetClass(); }
+   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollection*)nullptr)->GetClass(); }
    return fgIsA;
 }
 
 //______________________________________________________________________________
-atomic_TClass_ptr LeptonCollectionArrayHasher::fgIsA(0);  // static to hold class pointer
+atomic_TClass_ptr LeptonCollectionArrayHasher::fgIsA(nullptr);  // static to hold class pointer
 
 //______________________________________________________________________________
 const char *LeptonCollectionArrayHasher::Class_Name()
@@ -223,31 +223,31 @@ const char *LeptonCollectionArrayHasher::Class_Name()
 //______________________________________________________________________________
 const char *LeptonCollectionArrayHasher::ImplFileName()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)0x0)->GetImplFileName();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)nullptr)->GetImplFileName();
 }
 
 //______________________________________________________________________________
 int LeptonCollectionArrayHasher::ImplFileLine()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)0x0)->GetImplFileLine();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)nullptr)->GetImplFileLine();
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollectionArrayHasher::Dictionary()
 {
-   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)0x0)->GetClass();
+   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)nullptr)->GetClass();
    return fgIsA;
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollectionArrayHasher::Class()
 {
-   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)0x0)->GetClass(); }
+   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionArrayHasher*)nullptr)->GetClass(); }
    return fgIsA;
 }
 
 //______________________________________________________________________________
-atomic_TClass_ptr LeptonCollectionMap::fgIsA(0);  // static to hold class pointer
+atomic_TClass_ptr LeptonCollectionMap::fgIsA(nullptr);  // static to hold class pointer
 
 //______________________________________________________________________________
 const char *LeptonCollectionMap::Class_Name()
@@ -258,31 +258,31 @@ const char *LeptonCollectionMap::Class_Name()
 //______________________________________________________________________________
 const char *LeptonCollectionMap::ImplFileName()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)0x0)->GetImplFileName();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)nullptr)->GetImplFileName();
 }
 
 //______________________________________________________________________________
 int LeptonCollectionMap::ImplFileLine()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)0x0)->GetImplFileLine();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)nullptr)->GetImplFileLine();
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollectionMap::Dictionary()
 {
-   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)0x0)->GetClass();
+   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)nullptr)->GetClass();
    return fgIsA;
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollectionMap::Class()
 {
-   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)0x0)->GetClass(); }
+   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionMap*)nullptr)->GetClass(); }
    return fgIsA;
 }
 
 //______________________________________________________________________________
-atomic_TClass_ptr LeptonCollectionFilesMap::fgIsA(0);  // static to hold class pointer
+atomic_TClass_ptr LeptonCollectionFilesMap::fgIsA(nullptr);  // static to hold class pointer
 
 //______________________________________________________________________________
 const char *LeptonCollectionFilesMap::Class_Name()
@@ -293,26 +293,26 @@ const char *LeptonCollectionFilesMap::Class_Name()
 //______________________________________________________________________________
 const char *LeptonCollectionFilesMap::ImplFileName()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)0x0)->GetImplFileName();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)nullptr)->GetImplFileName();
 }
 
 //______________________________________________________________________________
 int LeptonCollectionFilesMap::ImplFileLine()
 {
-   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)0x0)->GetImplFileLine();
+   return ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)nullptr)->GetImplFileLine();
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollectionFilesMap::Dictionary()
 {
-   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)0x0)->GetClass();
+   fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)nullptr)->GetClass();
    return fgIsA;
 }
 
 //______________________________________________________________________________
 TClass *LeptonCollectionFilesMap::Class()
 {
-   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)0x0)->GetClass(); }
+   if (!fgIsA.load()) { R__LOCKGUARD(gInterpreterMutex); fgIsA = ::ROOT::GenerateInitInstanceLocal((const ::LeptonCollectionFilesMap*)nullptr)->GetClass(); }
    return fgIsA;
 }
 
@@ -466,7 +466,7 @@ namespace ROOT {
 namespace ROOT {
    static TClass *vectorlEintgR_Dictionary();
    static void vectorlEintgR_TClassManip(TClass*);
-   static void *new_vectorlEintgR(void *p = 0);
+   static void *new_vectorlEintgR(void *p = nullptr);
    static void *newArray_vectorlEintgR(Long_t size, void *p);
    static void delete_vectorlEintgR(void *p);
    static void deleteArray_vectorlEintgR(void *p);
@@ -475,10 +475,10 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const vector<int>*)
    {
-      vector<int> *ptr = 0;
+      vector<int> *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<int>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<int>", -2, "vector", 386,
+         instance("vector<int>", -2, "vector", 423,
                   typeid(vector<int>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEintgR_Dictionary, isa_proxy, 0,
                   sizeof(vector<int>) );
@@ -493,11 +493,11 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<int>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<int>*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlEintgR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<int>*)0x0)->GetClass();
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<int>*)nullptr)->GetClass();
       vectorlEintgR_TClassManip(theClass);
    return theClass;
    }
@@ -531,7 +531,7 @@ namespace ROOT {
 namespace ROOT {
    static TClass *vectorlEdoublegR_Dictionary();
    static void vectorlEdoublegR_TClassManip(TClass*);
-   static void *new_vectorlEdoublegR(void *p = 0);
+   static void *new_vectorlEdoublegR(void *p = nullptr);
    static void *newArray_vectorlEdoublegR(Long_t size, void *p);
    static void delete_vectorlEdoublegR(void *p);
    static void deleteArray_vectorlEdoublegR(void *p);
@@ -540,10 +540,10 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const vector<double>*)
    {
-      vector<double> *ptr = 0;
+      vector<double> *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<double>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<double>", -2, "vector", 386,
+         instance("vector<double>", -2, "vector", 423,
                   typeid(vector<double>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEdoublegR_Dictionary, isa_proxy, 0,
                   sizeof(vector<double>) );
@@ -558,11 +558,11 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<double>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<double>*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlEdoublegR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<double>*)0x0)->GetClass();
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<double>*)nullptr)->GetClass();
       vectorlEdoublegR_TClassManip(theClass);
    return theClass;
    }
@@ -596,7 +596,7 @@ namespace ROOT {
 namespace ROOT {
    static TClass *vectorlEboolgR_Dictionary();
    static void vectorlEboolgR_TClassManip(TClass*);
-   static void *new_vectorlEboolgR(void *p = 0);
+   static void *new_vectorlEboolgR(void *p = nullptr);
    static void *newArray_vectorlEboolgR(Long_t size, void *p);
    static void delete_vectorlEboolgR(void *p);
    static void deleteArray_vectorlEboolgR(void *p);
@@ -605,10 +605,10 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const vector<bool>*)
    {
-      vector<bool> *ptr = 0;
+      vector<bool> *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<bool>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<bool>", -2, "vector", 592,
+         instance("vector<bool>", -2, "vector", 690,
                   typeid(vector<bool>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEboolgR_Dictionary, isa_proxy, 0,
                   sizeof(vector<bool>) );
@@ -623,11 +623,11 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<bool>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<bool>*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlEboolgR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<bool>*)0x0)->GetClass();
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<bool>*)nullptr)->GetClass();
       vectorlEboolgR_TClassManip(theClass);
    return theClass;
    }
@@ -661,7 +661,7 @@ namespace ROOT {
 namespace ROOT {
    static TClass *vectorlETLorentzVectorgR_Dictionary();
    static void vectorlETLorentzVectorgR_TClassManip(TClass*);
-   static void *new_vectorlETLorentzVectorgR(void *p = 0);
+   static void *new_vectorlETLorentzVectorgR(void *p = nullptr);
    static void *newArray_vectorlETLorentzVectorgR(Long_t size, void *p);
    static void delete_vectorlETLorentzVectorgR(void *p);
    static void deleteArray_vectorlETLorentzVectorgR(void *p);
@@ -670,10 +670,10 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const vector<TLorentzVector>*)
    {
-      vector<TLorentzVector> *ptr = 0;
+      vector<TLorentzVector> *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<TLorentzVector>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<TLorentzVector>", -2, "vector", 386,
+         instance("vector<TLorentzVector>", -2, "vector", 423,
                   typeid(vector<TLorentzVector>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlETLorentzVectorgR_Dictionary, isa_proxy, 0,
                   sizeof(vector<TLorentzVector>) );
@@ -688,11 +688,11 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<TLorentzVector>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<TLorentzVector>*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlETLorentzVectorgR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<TLorentzVector>*)0x0)->GetClass();
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<TLorentzVector>*)nullptr)->GetClass();
       vectorlETLorentzVectorgR_TClassManip(theClass);
    return theClass;
    }
@@ -726,7 +726,7 @@ namespace ROOT {
 namespace ROOT {
    static TClass *unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR_Dictionary();
    static void unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR_TClassManip(TClass*);
-   static void *new_unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR(void *p = 0);
+   static void *new_unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR(void *p = nullptr);
    static void *newArray_unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR(Long_t size, void *p);
    static void delete_unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR(void *p);
    static void deleteArray_unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR(void *p);
@@ -735,7 +735,7 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const unordered_map<array<long,3>,string,LeptonCollectionArrayHasher>*)
    {
-      unordered_map<array<long,3>,string,LeptonCollectionArrayHasher> *ptr = 0;
+      unordered_map<array<long,3>,string,LeptonCollectionArrayHasher> *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(unordered_map<array<long,3>,string,LeptonCollectionArrayHasher>));
       static ::ROOT::TGenericClassInfo 
          instance("unordered_map<array<long,3>,string,LeptonCollectionArrayHasher>", -2, "unordered_map", 102,
@@ -753,11 +753,11 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const unordered_map<array<long,3>,string,LeptonCollectionArrayHasher>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const unordered_map<array<long,3>,string,LeptonCollectionArrayHasher>*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const unordered_map<array<long,3>,string,LeptonCollectionArrayHasher>*)0x0)->GetClass();
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const unordered_map<array<long,3>,string,LeptonCollectionArrayHasher>*)nullptr)->GetClass();
       unordered_maplEarraylElongcO3gRcOstringcOLeptonCollectionArrayHashergR_TClassManip(theClass);
    return theClass;
    }
@@ -791,7 +791,7 @@ namespace ROOT {
 namespace ROOT {
    static TClass *unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR_Dictionary();
    static void unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR_TClassManip(TClass*);
-   static void *new_unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR(void *p = 0);
+   static void *new_unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR(void *p = nullptr);
    static void *newArray_unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR(Long_t size, void *p);
    static void delete_unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR(void *p);
    static void deleteArray_unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR(void *p);
@@ -800,7 +800,7 @@ namespace ROOT {
    // Function generating the singleton type initializer
    static TGenericClassInfo *GenerateInitInstanceLocal(const unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher>*)
    {
-      unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher> *ptr = 0;
+      unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher> *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher>));
       static ::ROOT::TGenericClassInfo 
          instance("unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher>", -2, "unordered_map", 102,
@@ -818,11 +818,11 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher>*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher>*)0x0)->GetClass();
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const unordered_map<array<long,3>,LeptonCollection,LeptonCollectionArrayHasher>*)nullptr)->GetClass();
       unordered_maplEarraylElongcO3gRcOLeptonCollectioncOLeptonCollectionArrayHashergR_TClassManip(theClass);
    return theClass;
    }
@@ -857,12 +857,12 @@ namespace {
   void TriggerDictionaryInitialization_LeptonCollectionMapDict_Impl() {
     static const char* headers[] = {
 "LeptonCollectionMap.h",
-0
+nullptr
     };
     static const char* includePaths[] = {
-"/cvmfs/cms.cern.ch/slc7_amd64_gcc900/lcg/root/6.22.08-ljfedo/include/",
-"/nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_11_3_1/src/cms-tools/lib/classes/",
-0
+"/cvmfs/cms.cern.ch/el9_amd64_gcc12/lcg/root/6.26.11-bf905b525ba08330833d2acc7f29dee0/include/",
+"/nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_13_3_3/src/cms-tools/lib/classes/",
+nullptr
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(
 #line 1 "LeptonCollectionMapDict dictionary forward declarations' payload"
@@ -870,16 +870,6 @@ namespace {
 #pragma clang diagnostic ignored "-Wignored-attributes"
 #pragma clang diagnostic ignored "-Wreturn-type-c-linkage"
 extern int __Cling_AutoLoading_Map;
-namespace std{template <typename _Tp, std::size_t _Nm> struct __attribute__((annotate("$clingAutoload$array")))  __attribute__((annotate("$clingAutoload$LeptonCollectionMap.h")))  array;
-}
-class __attribute__((annotate("$clingAutoload$LeptonCollectionMap.h")))  LeptonCollection;
-class __attribute__((annotate("$clingAutoload$LeptonCollectionMap.h")))  LeptonCollectionArrayHasher;
-namespace std{template <typename _Tp = void> struct __attribute__((annotate("$clingAutoload$bits/stl_function.h")))  __attribute__((annotate("$clingAutoload$string")))  equal_to;
-}
-namespace std{template <typename _T1, typename _T2> struct __attribute__((annotate("$clingAutoload$bits/stl_pair.h")))  __attribute__((annotate("$clingAutoload$string")))  pair;
-}
-namespace std{template <typename _Tp> class __attribute__((annotate("$clingAutoload$bits/allocator.h")))  __attribute__((annotate("$clingAutoload$string")))  allocator;
-}
 class __attribute__((annotate("$clingAutoload$LeptonCollectionMap.h")))  LeptonCollectionMap;
 class __attribute__((annotate("$clingAutoload$LeptonCollectionMap.h")))  LeptonCollectionFilesMap;
 )DICTFWDDCLS";

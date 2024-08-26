@@ -40,4 +40,4 @@ for f in fileList :
 	c = TChain("TreeMaker2/PreSelection");
 	c.Add(f)
 	c.GetEntry(0)
-	print f + " " + str(c.CrossSection)
+	print(f + " " + str(c.CrossSection))

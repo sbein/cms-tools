@@ -41,7 +41,7 @@ signal = args.signal
 bg = args.bg
 sc = args.sc
 
-print "SAME CHARGE=", sc
+print("SAME CHARGE=", sc)
 
 input_file = None
 if args.input_file:
@@ -66,7 +66,7 @@ def main():
     
     for ientry in range(nentries):
         if ientry % 100 == 0:
-            print "Processing " + str(ientry) + " out of " + str(nentries)
+            print("Processing " + str(ientry) + " out of " + str(nentries))
         c.GetEntry(ientry)
         
         var_MinDeltaPhiMetJets = analysis_ntuples.eventMinDeltaPhiMetJets25Pt2_4Eta(c.Jets, c.MET, c.METPhi)

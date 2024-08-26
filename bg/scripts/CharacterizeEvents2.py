@@ -129,7 +129,7 @@ for selkey in anabins:
 	c1.Write('c_'+str(selkey)+'_'+histkey+'_'+anabins[selkey].replace(' && ','&').replace('==','='))
 	c1.Print('pdfs/kinematics/'+str(selkey)+'_'+histkey+'_'+anabins[selkey].replace(' && ','&').replace('==','=')+'.pdf')
 	#pause()
-print 'just created', fnew.GetName()
+print('just created', fnew.GetName())
 fnew.Close()
 		
 
@@ -149,7 +149,7 @@ for model in sorted(sigcounts.keys()):
 		max_value2 = heapq.nlargest(2, binnedSensitivityDict[model].values())[1]		
 		max_keys = [k for k, v in binnedSensitivityDict[model].items() if v == max_value]
 		max_keys2 = [k for k, v in binnedSensitivityDict[model].items() if v == max_value2]		
-		#print 'len(max_keys)', len(max_keys)		
+		#print('len(max_keys)', len(max_keys)		)
 		theline = '\\texttt{%s} & %s & %.1f &  %.1f & \\textbf{%.1f} & %s & %.1f & %.1f & \\textbf{%.1f} & \\textbf{%.1f}' % (model.replace('_',r'\_'), max_keys[0].replace('sr',''),sigcounts[model][max_keys[0]], bkgcounts[max_keys[0]],binnedSensitivityDict[model][max_keys[0]],max_keys2[0].replace('sr',''),sigcounts[model][max_keys2[0]],bkgcounts[max_keys2[0]], binnedSensitivityDict[model][max_keys2[0]], sensitivityDict[model])+r'\\'
 		textable+=theline+'\n'
 	  # maximum value
@@ -159,15 +159,15 @@ textable+=r'''\end{tabular}
 \end{itemize}
 }
 '''
-print textable
+print(textable)
 	
 
 		
 '''
 for selkey in anabins:
-	#print '='*5+selkey+'='*5
-	#print 'n(bkg)=%2f' % bkgcounts[selkey]
+	#print('='*5+selkey+'='*5)
+	#print('n(bkg)=%2f' % bkgcounts[selkey])
 	for key in SignalChainDict:
 		model = '_'.join(key.split('_')[2:])
-		#print 'n('+model+')=%2f, sigma=%2f' % (sigcounts[model][selkey], binnedSensitivityDict[model][selkey])
+		#print('n('+model+')=%2f, sigma=%2f' % (sigcounts[model][selkey], binnedSensitivityDict[model][selkey]))
 '''

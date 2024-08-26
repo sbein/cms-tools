@@ -288,12 +288,12 @@ plot_single = args.single
 req_cut = None
 req_obs = None
 if plot_single:
-    print "Printing Single Plot"
+    print("Printing Single Plot")
     if args.cut is None:
-        print "Must provide cut with single option."
+        print("Must provide cut with single option.")
         exit(0)
     if args.obs is None:
-        print "Must provide obs with single option."
+        print("Must provide obs with single option.")
         exit(0)
     req_cut = args.cut[0]
     req_obs = args.obs[0]
@@ -528,14 +528,14 @@ def styleHist(hist, onlyY = False):
         hist.GetXaxis().SetLabelSize(10);
 
 def createPlots(rootfiles, type, histograms, weight=1):
-    print "Processing "
-    print rootfiles
+    print("Processing ")
+    print(rootfiles)
     lumiSecs = LumiSectMap()
     
     for f in rootfiles:
-        print f
+        print(f)
         if os.path.basename(f) in ignore_bg_files:
-            print "File", f, "in ignore list. Skipping..."
+            print("File", f, "in ignore list. Skipping...")
             continue
         rootFile = TFile(f)
         c = rootFile.Get('tEvent')
@@ -545,10 +545,10 @@ def createPlots(rootfiles, type, histograms, weight=1):
             col.Add(lumis)
             lumiSecs.Merge(col)
         nentries = c.GetEntries()
-        print 'Analysing', nentries, "entries"
+        print('Analysing', nentries, "entries")
         for ientry in range(nentries):
             if ientry % 10000 == 0:
-                print "Processing " + str(ientry)
+                print("Processing " + str(ientry))
             c.GetEntry(ientry)
             
             for cut in cuts:
@@ -568,8 +568,8 @@ def createPlots(rootfiles, type, histograms, weight=1):
                     
                     hist = histograms[histName]
                     if type != "data":
-                        #print "Weight=", c.Weight
-                        #print "weight=", weight
+                        #print("Weight=", c.Weight)
+                        #print("weight=", weight)
                         if hist_def.get("func") is not None:
                             hist.Fill(hist_def["func"](c), c.Weight * weight)
                         else:
@@ -580,7 +580,7 @@ def createPlots(rootfiles, type, histograms, weight=1):
     
     if type == "data":
         if calculatedLumi.get('MET') is not None:
-            print "Found lumi=" + str(calculatedLumi['MET'])
+            print("Found lumi=" + str(calculatedLumi['MET']))
             return calculatedLumi['MET']
         else:
             return utils.calculateLumiFromLumiSecs(lumiSecs)
@@ -592,14 +592,14 @@ def createPlots(rootfiles, type, histograms, weight=1):
 
 
 def createPlotsFast(rootfiles, type, histograms, weight=1, prefix=""):
-    print "Processing "
-    print rootfiles
+    print("Processing ")
+    print(rootfiles)
     lumiSecs = LumiSectMap()
     
     for f in rootfiles:
-        print f
+        print(f)
         if os.path.basename(f) in ignore_bg_files:
-            print "File", f, "in ignore list. Skipping..."
+            print("File", f, "in ignore list. Skipping...")
             continue
         rootFile = TFile(f)
         c = rootFile.Get('tEvent')
@@ -628,7 +628,7 @@ def createPlotsFast(rootfiles, type, histograms, weight=1, prefix=""):
                     condition += " && " + hist_def["cond"]
                 if type != "data":
                     drawString = weightString[plot_kind] + " * " + str(weight) + "* Weight * (" + condition + ")"
-                    #print "drawString=" + drawString
+                    #print("drawString=" + drawString)
                     if plot_log_x and hist_def["obs"] == "invMass":
                         hist = utils.getRealLogxHistogramFromTree(histName, c, hist_def.get("obs"), hist_def.get("bins"), hist_def.get("minX"), hist_def.get("maxX"), drawString, plot_overflow)
                     else:
@@ -641,7 +641,7 @@ def createPlotsFast(rootfiles, type, histograms, weight=1, prefix=""):
                 if hist is None:
                     continue
                 #if "leptonF" in histName:
-                #    print "Made leptonFlavour for", histName, hist.GetXaxis().GetNbins()
+                #    print("Made leptonFlavour for", histName, hist.GetXaxis().GetNbins())
                 hist.GetXaxis().SetTitle("")
                 hist.SetTitle("")
                 hist.Sumw2()
@@ -660,7 +660,7 @@ def createPlotsFast(rootfiles, type, histograms, weight=1, prefix=""):
         #return calculatedLumi.get('SingleMuon')
         
         if calculatedLumi.get('MET') is not None:
-            print "Found lumi=" + str(calculatedLumi['MET'])
+            print("Found lumi=" + str(calculatedLumi['MET']))
             return calculatedLumi['MET']
         else:
             return utils.calculateLumiFromLumiSecs(lumiSecs)
@@ -678,7 +678,7 @@ def createRandomHist(name):
     return h
     
 def createCRPads(pId, ratioPads, twoRations = False):
-    print "Creating pads for id", pId
+    print("Creating pads for id", pId)
 
     histLowY = 0.21
     if twoRations:
@@ -712,7 +712,7 @@ def createCRPads(pId, ratioPads, twoRations = False):
     return histCPad, histRPad
 
 def plotRatio(c1, pad, memory, dataHist, newBgHist, hist_def, title = "Data / BG",setTitle = True):
-    print "Plotting ratio!"
+    print("Plotting ratio!")
 
     pad.cd()
     pad.SetGridx()
@@ -757,7 +757,7 @@ def createAllHistograms(histograms, sumTypes):
                 histograms_defs = [obs]
                 break
         if not foundReqObs:
-            print "Could not find obs " + req_obs
+            print("Could not find obs " + req_obs)
             exit(0)
         for cut in cuts:
             if cut["name"] == req_cut:
@@ -765,7 +765,7 @@ def createAllHistograms(histograms, sumTypes):
                 cuts = [cut]
                 break
         if not foundReqCut:
-            print "Could not find cut " + req_cut
+            print("Could not find cut " + req_cut)
             exit(0)
             
     if not plot_rand:
@@ -795,10 +795,10 @@ def createAllHistograms(histograms, sumTypes):
                     sumTypes[type] = {}
                 #sumTypes[types[0]][types[1]] = True
 
-        print sumTypes
+        print(sumTypes)
         
         if not plot_fast:
-            print "NOT PLOTTING FAST"
+            print("NOT PLOTTING FAST")
             for cut in cuts:
                     for hist_def in histograms_defs:
                         baseName = cut["name"] + "_" + hist_def["obs"]
@@ -826,20 +826,20 @@ def createAllHistograms(histograms, sumTypes):
                 calculated_lumi = createPlotsFast(dataFiles, "data", histograms)
             else:
                 calculated_lumi = createPlots(dataFiles, "data", histograms)
-            print "Calculated Luminosity: ", calculated_lumi
+            print("Calculated Luminosity: ", calculated_lumi)
             weight = calculated_lumi * 1000
         else:
-            print "HERE"
+            print("HERE")
             weight = utils.LUMINOSITY
         
         if plot_data and plot_sc:
-            print "CREATING SC CATEGORY!"
+            print("CREATING SC CATEGORY!")
             dataFiles = glob(sc_data_dir + "/*")
             createPlotsFast(dataFiles, "data", histograms, 1, "sc")
     
         if plot_signal:
             if plot_fast:
-                print "Plotting Signal Fast"
+                print("Plotting Signal Fast")
                 for signalFile in signal_dir:
                     signalBasename = os.path.basename(signalFile)
                     createPlotsFast([signalFile], signalBasename, histograms, weight)
@@ -852,19 +852,19 @@ def createAllHistograms(histograms, sumTypes):
             if bg_retag:
                 bgFilesToPlot = []
                 if choose_bg_files:
-                    print "In choose_bg_files"
+                    print("In choose_bg_files")
                     for bgChooseType in choose_bg_files_list:
                         if utils.isCoumpoundType(bgChooseType):
-                            print "Compound", bgChooseType
+                            print("Compound", bgChooseType)
                             bgFilesToPlot.extend(utils.getFilesForCompoundType(bgChooseType, bg_dir))
-                            print bgFilesToPlot
+                            print(bgFilesToPlot)
                         else:
-                            print "Not in compound", bgChooseType
+                            print("Not in compound", bgChooseType)
                             bgFilesToPlot.extend(glob(bg_dir + "/*" + bgChooseType + "_*.root"))
                 else:
                     bgFilesToPlot = allBgFiles
                 
-                print "Summing type", type
+                print("Summing type", type)
 
                 if plot_fast:
                     createPlotsFast(bgFilesToPlot, type, histograms, str(weight) + " * " + bgReTagging[type])
@@ -876,9 +876,9 @@ def createAllHistograms(histograms, sumTypes):
                 #if type == "ZJetsToNuNu" or type == "WJetsToLNu":
                 #    continue
                 if choose_bg_files and type not in choose_bg_files_list:
-                    print "Skipping type", type, "because not in chosen list"
+                    print("Skipping type", type, "because not in chosen list")
                     continue
-                print "Summing type", type
+                print("Summing type", type)
                 rootfiles = glob(bg_dir + "/*" + type + "_*.root")
                 if plot_fast:
                     createPlotsFast(rootfiles, type, histograms, weight)
@@ -888,10 +888,10 @@ def createAllHistograms(histograms, sumTypes):
             for cType in utils.compoundTypes:
                 
                 if choose_bg_files and cType not in choose_bg_files_list:
-                    print "Skipping cType", cType, "because not in chosen list"
+                    print("Skipping cType", cType, "because not in chosen list")
                     continue
                 
-                print "Creating compound type", cType
+                print("Creating compound type", cType)
                 
                 rootFiles = utils.getFilesForCompoundType(cType, bg_dir)
                 if len(rootFiles):
@@ -900,16 +900,16 @@ def createAllHistograms(histograms, sumTypes):
                     else:
                         createPlots(rootFiles, cType, histograms, weight)
                 else:
-                    print "**Couldn't find file for " + cType
+                    print("**Couldn't find file for " + cType)
         
         if plot_sc:
-            print "CREATING SC CATEGORY!"
+            print("CREATING SC CATEGORY!")
             
             bgFilesToPlot = []
             if choose_bg_files and choose_bg_files_for_sc:
                 for bgChooseType in choose_bg_files_list:
                     if utils.isCoumpoundType(bgChooseType):
-                        print bgChooseType, "is a compound type!"
+                        print(bgChooseType, "is a compound type!")
                         bgFilesToPlot.extend(utils.getFilesForCompoundType(bgChooseType, sc_bg_dir))
                     else:
                         bgFilesToPlot.extend(glob(sc_bg_dir + "/*" + bgChooseType + "_*.root"))
@@ -969,14 +969,14 @@ def createAllHistograms(histograms, sumTypes):
                                 data_hist.SetBinContent(i, 0)
                                 continue
                             if ((0.1 * signal_num / math.sqrt(bg_num)) > 0.1):
-                                print "Blinding bin", i, "for", histName
+                                print("Blinding bin", i, "for", histName)
                                 data_hist.SetBinContent(i, 0)
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     #deltaM = utils.getDmFromFileName(signal_dir[0])
-    #print "deltaM=" + deltaM
+    #print("deltaM=" + deltaM)
 
     histograms = {}
     sumTypes = {}
@@ -987,7 +987,7 @@ def main():
     
     createAllHistograms(histograms, sumTypes)
 
-    print "Plotting observable"
+    print("Plotting observable")
 
     c1 = TCanvas("c1", "c1", 800, 800)
     
@@ -1038,7 +1038,7 @@ def main():
         bgNum = 0
         
         cutName = cut["name"]
-        print "Cut " + cutName
+        print("Cut " + cutName)
         if plot_title:
             t.Clear()
             t.AddText(cut["title"])
@@ -1070,8 +1070,8 @@ def main():
                 pad = histCPad
                 pad.cd()
             
-            #print "*", ratioPads
-            #print histCPad, histRPad
+            #print("*", ratioPads)
+            #print(histCPad, histRPad)
             #exit(0)
             hs = THStack(str(plot_num),"")
             plot_num += 1
@@ -1120,14 +1120,14 @@ def main():
                         sigHistName += hist_def["namePostfix"]
                     sigHistsNames.append(sigHistName)
                     sigHist = histograms[sigHistName]
-                    print sigHistName, sigHist.GetMaximum()
+                    print(sigHistName, sigHist.GetMaximum())
                     sigHists.append(sigHist)
                     utils.formatHist(sigHist, utils.signalCp[i], 0.8)
                     sigMax = max(sigHist.GetMaximum(), sigMax)
             maximum = sigMax
             if foundBg:
                 bgMax = hs.GetMaximum()
-                print "Bg coung:", bgMax
+                print("Bg coung:", bgMax)
                 maximum = max(bgMax, sigMax)
             if plot_data:
                 dataHist = histograms[dataHistName]
@@ -1161,9 +1161,9 @@ def main():
                         newBgHist.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else "GeV")#hist_def["obs"])
                     else:
                         if newBgHist is not None and newBgHist.GetNhists() > 0:
-                            print hist_def
-                            print newBgHist
-                            print newBgHist.GetXaxis()
+                            print(hist_def)
+                            print(newBgHist)
+                            print(newBgHist.GetXaxis())
                             newBgHist.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else hist_def["obs"])
                 if newBgHist.GetHists() is not None and newBgHist.GetNhists() > 0:
                     newBgHist.GetYaxis().SetTitle("Number of events")
@@ -1204,7 +1204,7 @@ def main():
 #                 for bgHist in newBgHist.GetHists():
 #                     bgNum += bgHist.Integral(1, bgHist.FindBin(8))
 #                 significance = 0.1*sigNum/math.sqrt(bgNum)
-                print "cutName ", cutName, "sig", significance
+                print("cutName ", cutName, "sig", significance)
                 if not plot_single and plot_significance:
                     pt = TPaveText(.60,.1,.95,.2, "NDC")
                     pt.SetFillColor(0)
@@ -1264,19 +1264,19 @@ def main():
             
             c1.Update()
             
-            #print "**", ratioPads
+            #print("**", ratioPads)
             
             if plot_ratio or plot_custom_ratio > 0:
                 if plot_sc:
-                    #print "Going to plot for ", histRPad, dataHist, scDataHist, hist_def
+                    #print("Going to plot for ", histRPad, dataHist, scDataHist, hist_def)
                     
-                    #print "***********", pId, ratioPads
+                    #print("***********", pId, ratioPads)
                     stackSum = utils.getStackSum(newBgHist)
                     memory.append(stackSum)
                     plotRatio(c1, histRPad, memory, stackSum, scBgHist, hist_def, "Bg / Bg")
                     if plot_data:
                         plotRatio(c1, histR2Pad, memory, dataHist, scDataHist, hist_def, "Data / Data", False)
-                    #print "-------", pId, ratioPads
+                    #print("-------", pId, ratioPads)
                 else:
                     if plot_custom_ratio > 0:
                         bgHists = hs.GetHists()
@@ -1313,7 +1313,7 @@ def main():
                         memory.append(stackSum)
                         plotRatio(c1, histRPad, memory, dataHist, stackSum, hist_def)
             
-            #print "***", ratioPads
+            #print("***", ratioPads)
             
             if plot_single:
                 utils.stamp_plot()
@@ -1333,7 +1333,7 @@ def main():
             linBgHist.SetMaximum(maximum*1.1)
             linBgHist.SetMinimum(0)
             
-            #print "****", ratioPads
+            #print("****", ratioPads)
             
             pad = histPad.cd(pId)
             histCPad = None
@@ -1343,7 +1343,7 @@ def main():
                 if ratioPads.get(pId) is None:
                     if (plot_sc and plot_data) or plot_custom_ratio > 1:
                         histCPad, histRPad, histR2Pad = createCRPads(pId, ratioPads, True)
-                        #print "After:", histCPad, histRPad, histR2Pad
+                        #print("After:", histCPad, histRPad, histR2Pad)
                     else:
                         histCPad, histRPad = createCRPads(pId, ratioPads)
                 else:
@@ -1351,9 +1351,9 @@ def main():
                     histRPad = ratioPads[pId][1]
                     if (plot_sc and plot_data) or plot_custom_ratio > 1:
                         histR2Pad = ratioPads[pId][2]
-                    #print "Was trying to get Id", pId, ratioPads
-                    #print "After in here", histCPad, histRPad, histR2Pad
-                print "Assigning ", histCPad
+                    #print("Was trying to get Id", pId, ratioPads)
+                    #print("After in here", histCPad, histRPad, histR2Pad)
+                print("Assigning ", histCPad)
                 pad = histCPad
                 pad.cd()
             else:
@@ -1448,7 +1448,7 @@ def main():
         
         if needToDraw and not plot_single:
             for id in range(pId, 5):
-                print "Clearing pad " + str(id)
+                print("Clearing pad " + str(id))
                 pad = histPad.cd(id)
                 if plot_ratio:
                     ratioPads[pId][0].Clear()
@@ -1464,11 +1464,11 @@ def main():
         
     c1.Print(output_file+"]");
     if create_canvas:
-        print "Just created", canvasFile.GetName()
+        print("Just created", canvasFile.GetName())
         canvasFile.Close()
     
     
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     exit(0)
 
 main()

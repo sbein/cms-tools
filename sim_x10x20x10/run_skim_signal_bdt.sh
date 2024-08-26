@@ -125,4 +125,4 @@ done
 
 condor_submit $output_file
 echo "log file: $output_file"
-rm $output_file
+#rm $output_file

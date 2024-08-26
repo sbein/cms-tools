@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -122,7 +122,7 @@ def main():
         
                 bg_hist.Draw("HIST")
                 
-                #print "BinWidth", bg_hist.GetBinWidth()
+                #print("BinWidth", bg_hist.GetBinWidth())
                 # print("*********GetNbinsX", bg_hist.GetNbinsX())
 #                 for ibin in range(1, bg_hist.GetNbinsX()):
 #                     print("BinWidth", bg_hist.GetBinWidth(ibin))

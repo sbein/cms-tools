@@ -29,7 +29,7 @@ args = parser.parse_args()
 state = args.state[0]
 
 if state not in STATES:
-    print "No such state: " + state
+    print("No such state: " + state)
     exit(1)
 
 def createDef():

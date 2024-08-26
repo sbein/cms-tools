@@ -34,11 +34,11 @@ if args.input:
     input = args.input[0]
 ######## END OF CMDLINE ARGUMENTS ########
 
-print "Running for input: " + input
+print("Running for input: " + input)
 
 def main():
 
-    print "Plotting observable"
+    print("Plotting observable")
 
     c1 = TCanvas("c1", "c1", 800, 800)
     c1.SetBottomMargin(0.16)
@@ -55,7 +55,7 @@ def main():
     
     files = [input]
     
-    print files
+    print(files)
     
     sh = utils.UOFlowTH1F("sh", "", 30, 0, 8)
     bh = utils.UOFlowTH1F("bh", "", 30, 0, 8)
@@ -66,15 +66,15 @@ def main():
         f = TFile(file)
         c = f.Get('tEvent')
         nentries = c.GetEntries()
-        print 'Analysing', nentries, "entries"
+        print('Analysing', nentries, "entries")
         for ientry in range(nentries):
             c.GetEntry(ientry)
             if ientry % 1000 == 0:
-                print "Processing " + str(ientry) + " weight=" + str(c.Weight)
+                print("Processing " + str(ientry) + " weight=" + str(c.Weight))
             if analysis_ntuples.isX1X2X1Process(c):
                 genZL, genNonZL = analysis_ntuples.classifyGenZLeptons(c)
                 if genZL is None:
-                    print "WHAT?!"
+                    print("WHAT?!")
                     continue
                 nL = c.Electrons.size() + c.Muons.size()
                 l1 = None
@@ -88,14 +88,14 @@ def main():
                 if l1 is not None:
                     if l1.Pt() < 5 or l2.Pt() < 5:
                         continue
-                    #print l1, genZL, c
+                    #print(l1, genZL, c)
                     minZ, minCanZ = analysis_ntuples.minDeltaRGenParticles(l1, genZL, c.GenParticles)
                     if minZ > 0.1:
-                        #print "NO"
+                        #print("NO")
                         continue
                     minZ, minCanZ = analysis_ntuples.minDeltaRGenParticles(l2, genZL, c.GenParticles)
                     if minZ > 0.1:
-                        #print "NO"
+                        #print("NO")
                         continue
                     sh.Fill((l1 + l2).M(), c.Weight)
                 else:
@@ -138,7 +138,7 @@ def main():
                         elif minNZ is None or minZ < minNZ:
                             if c.tracks_charge[ti] * c.GenParticles_PdgId[minCanZ] < 0:
                                 result = "Zl"
-                                #print "Found!"
+                                #print("Found!")
                             else:
                                 result = "MM"
                         else:

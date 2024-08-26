@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from ROOT import *
 from glob import glob
@@ -12,7 +12,7 @@ from array import array
 # gSystem.Load("libDataFormatsFWLite.so");
 # FWLiteEnabler.enable()
 
-# load FWlite python libraries
+# load FWlite python3 libraries
 # from DataFormats.FWLite import Handle, Events
 # import FWCore.ParameterSet.Config as cms
 
@@ -41,7 +41,7 @@ def printTree(particleRef, shouldTrimTree = False, space=0):
 	delim = ""
 	if space > 0:
 		delim = "|- "
-	print ("|  " * space) + delim + str(particle.pdgId()) + "(" + str(particle.status()) + ")" + "(" + str(particle.isLastCopy()) + ")"
+	print(("|  " * space) + delim + str(particle.pdgId()) + "(" + str(particle.status()) + ")" + "(" + str(particle.isLastCopy()) + ")")
 	if particle.numberOfDaughters() == 0:
 		return
 	for p in range(particle.numberOfDaughters()):
@@ -63,7 +63,7 @@ def handleX10X20X10Gen(x20, x10, event):
 	p1v = TLorentzVector(p1.px(), p1.py(), p1.pz(), p1.energy())
 	p2v = TLorentzVector(p2.px(), p2.py(), p2.pz(), p2.energy())
 	invMass = (p1v + p2v).M()
-	#print "invMass=" + str(invMass) + "(" + str(p1.pdgId())+","+str(p2.pdgId())+")" +"(" + str(p1.isElectron())+","+str(p2.isMuon())+")"
+	#print("invMass=" + str(invMass) + "(" + str(p1.pdgId())+","+str(p2.pdgId())+")" +"(" + str(p1.isElectron())+","+str(p2.isMuon())+")")
 	utils.fillHistWithCuts("InvMassGen", invMass, histList, cutsDef, "aod", event)
 
 def handleX10X20X10MET(event, nj):
@@ -170,7 +170,7 @@ def handleX10X20X10NLGen(genParticles, event):
 				utils.fillHistWithCuts("MatchLep", 1, histList, cutsDef, "aod", event)
 			else:
 				utils.fillHistWithCuts("MatchLep", 0, histList, cutsDef, "aod", event)
-				#print minCan.pdgId(), " ", part.pdgId()
+				#print(minCan.pdgId(), " ", part.pdgId())
 			if l1 is None:
 				l1 = part
 			else:
@@ -210,7 +210,7 @@ def printEvent(genParticles):
 	products = genParticles.product()
 	for j,product in enumerate(products):
   		if product.pdgId() == 2212 and product.isLastCopy():
-  			print "----------------"
+  			print("----------------")
    			printTree(product, True)
    			break
 
@@ -240,7 +240,7 @@ def process(events):
 		rightX20 = False
 		x20 = None
 		x10 = None
-		#print "-----"
+		#print("-----")
 		for j,product in enumerate(products):
 			pdgId = product.pdgId()
 			
@@ -291,10 +291,10 @@ numberOfX10X20X10Processes = 0
 for f in FileList : 
 	events = Events(f)
 	numberOfX10X20X10Processes += process(events)
-	print "Processed ", numberOfX10X20X10Processes, " X10X20X10 events." 
+	print("Processed ", numberOfX10X20X10Processes, " X10X20X10 events." )
 
-print "-------------------------"
-print "Processed ", numberOfX10X20X10Processes, " X10X20X10 events."
+print("-------------------------")
+print("Processed ", numberOfX10X20X10Processes, " X10X20X10 events.")
 
 fnew = TFile("x10x20x10.root", "recreate")
 
@@ -302,7 +302,7 @@ sigma = 50. #fb
 LUMINOSITY = 35.900 #1/fb
 N = histList["HT"].Integral(-1,99999999)+0.000000000001
 
-print "Number of HT event " + str(N)
+print("Number of HT event " + str(N))
 
 weight = sigma * LUMINOSITY / N
 

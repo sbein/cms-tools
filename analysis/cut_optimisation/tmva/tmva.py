@@ -37,14 +37,14 @@ else:
 no_norm = args.no_norm
 all = args.all
 
-print "No norm=" + str(no_norm)
-print "All=" + str(all)
+print("No norm=" + str(no_norm))
+print("All=" + str(all))
 
 	
 ######## END OF CMDLINE ARGUMENTS ########
 
 dir = os.path.dirname(output_file_name)
-print "Changing directory to", dir
+print("Changing directory to", dir)
 os.chdir(dir)
 
 gROOT.SetBatch(1)
@@ -69,7 +69,7 @@ bgFiles = []
 bTrees = []
 bFileNames =  glob(bg_dir + "/*");
 for f in bFileNames:
-    print "Adding file " + f
+    print("Adding file " + f)
     bFile = TFile(f, "update")
     bgFiles.append(bFile)
     bTree = bFile.Get("tEvent")

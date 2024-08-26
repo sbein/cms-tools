@@ -26,16 +26,16 @@ parser.add_argument('-bg', '--background', dest='bg', help='Background', action=
 parser.add_argument('-data', '--data', dest='data', help='Data', action='store_true')
 args = parser.parse_args()
 
-print args
+print(args)
 
 madHTgt = None
 madHTlt = None
 if args.madHTgt:
     madHTgt = int(args.madHTgt[0])
-    print "Got madHT lower bound of " + str(madHTgt)
+    print("Got madHT lower bound of " + str(madHTgt))
 if args.madHTlt:
     madHTlt = int(args.madHTlt[0])
-    print "Got madHT upper bound of " + str(madHTlt)
+    print("Got madHT upper bound of " + str(madHTlt))
 
 
 signal = args.signal
@@ -59,7 +59,7 @@ def main():
     chain.Add(input_file)
     c = chain.CloneTree()
     chain = None
-    print "Creating " + output_file
+    print("Creating " + output_file)
     fnew = TFile(output_file,'recreate')
 
     hHt = TH1F('hHt','hHt',100,0,3000)
@@ -116,7 +116,7 @@ def main():
     tEvent.Branch('MinDeltaPhiMhtJets', var_MinDeltaPhiMhtJets,'MinDeltaPhiMhtJets/D')
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     count = 0
     afterPreselection = 0
@@ -134,10 +134,10 @@ def main():
                 crossSection = utils.crossSections.get(filename)
             else:
                 crossSection = 1.21547
-    print "Starting Loop"
+    print("Starting Loop")
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         c.GetEntry(ientry)
 
         ### MADHT ###
@@ -158,7 +158,7 @@ def main():
                 runs[runnum].append(lumisec)
 
         hHt.Fill(c.HT)
-        #print "crossSection=" + str(crossSection)
+        #print("crossSection=" + str(crossSection))
         hHtWeighted.Fill(c.HT, crossSection)
 
         if not rightProcess:
@@ -183,19 +183,19 @@ def main():
                 genLeps.append(ipart)
         
         if len(genLeps) != 2 or abs(c.GenParticles_PdgId[genLeps[0]]) != abs(c.GenParticles_PdgId[genLeps[1]]) or c.GenParticles_PdgId[genLeps[0]] * c.GenParticles_PdgId[genLeps[1]] > 0:
-           #  print "*********"
-#             print "No!!! size=" + str(len(genLeps))
+           #  print("*********")
+#             print("No!!! size=" + str(len(genLeps)))
 #             for i in genLeps:
-#                 print c.GenParticles_ParentId[i]
+#                 print(c.GenParticles_ParentId[i])
             continue
         if c.GenParticles_ParentIdx[genLeps[0]] == c.GenParticles_ParentIdx[genLeps[1]]:
-            print "HERE! ", c.GenParticles_ParentId[genLeps[0]]
+            print("HERE! ", c.GenParticles_ParentId[genLeps[0]])
         if c.GenParticles_ParentIdx[genLeps[0]] != c.GenParticles_ParentIdx[genLeps[1]] or (c.GenParticles_ParentId[genLeps[0]] != 22 and c.GenParticles_ParentId[genLeps[0]] != 23):
             continue
         
-        #print "Yes! ", c.GenParticles_ParentId[genLeps[0]]
+        #print("Yes! ", c.GenParticles_ParentId[genLeps[0]])
         #else:
-        #    print "YES!!"
+        #    print("YES!!")
             
         
         #if nL != 2 or (c.Electrons.size() != 2 and c.Muons.size() != 2):
@@ -261,17 +261,17 @@ def main():
 
     fnew.cd()
     tEvent.Write()
-    print 'just created', fnew.GetName()
-    print "Total: " + str(nentries)
-    print "After Preselection: " + str(afterPreselection)
+    print('just created', fnew.GetName())
+    print("Total: " + str(nentries))
+    print("After Preselection: " + str(afterPreselection))
     hHt.Write()
-    print "*"
+    print("*")
     hHtWeighted.Write()
-    print "**"
+    print("**")
     hHtAfterMadHt.Write()
-    print "***"
+    print("***")
     fnew.Close()
-    print "****"
+    print("****")
     
 main()
 

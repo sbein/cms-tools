@@ -64,12 +64,12 @@ plot_single = args.single
 req_cut = None
 req_obs = None
 if plot_single:
-    print "Printing Single Plot"
+    print("Printing Single Plot")
     if args.cut is None:
-        print "Must provide cut with single option."
+        print("Must provide cut with single option.")
         exit(0)
     if args.obs is None:
-        print "Must provide obs with single option."
+        print("Must provide obs with single option.")
         exit(0)
     req_cut = args.cut[0]
     req_obs = args.obs[0]
@@ -266,7 +266,7 @@ histoDefs = [
 
 def createAllHistograms(files_to_process, histograms):
     for f in files_to_process:
-        print f
+        print(f)
         rootFile = TFile(f)
         c = rootFile.Get('tEvent')
         for cut in cuts:
@@ -288,7 +288,7 @@ def createAllHistograms(files_to_process, histograms):
                             drawString = "(" + cut["condition"][hist_def["lep"]] + ")"
                     if hist_def.get("extraConds") is not None and len(hist_def["extraConds"]) > 0:
                         drawString += " && (" + hist_def["extraConds"] + ")"
-                    print "Drawing histogram", histName, "with cond", drawString
+                    print("Drawing histogram", histName, "with cond", drawString)
                     hist = utils.getHistogramFromTree(histName, c, hist_def.get("obs"), hist_def.get("bins"), hist_def.get("minX"), hist_def.get("maxX"), drawString, plot_overflow)
                     hist.Sumw2()
                     hist.SetTitle("")
@@ -302,7 +302,7 @@ def createAllHistograms(files_to_process, histograms):
                         drawString = lepConds[hist_def["lep"]][lepType] + " && (" + cut["condition"][hist_def["lep"]] + ")"
                         if hist_def.get("extraConds") is not None and len(hist_def["extraConds"]) > 0:
                             drawString += " && (" + hist_def["extraConds"] + ")"
-                        print "Drawing histogram", histName, "with cond", drawString
+                        print("Drawing histogram", histName, "with cond", drawString)
                         hist = utils.getHistogramFromTree(histName, c, hist_def.get("obs"), hist_def.get("bins"), hist_def.get("minX"), hist_def.get("maxX"), drawString, plot_overflow)
                         hist.Sumw2()
                         hist.SetTitle("")
@@ -314,7 +314,7 @@ def createAllHistograms(files_to_process, histograms):
 
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     histograms = {"Zl" : {}, "MM" : {}}
     memory = []
@@ -323,8 +323,8 @@ def main():
     for file_pattern in input_files:
         files_to_process.extend(glob(file_pattern))
     
-    print "Going to process the following files:"
-    print files_to_process
+    print("Going to process the following files:")
+    print(files_to_process)
     
     createAllHistograms(files_to_process, histograms)
 
@@ -420,10 +420,10 @@ def main():
                         #h.SetMinimum(0)
                         legend.AddEntry(h, lepType, 'F')
                         if drawSame:
-                            #print "DRAW SAME", name, lepType
+                            #print("DRAW SAME", name, lepType)
                             h.Draw("HIST SAME")
                         else:
-                            #print "DRAW", name, lepType
+                            #print("DRAW", name, lepType)
                             needToDraw = True
                             h.GetXaxis().SetTitle(histDef["name"] if histDef.get("name") is not None else histDef["obs"])
                             h.Draw("HIST")
@@ -440,7 +440,7 @@ def main():
         
         if needToDraw and not plot_single:
             for id in range(pId, 5):
-                print "Clearing pad " + str(id)
+                print("Clearing pad " + str(id))
                 pad = histPad.cd(id)
                 pad.Clear()
             c1.Print(OUTPUT_FILE);
@@ -449,7 +449,7 @@ def main():
         c1.Print(OUTPUT_FILE);
     c1.Print(OUTPUT_FILE+"]");
     
-    print "End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("End: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     exit(0)
     
 main()

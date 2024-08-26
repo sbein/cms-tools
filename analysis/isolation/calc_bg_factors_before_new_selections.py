@@ -122,7 +122,7 @@ dilepBDTString = {
 ######## END OF CMDLINE ARGUMENTS ########
 
 def main():
-    print "Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    print("Start: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
     
     
@@ -140,11 +140,11 @@ def main():
         mtautau_min = 0
         mtautau_max = 160
     
-    print "Getting BG..."
+    print("Getting BG...")
     bg_files = [bg_slim_file]
     for filename in bg_files:#glob(bg_dir + "/*"):
-        print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
-        print "Opening", filename
+        print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
+        print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
         
@@ -169,7 +169,7 @@ def main():
                 #(name, tree, obs, bins, minX, maxX, condition, overflow=True, tmpName="hsqrt"
                  # Tau-Tau BG inside M-tau-tau Window
                 condition = str(lumi_weight) + " * " + triggers[wanted_year] + " * passesUniversalSelection * passedMhtMet6pack * Weight * BranchingRatio * (twoLeptons" + jetiso + " == 1 "  + (orth_cond if orth else "") +  " && MinDeltaPhiMhtJets > 0.4 && MET >= 140 && MHT >= 220 && BTagsDeepMedium == 0 && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && sameSign" + jetiso + " == 0 && isoCr" + jetiso + (" >= 1" if isoCr else " == 0") + " && nmtautau" + jetiso + " > " + str(mtautau_min) + " && nmtautau"  + jetiso + " < " + str(mtautau_max) + "  && " + dilepBDTString[wanted_year] +  jetiso + " < 0 && leptonFlavour" + jetiso + " == \"" + lep + "\" && tautau" + jetiso + " == 1)"
-                print "condition=" + condition
+                print("condition=" + condition)
                 hist = utils.getHistogramFromTree("bg_2l_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else ""), c, dilepBDTString[wanted_year] + jetiso, 1, -1, 1, condition, False)
                 hist.Sumw2()
                 histName = "inside_mtautau_tautau_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else "")
@@ -194,7 +194,7 @@ def main():
                     # Non-Tau-Tau BG inside M-tau-tau Window
                     #condition = str(lumi_weight) + " * passedMhtMet6pack * tEffhMetMhtRealXMht2016 * Weight * BranchingRatio * puWeight * (twoLeptons" + jetiso + " == 1 "  + (orth_cond if orth else "") +  " && MinDeltaPhiMhtJets > 0.4 && MET >= 140 && MHT >= 220 && BTagsDeepMedium == 0 && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && sameSign" + jetiso + " == 0 && isoCr" + jetiso + (" >= 1" if isoCr else " == 0") + " && mtautau" + jetiso + " > 60 && mtautau"  + jetiso + " < 120  && " + dilepBDTString[wanted_year] +  jetiso + " < 0 && leptonFlavour" + jetiso + " == \"" + lep + "\" && tautau" + jetiso + " == 0)"
                     condition = str(lumi_weight) + " * " + triggers[wanted_year] + " * passesUniversalSelection * passedMhtMet6pack * Weight * BranchingRatio * (twoLeptons" + jetiso + " == 1 "  + (orth_cond if orth else "") +  " && MinDeltaPhiMhtJets > 0.4 && MET >= 140 && MHT >= 220 && BTagsDeepMedium == 0 && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && sameSign" + jetiso + " == 0 && isoCr" + jetiso + (" >= 1" if isoCr else " == 0") + " && nmtautau" + jetiso + " > " + str(mtautau_min) + " && nmtautau"  + jetiso + " < " + str(mtautau_max) + "  && " + dilepBDTString[wanted_year] +  jetiso + " < 0 && leptonFlavour" + jetiso + " == \"" + lep + "\" && tautau" + jetiso + " == 0)" 
-                    print "condition=" + condition
+                    print("condition=" + condition)
                     hist = utils.getHistogramFromTree("bg_2l_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else ""), c, dilepBDTString[wanted_year] + jetiso, 1, -1, 1, condition, False)
                     hist.Sumw2()
                     histName = "inside_mtautau_nontautau_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else "")
@@ -210,7 +210,7 @@ def main():
                     
                     histName = "outside_nmtautau_nontautau_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else "")
                     
-                    print "\n\n\n\n\n\n\nname=" + histName + " condition=" + condition
+                    print("\n\n\n\n\n\n\nname=" + histName + " condition=" + condition)
                     hist = utils.getHistogramFromTree("bg_2l_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else ""), c, dilepBDTString[wanted_year] + jetiso, 1, -1, 1, condition, False)
                     hist.Sumw2()
                     
@@ -221,22 +221,22 @@ def main():
                 
                 
         f.Close()
-    print bg_2l_hist
+    print(bg_2l_hist)
     
-    print "\n\n\n\n\n\n"
+    print("\n\n\n\n\n\n")
     for bgHistName in bg_2l_hist:
         bgHist = bg_2l_hist[bgHistName]
         bgNum = bgHist.GetBinContent(1)
         bgError = bgHist.GetBinError(1)
-        print bgHistName, "bgNum", bgNum, "bgError", bgError
+        print(bgHistName, "bgNum", bgNum, "bgError", bgError)
     
     
-    print "\n\n\niso-cr MC scale factor - Non-Tau-Tau BG outside nM-tau-tau Window, BDT sideband"
+    print("\n\n\niso-cr MC scale factor - Non-Tau-Tau BG outside nM-tau-tau Window, BDT sideband")
     numHist = bg_2l_hist["outside_nmtautau_nontautau_" + required_lepton + "_" + jetiso].Clone()
     denHist = bg_2l_hist["outside_nmtautau_nontautau_" + required_lepton + "_" + jetiso + "_isoCr"]
-    print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+    print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
     numHist.Divide(denHist)
-    print "nf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+    print("nf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
     
     numHist = bg_2l_hist["inside_mtautau_tautau_" + required_lepton + "_" + jetiso].Clone()
     denHist = bg_2l_hist["inside_mtautau_nontautau_" + required_lepton + "_" + jetiso].Clone()
@@ -244,17 +244,17 @@ def main():
     denHist.Add(numHist)
     numHist.Divide(denHist)
     
-    print "\n\n\ntau-tau MC purity inside nM-tau-tau Window, BDT sideband, [" + str(mtautau_min) + "," + str(mtautau_max) + "]"
-    print "tautau MC", bg_2l_hist["inside_mtautau_tautau_" + required_lepton + "_" + jetiso].GetBinContent(1), "err", bg_2l_hist["inside_mtautau_tautau_" + required_lepton + "_" + jetiso].GetBinError(1)
-    print "non-tautau MC", bg_2l_hist["inside_mtautau_nontautau_" + required_lepton + "_" + jetiso].GetBinContent(1), "err", bg_2l_hist["inside_mtautau_nontautau_" + required_lepton + "_" + jetiso].GetBinError(1)
-    print "tautau MC purity", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+    print("\n\n\ntau-tau MC purity inside nM-tau-tau Window, BDT sideband, [" + str(mtautau_min) + "," + str(mtautau_max) + "]")
+    print("tautau MC", bg_2l_hist["inside_mtautau_tautau_" + required_lepton + "_" + jetiso].GetBinContent(1), "err", bg_2l_hist["inside_mtautau_tautau_" + required_lepton + "_" + jetiso].GetBinError(1))
+    print("non-tautau MC", bg_2l_hist["inside_mtautau_nontautau_" + required_lepton + "_" + jetiso].GetBinContent(1), "err", bg_2l_hist["inside_mtautau_nontautau_" + required_lepton + "_" + jetiso].GetBinError(1))
+    print("tautau MC purity", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
     
 
-    print "\n\n\n\n\n\n\n\n\n\n\nGetting Data..."
+    print("\n\n\n\n\n\n\n\n\n\n\nGetting Data...")
     data_files = [data_slim_file]
     for filename in data_files:#glob(bg_dir + "/*"):
-        print "====================================="
-        print "Opening", filename
+        print("=====================================")
+        print("Opening", filename)
         f = TFile(filename)
         c = f.Get('tEvent')
         
@@ -268,7 +268,7 @@ def main():
             orthOpt = [True, False] if lep == "Muons" else [False]
             orth_cond = " && (leptons" + jetiso + "[1].Pt() <= 3.5 || deltaR" + jetiso + " <= 0.3)"
             #orthOpt = [False,True]
-            print "orthOpt", orthOpt
+            print("orthOpt", orthOpt)
             for orth in orthOpt:
                 
                 isoCr = False
@@ -279,12 +279,12 @@ def main():
                 
                 condition = data_filters[wanted_year] + "(passesUniversalSelection &&  passedMhtMet6pack && twoLeptons" + jetiso + " == 1 "  + (orth_cond if orth else "") +  " && MinDeltaPhiMhtJets > 0.4 && MET >= 140 && MHT >= 220 && BTagsDeepMedium == 0 && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && sameSign" + jetiso + " == 0 && isoCr" + jetiso + (" >= 1" if isoCr else " == 0") + " && nmtautau" + jetiso + " > " + str(mtautau_min) + " && nmtautau"  + jetiso + " < " + str(mtautau_max) + "  && " + dilepBDTString[wanted_year] +  jetiso + " < 0 && leptonFlavour" + jetiso + " == \"" + lep + "\")"
                 
-                #print "condition=" + condition
+                #print("condition=" + condition)
                 histName = "inside_mtautau_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else "")
                 hist = utils.getHistogramFromTree("data_2l_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else ""), c, dilepBDTString[wanted_year] + jetiso, 1, -1, 1, condition, False)
                 hist.Sumw2()
                 
-                print "-----orth", orth, "histName", histName
+                print("-----orth", orth, "histName", histName)
                 if data_2l_hist.get(histName) is None:
                     data_2l_hist[histName] = hist
                 else:
@@ -347,89 +347,89 @@ def main():
                             data_2l_hist[histName].Add(hist)
                 
         f.Close()
-    print "\n\n\n\n\n"
-    print data_2l_hist
-    print "\n\n\n\n\n"
+    print("\n\n\n\n\n")
+    print(data_2l_hist)
+    print("\n\n\n\n\n")
     for dataHistName in data_2l_hist:
         dataHist = data_2l_hist[dataHistName]
         dataNum = dataHist.GetBinContent(1)
         dataError = dataHist.GetBinError(1)
-        print dataHistName, "dataNum", dataNum, "dataError", dataError
+        print(dataHistName, "dataNum", dataNum, "dataError", dataError)
     
-    print "=====================================\n\n\n\n\n\n\n\n\n\n\n"
+    print("=====================================\n\n\n\n\n\n\n\n\n\n\n")
         
-    print "\n\n\niso-cr scale factor"
+    print("\n\n\niso-cr scale factor")
     numHist = data_2l_hist["iso_cr_" + required_lepton + "_" + jetiso]
     denHist = data_2l_hist["iso_cr_" + required_lepton + "_" + jetiso + "_isoCr"]
-    print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+    print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
     numHist.Divide(denHist)
-    print "sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+    print("sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
  
     if required_lepton == "Muons":
-        print "\n\n\niso-cr scale factor - ANALYSIS ORTH"
+        print("\n\n\niso-cr scale factor - ANALYSIS ORTH")
         numHist = data_2l_hist["iso_cr_" + required_lepton + "_orth_" + jetiso]
         denHist = data_2l_hist["iso_cr_" + required_lepton + "_orth_" + jetiso + "_isoCr"]
-        print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+        print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
         numHist.Divide(denHist)
-        print "sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+        print("sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
     
-    print "\n\n\nSAME-SIGN iso-cr scale factor"
+    print("\n\n\nSAME-SIGN iso-cr scale factor")
     numHist = data_2l_hist["iso_cr_" + required_lepton + "_" + jetiso + "_sameSign"]
     denHist = data_2l_hist["iso_cr_" + required_lepton + "_" + jetiso + "_isoCr_sameSign"]
-    print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+    print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
     numHist.Divide(denHist)
-    print "sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+    print("sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
  
-#     print "\n\n\nmtautau normalisation factor - Orth"
+#     print("\n\n\nmtautau normalisation factor - Orth")
 #     numHist = data_2l_hist["Muons_orth_CorrJetIso10.5Dr0.55"]
 #     denHist = bg_2l_hist["Muons_orth_CorrJetIso10.5Dr0.55"]
-#     print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+#     print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
 #     numHist.Divide(denHist)
-#     print "sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+#     print("sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
     
-    # print "\n\n\nmtautau normalisation factor"
+    # print("\n\n\nmtautau normalisation factor")
 #     numHist = data_2l_hist["Muons_CorrJetIso10.5Dr0.55"]
 #     denHist = bg_2l_hist["Muons_CorrJetIso10.5Dr0.55"]
-#     print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+#     print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
 #     numHist.Divide(denHist)
-#     print "sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+#     print("sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
 #    
     
-    print "\n\n\nmtautau normalisation factor - non-tautau removed"
+    print("\n\n\nmtautau normalisation factor - non-tautau removed")
     numHist = data_2l_hist["inside_mtautau_" + required_lepton + "_" + jetiso]
-    print "num", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+    print("num", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
     nonTautauHist = data_2l_hist["inside_mtautau_nontautau_" + required_lepton + "_" + jetiso + "_isoCr"]
-    print "nonTautauHist", nonTautauHist.GetBinContent(1), "err", nonTautauHist.GetBinError(1), "rel-err", nonTautauHist.GetBinError(1)/nonTautauHist.GetBinContent(1)
+    print("nonTautauHist", nonTautauHist.GetBinContent(1), "err", nonTautauHist.GetBinError(1), "rel-err", nonTautauHist.GetBinError(1)/nonTautauHist.GetBinContent(1))
 
     nonTautauHistMC = bg_2l_hist["inside_mtautau_nontautau_" + required_lepton + "_" + jetiso]
-    print "nonTautauHistMC", nonTautauHistMC.GetBinContent(1), "err", nonTautauHistMC.GetBinError(1), "rel-err", nonTautauHistMC.GetBinError(1)/nonTautauHistMC.GetBinContent(1)
+    print("nonTautauHistMC", nonTautauHistMC.GetBinContent(1), "err", nonTautauHistMC.GetBinError(1), "rel-err", nonTautauHistMC.GetBinError(1)/nonTautauHistMC.GetBinContent(1))
     
     
     denHist = bg_2l_hist["inside_mtautau_tautau_" + required_lepton + "_" + jetiso]
-    print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+    print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
     
-    print "After Subtraction"
+    print("After Subtraction")
     numHist.Add(nonTautauHist, -1)
-    print "num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1)
+    print("num", numHist.GetBinContent(1), "den", denHist.GetBinContent(1))
     
     numHist.Divide(denHist)
-    print "sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1)
+    print("sf", numHist.GetBinContent(1), "err", numHist.GetBinError(1), "rel-err", numHist.GetBinError(1)/numHist.GetBinContent(1))
    
     
     # GET SR ISO-CR COUNT
-    print "\n\n\nMethod to MC ratio in SR"
+    print("\n\n\nMethod to MC ratio in SR")
     
     srMcHist = bg_2l_hist["SR_" + required_lepton +  "_" + jetiso]
     dataSrMethodHist = data_2l_hist["SR_" + required_lepton + "_" + jetiso + "_isoCr" ]
-    print "srMcHist", srMcHist.GetBinContent(1), "err", srMcHist.GetBinError(1), "rel-err", srMcHist.GetBinError(1)/srMcHist.GetBinContent(1)
-    print "dataSrMethodHist", dataSrMethodHist.GetBinContent(1), "err", dataSrMethodHist.GetBinError(1), "rel-err", dataSrMethodHist.GetBinError(1)/dataSrMethodHist.GetBinContent(1)
+    print("srMcHist", srMcHist.GetBinContent(1), "err", srMcHist.GetBinError(1), "rel-err", srMcHist.GetBinError(1)/srMcHist.GetBinContent(1))
+    print("dataSrMethodHist", dataSrMethodHist.GetBinContent(1), "err", dataSrMethodHist.GetBinError(1), "rel-err", dataSrMethodHist.GetBinError(1)/dataSrMethodHist.GetBinContent(1))
     
     dataSrMethodHist.Divide(srMcHist)
     
     # I think there is a bug here - we should count BDT > 0 and NOT BDT < 0
     # OR we simply take it as the comparable counts in BDT < 0
     
-    print "Method/MC in SR factor", dataSrMethodHist.GetBinContent(1), "err", dataSrMethodHist.GetBinError(1), "rel-err", dataSrMethodHist.GetBinError(1)/dataSrMethodHist.GetBinContent(1)
+    print("Method/MC in SR factor", dataSrMethodHist.GetBinContent(1), "err", dataSrMethodHist.GetBinError(1), "rel-err", dataSrMethodHist.GetBinError(1)/dataSrMethodHist.GetBinContent(1))
     
     
     exit(0)

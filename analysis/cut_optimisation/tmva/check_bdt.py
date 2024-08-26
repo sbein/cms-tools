@@ -59,17 +59,17 @@ def main():
     univ_bdt_specs_map = cut_optimisation.getSpectatorsMemMap(univ_bdt_specs)
     univ_bdt_reader = cut_optimisation.prepareReader(univ_bdt_weights, univ_bdt_vars, univ_bdt_vars_map, univ_bdt_specs, univ_bdt_specs_map)
 
-    print "univ_highestMVA=" + str(univ_highestMVA)
+    print("univ_highestMVA=" + str(univ_highestMVA))
 
     nentries = c.GetEntries()
-    print 'Analysing', nentries, "entries"
+    print('Analysing', nentries, "entries")
 
     total = 0
     passed = 0
 
     for ientry in range(nentries):
         if ientry % 1000 == 0:
-            print "Processing " + str(ientry)
+            print("Processing " + str(ientry))
         total += 1
         c.GetEntry(ientry)
         for k, v in univ_bdt_vars_map.items():
@@ -81,8 +81,8 @@ def main():
         if value >= univ_highestMVA:
             passed += 1
 
-    print "total=" + str(total)
-    print "passed=" + str(passed)
+    print("total=" + str(total))
+    print("passed=" + str(passed))
 
     # Create canvas
     canvas = TCanvas("roc", "roc", 520, 10, 1000, 1000)

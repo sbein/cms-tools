@@ -23,14 +23,14 @@ significance = {'115': {'5p65': {'CorrJetIso10': {'veto': {'mm': {'non-orth': 1.
 
 prefix = "s_s_b_"
 
-print "mu,deltaM,iso,veto,ee,orth-ee,mm,orth-mm,te,tm"
+print("mu,deltaM,iso,veto,ee,orth-ee,mm,orth-mm,te,tm")
 
 for mu in sorted(significance.keys()):
     for deltaM in sorted(significance[mu].keys()):
         for isoStr in sorted(significance[mu][deltaM].keys()):
             for vetoStr in sorted(significance[mu][deltaM][isoStr].keys()):
-                print  ",".join((mu,deltaM,isoStr,vetoStr,"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["ee"]["non-orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["ee"]["orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["mm"]["non-orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["mm"]["orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["te"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["tm"])))
-                #print ",".join((mu,deltaM,isoStr,"{:.2f}".format(significance[mu][deltaM][isoStr]["ee"]),"{:.2f}".format(significance[mu][deltaM][isoStr]["mm"]),"{:.2f}".format(significance[mu][deltaM][isoStr]["te"]),"{:.2f}".format(significance[mu][deltaM][isoStr]["tm"]))
+                print( ",".join((mu,deltaM,isoStr,vetoStr,"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["ee"]["non-orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["ee"]["orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["mm"]["non-orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["mm"]["orth"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["te"]),"{:.2f}".format(significance[mu][deltaM][isoStr][vetoStr]["tm"]))))
+                #print(",".join((mu,deltaM,isoStr,"{:.2f}".format(significance[mu][deltaM][isoStr]["ee"]),"{:.2f}".format(significance[mu][deltaM][isoStr]["mm"]),"{:.2f}".format(significance[mu][deltaM][isoStr]["te"]),"{:.2f}".format(significance[mu][deltaM][isoStr]["tm"])))
            
 
 histogramsToDraw = {
@@ -74,7 +74,7 @@ for lep in histogramsToDraw:
                     for ptRange in ptRanges:
                         isoStr = CorrJetObs + str(ptRange)
                         hist.SetBinContent(binIdx, significance[point[0]][point[1]][isoStr][veto][lep][orth])
-                        #print binIdx, isoStr
+                        #print(binIdx, isoStr)
                         hist.GetXaxis().SetBinLabel(binIdx,isoStr)
                         binIdx += 1
                 if histogramsToDraw[lep]["hists"].get(veto + orth) is None:
@@ -160,7 +160,7 @@ for lep in histogramsToDraw:
 #         for ptRange in ptRanges:
 #             isoStr = CorrJetObs + str(ptRange)
 #             eeHist.SetBinContent(binIdx, significance[eeToDraw[0]][eeToDraw[1]][isoStr]["no-veto"]["ee"]["non-orth"])
-#             #print binIdx, isoStr
+#             #print(binIdx, isoStr)
 #             eeHist.GetXaxis().SetBinLabel(binIdx,isoStr)
 #             binIdx += 1
 #     eeHists.append(eeHist)

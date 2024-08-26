@@ -53,7 +53,7 @@ class jobSubmitterCT(jobSubmitter):
         if self.mode == "def":
             modelLocation = os.path.expandvars("$CMSSW_BASE/src/Configuration/Generator/python")
             for file in glob(modelLocation + "/higgsino*.py"):
-                print "Adding job for file=" + file
+                print("Adding job for file=" + file)
                 job.njobs += 1
                 if self.count and not self.prepare:
                     continue
@@ -77,7 +77,7 @@ class jobSubmitterCT(jobSubmitter):
         elif self.mode == "aod":
             status, out = commands.getstatusoutput('gfal-ls ' + defaultModeLocations['def'])
             for file in out.split("\n"):
-                print "Adding job for file=" + file
+                print("Adding job for file=" + file)
                 job.njobs += 1
                 if self.count and not self.prepare:
                     continue
@@ -97,5 +97,5 @@ class jobSubmitterCT(jobSubmitter):
                         argfile.write(args)
         
         job.queue = "-queue "+str(job.njobs)
-        print "Job queue", job.queue
+        print("Job queue", job.queue)
         self.protoJobs.append(job)

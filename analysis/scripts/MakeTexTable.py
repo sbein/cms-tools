@@ -57,7 +57,7 @@ for line in rawlines:
     row = fields[0] + ' & ' + fields[1] + ' & ' + fields[2] + '(' + fields[3] + ')' +r' \\'
     TABLEROWS+=row+'\n'
 
-print TABLEROWS
+print(TABLEROWS)
 
 tabledoc = texskeleton.replace('TABLEROWS',TABLEROWS)
 newfile = open('CutFlowTables.tex','w')
