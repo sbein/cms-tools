@@ -41,10 +41,9 @@ output_file = None
 signal_dir = None
 bg_dir = None
 
-wanted_year = "2016"
+wanted_year = "phase1"
 
-print("Wanted year: " + wanted_year)
-
+print "Wanted year: " + wanted_year
 required_lepton = "Electrons"
 jetiso = "CorrJetNoMultIso10Dr0.5"
 
@@ -301,8 +300,8 @@ def main():
                 
                 hist = utils.getHistogramFromTree("inside_mtautau_nontautau_data_2l_" + lep + ("_orth" if orth else "") + "_" + jetiso + ("_isoCr" if isoCr else ""), c, analysis_selections.dilepBDTString[wanted_year] + jetiso, 1, -1, 1, condition, False)
                 hist.Sumw2()
-
-                utils.scaleHistogram(hist, analysis_selections.sfs["leptons"][wanted_year][required_lepton][0], analysis_selections.sfs["leptons"][wanted_year][required_lepton][1])
+                print "Scaling histogram " + histName
+                utils.scaleHistogram(hist, analysis_selections.non_iso_2l_non_sos_factors[wanted_year][required_lepton][0], analysis_selections.non_iso_2l_non_sos_factors[wanted_year][required_lepton][1])
                 if data_2l_hist.get(histName) is None:
                     data_2l_hist[histName] = hist
                 else:
@@ -372,7 +371,7 @@ def main():
                         #tmpHist.SetBinError(1, analysis_selections.sfs["leptons"][wanted_year][required_lepton][1])
                         #hist.Multiply(tmpHist)
                         
-                        utils.scaleHistogram(hist, analysis_selections.sfs["leptons"][wanted_year][required_lepton][0], analysis_selections.sfs["leptons"][wanted_year][required_lepton][1])
+                        utils.scaleHistogram(hist, analysis_selections.non_iso_2l_non_sos_factors[wanted_year][required_lepton][0], analysis_selections.non_iso_2l_non_sos_factors[wanted_year][required_lepton][1])
                         
                         if bg_2l_hist.get(histName) is None:
                             data_2l_hist[histName] = hist

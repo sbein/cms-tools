@@ -171,9 +171,9 @@ signals = [
 signals_mini = [
               #"/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim_sum/higgsino_mu100_dm0p86Chi20Chipm*.root",
               #"/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim_sum/higgsino_mu100_dm1p13Chi20Chipm*.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim_sum/higgsino_mu100_dm1p92Chi20Chipm*.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim_sum/higgsino_mu100_dm3p28Chi20Chipm*.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim_sum/higgsino_mu100_dm4p30Chi20Chipm*.root",
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum/higgsino_mu100_dm1p92Chi20Chipm*.root",
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum/higgsino_mu100_dm3p28Chi20Chipm*.root",
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum/higgsino_mu100_dm4p30Chi20Chipm*.root",
               #"/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim_sum/higgsino_mu100_dm5p63Chi20Chipm*.root"
               
               ]
@@ -470,9 +470,7 @@ class track_electron_bg_signal(track_electron):
 
 
     
-
-
-class track_muon_bdtsideband(track_electron):
+class track_muon_bdtsideband_phase1(track_electron):
 
     save_histrograms_to_file = True
     load_histrograms_from_file = True
@@ -481,7 +479,7 @@ class track_muon_bdtsideband(track_electron):
         {"name":"none", "title": "None", "condition" : analysis_selections.common_preselection, "baseline" : baseConitions, "sc" : "1" },
         #{"name":"sr", "title": "sr", "condition" : "(MinDeltaPhiMhtJets > 0.4 && MHT >= 220 &&  MET >= 140 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
     ]
-    histrograms_file = BaseParams.histograms_root_files_dir + "/track_muon_bdtsideband.root"
+    histrograms_file = BaseParams.histograms_root_files_dir + "/track_muon_bdtsideband_phase1.root"
     signal_dir = signals_2017_full
     histograms_defs = []
     histograms_defs.extend(copy.deepcopy(common_histograms))
@@ -500,15 +498,28 @@ class track_muon_bdtsideband(track_electron):
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"##needed for phase 1
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/sum/"##  
     label_text = plotutils.StampStr.INT
+    plot_ratio = True
     
-    
-class track_electron_bdtsideband(track_electron):
+
+class track_muon_bdtsideband_phase0(track_muon_bdtsideband_phase1):
     save_histrograms_to_file = True
     load_histrograms_from_file = True
+    baseConitions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "2016", "Muons")+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.6<0 && MHT >= 220 &&  MET >= 140 && HT>MHT'
+    histrograms_file = BaseParams.histograms_root_files_dir + "/track_muon_bdtsideband_phase0.root"
     signal_dir = signals_2017_full
+    calculatedLumi = {'MET' : analysis_selections.recommended_luminosities["2016"]}
+    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/type_sum"##needed for phase 1
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/sum/"##  
+    
+    
+    
+class track_electron_bdtsideband_phase1(track_electron):
+    save_histrograms_to_file = True
+    load_histrograms_from_file = True
+    signal_dir = signals_mini
     #track_electron_2017
     print('BaseParams.histograms_root_files_dir', BaseParams.histograms_root_files_dir)
-    #histrograms_file = BaseParams.histograms_root_files_dir + "/track_electron_bdtsideband.root"
+    #histrograms_file = BaseParams.histograms_root_files_dir + "/track_electron_bdtsideband_phase1.root"
     histrograms_file = BaseParams.histograms_root_files_dir + "/track_electron_2017.root"
     #bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum"##needed for phase 1 #this caused a crash on Bad numerical expression : "exclusiveTrackCorrJetNoMultIso10Dr0.5"
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"##needed for phase 1
@@ -540,4 +551,19 @@ class track_electron_bdtsideband(track_electron):
     plot_signal = False
     plot_data = True   
     normalise = True  
+    plot_ratio = True    
     label_text = plotutils.StampStr.INT
+    
+class track_electron_bdtsideband_phase0(track_electron_bdtsideband_phase1):
+    signal_dir = signals_mini
+    #track_electron_2017
+    histrograms_file = BaseParams.histograms_root_files_dir + "/track_electron_2016.root"
+    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/type_sum"##needed for phase 1
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/sum/"
+    
+    baseConitions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "2016", "Electrons")+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.5<0'#+' && exTrack_dilepBDTCorrJetNoMultIso10Dr0.5>-0.1'
+    cuts = [{"name":"none", "title": "None", "condition" : analysis_selections.common_preselection, "baseline" : baseConitions, "sc" : "1" }]
+    calculatedLumi = {'MET' : analysis_selections.recommended_luminosities["2016"]}
+
+
+

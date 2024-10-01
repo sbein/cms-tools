@@ -445,6 +445,47 @@ class unblinded_dimuon_phase1(unblinded_dimuon):
         'MET' : "hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons"
     }
 
+class unblinded_dimuon_phase1_tautau(unblinded_dimuon_phase1):
+    histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_phase1_tautau.root"
+    
+    save_histrograms_to_file = True
+    load_histrograms_from_file = False
+    
+    plot_overflow = False
+    
+    jetIso = analysis_selections.jetIsos["Muons"]
+    
+    baseConditionsArr = [analysis_selections.two_leptons_bdt_cr, analysis_selections.common_preselection, analysis_selections.two_leptons_condition,  analysis_selections.two_leptons_opposite_sign, analysis_selections.inside_mtautau_window]
+    
+    
+    baseConditions = analysis_selections.injectValues(analysis_selections.andStringSelections(baseConditionsArr), "phase1", "Muons")
+    baseConditionsSos = analysis_selections.injectValues(analysis_selections.andStringSelections(baseConditionsArr + [analysis_selections.sos_orth_condition]), "phase1", "Muons")
+    baseConditionsIso = analysis_selections.injectValues(analysis_selections.andStringSelections([analysis_selections.two_leptons_iso_condition]), "phase1", "Muons")
+    
+    cuts = [
+        {"name":"none", "title": "None", "condition" : baseConditions, "data_only" : baseConditionsIso},
+        {"name":"sos", "title": "SOS", "condition" : baseConditionsSos, "data_only" : baseConditionsIso},
+    ]
+    injectJetIsoToCuts(cuts, jetIso)
+    
+    
+    bgReTaggingFactors = {
+        "tautau" : analysis_selections.tautau_factors["phase1"]["Muons"],
+        #"tautau" : [1,0],
+        "non-iso" : analysis_selections.non_iso_2l_non_sos_factors["phase1"]["Muons"]
+        
+        #"non-iso" : [0.622,0.058]
+    }
+    
+    histograms_defs = [     
+        { "obs" : "full_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
+        { "obs" : "final_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,0,0.1,0.2,0.3,0.4,0.5,1] , "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
+        { "obs" : "fine_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "bins" : 40, "units" : "BDT", "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}},
+        { "obs" : "nmtautau%%%", "linearYspace" : 1.3, "ratio1max" : 3, "minX" : 30, "maxX" : 230, "bins" : 10},
+        #{ "obs" : "nmtautau%%%", "linearYspace" : 1.3, "ratio1max" : 3, "minX" : 30, "maxX" : 230, "customBins"  : [30,40,130,230]}
+    ]
+    injectJetIsoToHistograms(histograms_defs, jetIso)
+
 class partial_unblinded_dimuon_phase1(unblinded_dimuon_phase1):
     
     histrograms_file = BaseParams.histograms_root_files_dir + "/partial_unblinded_dimuon_phase1.root"

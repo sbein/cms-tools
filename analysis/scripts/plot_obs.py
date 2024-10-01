@@ -555,7 +555,7 @@ def plotRatio(c1, pad, memory, numHist, denHist, hist_def, numLabel = "Data", de
     if setXtitle:
         print("Setting title in ratio!")
         #exit(0)
-        rdataHist.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else hist_def["obs"])
+        rdataHist.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else hist_def["obs"].replace('DileptonCorrJetNoMult',''))
         if hist_def.get("Ndivisions") is not None:
             rdataHist.GetXaxis().SetNdivisions(hist_def["Ndivisions"])
         if hist_def.get("binLabels") is not None:
@@ -1592,7 +1592,7 @@ def main():
                 if newBgHist is not None and (plot_par.solid_bg or newBgHist.GetNhists() > 0):
                     print('newBgHist', newBgHist, bool(newBgHist is None))
                     if not plot_par.plot_ratio:
-                        newBgHist.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else hist_def["obs"])
+                        newBgHist.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else hist_def["obs"].replace('DileptonCorrJetNoMult',''))
                         if hist_def.get("Ndivisions") is not None:
                             newBgHist.GetXaxis().SetNdivisions(hist_def["Ndivisions"])
                         if hist_def.get("binLabels") is not None:

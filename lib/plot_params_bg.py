@@ -507,7 +507,7 @@ class dimuon_background_estimation_non_isolated_and_tautau_2016(BaseParams):
     plot_data = False
     plot_data_for_bg_estimation = True
     
-    plot_signal = False
+    plot_signal = True
     blind_data = False
     bg_retag = True
     
@@ -662,7 +662,7 @@ class dimuon_background_estimation_non_isolated_and_tautau_2017(dimuon_backgroun
 class dimuon_background_estimation_non_isolated_and_tautau_2016_after_topup(dimuon_background_estimation_non_isolated_and_tautau_2016):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_2016_after_topup.root"
     save_histrograms_to_file = True
-    load_histrograms_from_file = True
+    load_histrograms_from_file = False
     
     
 
@@ -728,7 +728,7 @@ class dimuon_background_estimation_non_isolated_and_tautau_phase1(dimuon_backgro
 class dimuon_background_estimation_non_isolated_and_tautau_phase1_after_topup(dimuon_background_estimation_non_isolated_and_tautau_phase1):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_phase1_after_topup.root"
     save_histrograms_to_file = True
-    load_histrograms_from_file = True
+    load_histrograms_from_file = False
 
 class dimuon_background_estimation_non_isolated_and_tautau_run2(dimuon_background_estimation_non_isolated_and_tautau_2016):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dimuon_background_estimation_non_isolated_and_tautau_run2.root"
