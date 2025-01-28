@@ -8,12 +8,19 @@ sys.path.append(os.path.expandvars("$CMSSW_BASE/src/cms-tools/lib"))
 from plot_params_base import *
 import plot_params_analysis_categories
 
+'''
+ Muons_minDeltaRJets = (vector<double>*)0x5f482f0
+ Muons_closestJet = (vector<int>*)0x5f58490
+ Muons_correctedMinDeltaRJets = (vector<double>*)0x5f68470
+ '''
 
 class dilepton_muons_data_control_region(BaseParams):
-    signal_dir = signals
+    signal_dir = signals_2016
     signal_names = signalNames
-    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/slim_sum/type_sum"
-    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/slim_sum/"
+    #bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/slim_sum/type_sum"
+    #data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/slim_sum/"
+    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/type_sum"
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/sum/"    
     cuts = [
         #{"name":"none", "title": "None", "condition" : "(MinDeltaPhiMhtJets > 0.4 && BTagsDeepMedium == 0 && twoLeptons%%% == 1 && MHT >= 220 &&  MET >= 140 && leptonFlavour%%% == \"Muons\" && invMass%%% < 12  && invMass%%% > 0.4 && !(invMass%%% > 3 && invMass%%% < 3.2) && !(invMass%%% > 0.75 && invMass%%% < 0.81) && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && isoCr%%% == 0 && sameSign%%% == 0 && dilepBDT%%% < 0)", "baseline" : "", "sc" : ""},
         {"name":"passesUniversalSelection", "title": "passesUniversalSelection", "condition" : "(MinDeltaPhiMhtJets > 0.4 && BTagsDeepMedium == 0 && twoLeptons%%% == 1 && MHT >= 220 &&  MET >= 140 && leptonFlavour%%% == \"Muons\" && invMass%%% < 12  && invMass%%% > 0.4 && !(invMass%%% > 3 && invMass%%% < 3.2) && !(invMass%%% > 0.75 && invMass%%% < 0.81) && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && isoCr%%% == 0 && sameSign%%% == 0 && dilepBDT%%% < 0 && passesUniversalSelection == 1)", "baseline" : "", "sc" : ""},
@@ -26,8 +33,11 @@ class dilepton_muons_data_control_region(BaseParams):
     
     #(twoLeptons == 1 && (leptons[1].Pt() <= 3.5 || deltaR <= 0.3) && MHT >= 220 &&  MET >= 200 && invMass < 12  && invMass > 0.4 && !(invMass > 3 && invMass < 3.2) && !(invMass > 0.75 && invMass < 0.81) && dilepBDT > 0.1 && BTagsDeepMedium == 0 && vetoElectronsPassIsoTightID == 0 && vetoMuonsPassIsoPassIso == 0 && @leptons.size() == 2 && leptonFlavour == \"" + lep + "\" && sameSign == 0)", True)
     histograms_defs = []
-    histograms_defs.extend(copy.deepcopy(plot_params_analysis_categories.common_histograms))
-    histograms_defs.extend(copy.deepcopy(plot_params_analysis_categories.two_leps_histograms))
+    ##histograms_defs.extend(copy.deepcopy(plot_params_analysis_categories.common_histograms))
+    ##histograms_defs.extend(copy.deepcopy(plot_params_analysis_categories.two_leps_histograms))
+    histograms_defs = [{'obs': 'Muons_minDeltaRJets', 'minX': 0, 'maxX': 3.2, 'bins': 10, 'units': 'Min\\Delta_{}R(\\mu\\mu, Jets)', 'linearYspace': 1.7, 'logYspace': 40000}, {'obs': 'Muons_correctedMinDeltaRJets', 'minX': 0, 'maxX': 3.2, 'bins': 10, 'units': 'Min\\Delta_{}R(\\mu\\mu, Jets)', 'linearYspace': 1.7, 'logYspace': 40000}]
+    
+    print(histograms_defs)
     #histograms_defs.extend(extra_study_obs)
     
     weightString = {
@@ -55,8 +65,12 @@ class dilepton_muons_data_control_region(BaseParams):
     blind_data = False
 
     save_histrograms_to_file = True
-    load_histrograms_from_file = True
+    load_histrograms_from_file = False
     
+    bgReTaggingFactors = {
+        "tautau" : 2,
+        "non-iso" : 3
+    }
     
     jetIsoStr = "CorrJetNoMultIso10Dr0.6"
     #jetIsoStr = "NoIso"
@@ -123,17 +137,20 @@ class dilepton_muons_data_control_region_met_filters(dilepton_muons_data_control
 
 class dilepton_muons_data_control_region_phase1_new(dilepton_muons_data_control_region):
     histrograms_file = BaseParams.histograms_root_files_dir + "/dilepton_muons_data_control_region_phase1_new.root"
-    load_histrograms_from_file = True
-    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum"
-    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_sum/"
+    load_histrograms_from_file = False
+    #bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum"
+    #data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_sum/"
+    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/sum/"    
     baseConditions = analysis_selections.injectValues(analysis_selections.andStringSelections(analysis_selections.two_leptons_cr_conditions), "phase1", "Muons")
     cuts = [
-        {"name":"none", "title": "None", "condition" : baseConditions, "baseline" : "", "sc" : ""},
+        #{"name":"none", "title": "None", "condition" : baseConditions, "baseline" : "", "sc" : ""},
+        {"name":"passesUniversalSelection", "title": "passesUniversalSelection", "condition" : "(MinDeltaPhiMhtJets > 0.4 && BTagsDeepMedium == 0 && twoLeptons%%% == 1 && MHT >= 220 &&  MET >= 140 && leptonFlavour%%% == \"Muons\" && invMass%%% < 12  && invMass%%% > 0.4 && !(invMass%%% > 3 && invMass%%% < 3.2) && !(invMass%%% > 0.75 && invMass%%% < 0.81) && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && isoCr%%% == 0 && sameSign%%% == 0 && dilepBDT%%% < 0 && passesUniversalSelection == 1)", "baseline" : "", "sc" : ""},
         #{"name":"met", "title": "MET > 200", "condition" : "(MinDeltaPhiMhtJets > 0.4 && BTagsDeepMedium == 0 && twoLeptons%%% == 1 && MHT >= 220 &&  MET >= 200 && leptonFlavour%%% == \"Muons\" && invMass%%% < 12  && invMass%%% > 0.4 && !(invMass%%% > 3 && invMass%%% < 3.2) && !(invMass%%% > 0.75 && invMass%%% < 0.81) && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && isoCr%%% == 0 && sameSign%%% == 0 && dilepBDT%%% < 0 && passesUniversalSelection == 1)", "baseline" : "", "sc" : ""},
     ]
     normalise = False
     jetIsoStr = analysis_selections.jetIsos["Muons"]
-    #injectJetIsoToCuts(cuts, jetIsoStr)
+    injectJetIsoToCuts(cuts, jetIsoStr)
     
     #print("BaseConditions", baseConditions)
     #print("BaseConditions orig", "(MinDeltaPhiMhtJets > 0.4 && BTagsDeepMedium == 0 && twoLeptons%%% == 1 && MHT >= 220 &&  MET >= 140 && leptonFlavour%%% == \"Muons\" && invMass%%% < 12  && invMass%%% > 0.4 && !(invMass%%% > 3 && invMass%%% < 3.2) && !(invMass%%% > 0.75 && invMass%%% < 0.81) && vetoElectronsPassIso == 0 && vetoMuonsPassIso == 0 && isoCr%%% == 0 && sameSign%%% == 0 && dilepBDT%%% < 0 && passesUniversalSelection == 1)")
@@ -143,6 +160,8 @@ class dilepton_muons_data_control_region_phase1_new(dilepton_muons_data_control_
     histograms_defs = []
     histograms_defs.extend(copy.deepcopy(plot_params_analysis_categories.common_histograms))
     histograms_defs.extend(copy.deepcopy(plot_params_analysis_categories.two_leps_histograms))
+    #histograms_defs = [{'obs': 'Muons_minDeltaRJets', 'minX': 0, 'maxX': 3.2, 'bins': 10, 'units': 'Min\\Delta_{}R(\\mu\\mu, Jets)', 'linearYspace': 1.7, 'logYspace': 40000}]
+    histograms_defs = [{'obs': 'Muons_minDeltaRJets', 'minX': 0, 'maxX': 3.2, 'bins': 10, 'units': 'Min\\Delta_{}R(\\mu\\mu, Jets)', 'linearYspace': 1.7, 'logYspace': 40000}, {'obs': 'Muons_correctedMinDeltaRJets', 'minX': 0, 'maxX': 3.2, 'bins': 10, 'units': 'Min\\Delta_{}R(\\mu\\mu, Jets)', 'linearYspace': 1.7, 'logYspace': 40000}]
     injectJetIsoToHistograms(histograms_defs, jetIsoStr)
     
     turnOnOnlyUsedObsInTree = False
@@ -151,6 +170,8 @@ class dilepton_muons_data_control_region_phase1_new(dilepton_muons_data_control_
         #'MET' : 99.226209715
         'MET' : analysis_selections.luminosities["phase1"]
     }
+    
+    
     
     weightString = {
         #'MET' : "Weight * passedMhtMet6pack * tEffhMetMhtRealXMht2017 * BranchingRatio",
@@ -268,15 +289,15 @@ class track_muons_data_control_region(BaseParams):
         'MET' : "Weight * passedMhtMet6pack * tEffhMetMhtRealXMht2016 * BranchingRatio",
     }
     
-<<<<<<< HEAD
-    calculatedLumi = {
-        #Before nomult
-        #'MET' : 35.712736198,
-        #Afrer nomult
-        'MET' : 35.73895434
-    }
-=======
->>>>>>> upstream/master
+#<<<<<<< HEAD
+#    calculatedLumi = {
+#        #Before nomult
+#        #'MET' : 35.712736198,
+#        #Afrer nomult
+#        'MET' : 35.73895434
+#    }
+#=======
+#>>>>>>> upstream/master
     turnOnOnlyUsedObsInTree = True
     usedObs = ["passesUniversalSelection", "BranchingRatio","Weight","passedMhtMet6pack","tEffhMetMhtRealXMht2016","puWeight","MinDeltaPhiMhtJets","BTagsDeepMedium","twoLeptons%%%","MHT","MET","leptonFlavour%%%","invMass%%%","vetoElectronsPassIso","vetoMuonsPassIso","isoCr%%%","sameSign%%%", "leptons%%%", "deltaR%%%", "trackBDT%%%", "exclusiveTrack%%%", "exTrack_invMass%%%", "exclusiveTrackLeptonFlavour%%%", "sc_exclusiveTrack%%%", "sc_trackBDT%%%", "sc_exTrack_invMass%%%", "sc_exclusiveTrackLeptonFlavour%%%", "exTrack_dilepBDT%%%", "sc_exTrack_dilepBDT%%%"]
     injectJetIsoToList(usedObs, jetIsoStr)
@@ -288,13 +309,7 @@ class track_muons_data_control_region(BaseParams):
     plot_ratio = True
     blind_data = True
     save_histrograms_to_file = True
-<<<<<<< HEAD
-    load_histrograms_from_file = False
-=======
     load_histrograms_from_file = True
-    
-
->>>>>>> upstream/master
     sig_line_width = 3
     plot_error = True
     

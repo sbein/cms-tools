@@ -68,7 +68,7 @@ def get_btag_weight(tree,nSigmaBtagSF,nSigmaBtagFastSimSF,isFastSim,readerBtag):
     ## Get Btagging efficiency map for signal sample
     if 'T1' in tree.GetDirectory().GetName(): 
         fbeff = TFile(os.environ['CMSSW_BASE']+"/src/systematics/BtagEffMaps/RunIISummer16MiniAODv3.SMS-T1qqqq-LLChipm_ctau-200_merged.root")
-    elif 'T2' in tree.GetDirectory().GetName() or 'iggsino' in tree.GetDirectory().GetName() or 'T2tb' in tree.GetDirectory().GetName() or 'PMSSM' in tree.GetDirectory().GetName():
+    elif True or ('T2' in tree.GetDirectory().GetName() or 'iggsino' in tree.GetDirectory().GetName() or 'T2tb' in tree.GetDirectory().GetName() or 'PMSSM' in tree.GetDirectory().GetName()):
         fbeff = TFile(os.environ['CMSSW_BASE']+"/src/systematics/BtagEffMaps/RunIISummer16MiniAODv3.SMS-T2bt-LLChipm_ctau-200_merged.root")
     else : 
         print ('Cannot choose efficiency map for this sample, quit', tree.GetDirectory().GetName())

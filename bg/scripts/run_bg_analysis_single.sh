@@ -8,7 +8,8 @@ shopt -s nullglob
 shopt -s expand_aliases
 
 # CMS ENV
-cd ~/CMSSW_11_3_1/src
+#Sam commentingcd ~/CMSSW_11_3_1/src
+cd /nfs/dust/cms/user/beinsam/NaturalSusy/CMSSW_13_3_3/src/
 
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
@@ -145,12 +146,12 @@ FILE_OUTPUT="${OUTPUT_DIR}/single"
 
 #check output directory
 if [ ! -d "$OUTPUT_DIR" ]; then
-  mkdir $OUTPUT_DIR
+  mkdir -p $OUTPUT_DIR
 fi
 
 #check output directory
 if [ ! -d "$FILE_OUTPUT" ]; then
-  mkdir $FILE_OUTPUT
+  mkdir -p $FILE_OUTPUT
 fi
 
 
@@ -163,7 +164,8 @@ for INPUT_FILE in $INPUT_FILES; do
 
     timestamp=$(date +%Y%m%d_%H%M%S%N)
 
-    output_file="${WORK_DIR}/${timestamp}/$(basename $INPUT_FILE)"
+    output_file="${WORK_DIR}/${timestamp}/"
+    ##$(basename $INPUT_FILE)
     command="$SCRIPT_PATH -i ${INPUT_FILE} -o $output_file -bg ${POSITIONAL[@]}"
 
     echo "Running command: $command"
@@ -181,8 +183,12 @@ for INPUT_FILE in $INPUT_FILES; do
             rm -rf $timestamp
             continue
         else
-            echo mv $output_file "${FILE_OUTPUT}/"
-            mv $output_file "${FILE_OUTPUT}/"
+            echo mv $output_file/*.root "${FILE_OUTPUT}/"
+            echo listing here
+            ls 
+            echo "listing in timestamp"
+            ls $timestamp
+            mv $output_file/*.root ${FILE_OUTPUT}
             rm -rf $timestamp
         fi
     fi

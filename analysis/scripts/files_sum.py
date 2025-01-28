@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -34,6 +34,8 @@ parser.add_argument('-slim', '--slim', dest='slim', help='slim', action='store_t
 parser.add_argument('-phase1', '--phase1', dest='phase1', help='phase1', action='store_true')
 args = parser.parse_args()
 
+##the double ## comments with SB could be made into a flag for the sam WZ ntuples
+
 skim = args.skim
 signal = args.sig
 bg = args.bg
@@ -65,7 +67,8 @@ if bg:
             if sc:
                 WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/2lx1x2x1/bg/skim_sc"
             else:
-                WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/2lx1x2x1/bg/skim"
+                ##SB##COMMENTWORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/2lx1x2x1/bg/skim"
+                WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/bg/skim_phase1"
         elif drell_yan:
             WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_dy"
         elif no_lepton_selection:
@@ -81,12 +84,14 @@ if bg:
         elif slim:
             WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/slim"
             if phase1:
-                WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim"
+                ##WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim"
+                WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/bg/skim_phase1/sum/slim"
     else:
         WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/hist"
 else:
     if skim:
         WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim"
+        
         if lepton_collection:
             WORK_DIR = "/pnfs/desy.de/cms/tier2/store/user/ynissan/NtupleHub/LeptonCollectionFilesMaps/"
     else:
@@ -98,7 +103,8 @@ OUTPUT_SUM = WORK_DIR + "/sum"
 if slim:
     if phase1:
         SINGLE_OUTPUT = WORK_DIR + "/"
-        OUTPUT_SUM = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum" 
+        ##SBCOMMENTED#OUTPUT_SUM = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum" 
+        OUTPUT_SUM = "/nfs/dust/cms/user/beinsam/x1x2x1/bg/skim_phase1/sum/slim_sum" 
     else:
         SINGLE_OUTPUT = WORK_DIR + "/"
         OUTPUT_SUM = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/slim_sum" 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from ROOT import *
 from glob import glob
@@ -43,7 +43,8 @@ if not signal and not bg and not data:
 signal_dir = None
 bg_dir = None
 
-base_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1"
+#base_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1"
+base_dir = "/nfs/dust/cms/user/beinsam/x1x2x1"
 
 if signal:
     if phase1:
@@ -128,7 +129,7 @@ notification = Never
     #files= [input_dir+"/QCD_HT1500to2000_TuneCUETP8M1_16.root"]
 
     
-    for filename in files:
+    for ifilename, filename in enumerate(files):
         print("Opening", filename)
         baseFileName = os.path.basename(filename)
         baseFileNameNoStem = '.'.join(os.path.basename(filename).split('.')[:-1])
@@ -139,8 +140,8 @@ notification = Never
             print("File exits. Skipping", output_file)
             continue
         
-        command = slimmer_script + " -i " + filename + " -o " + output_file
-        print("Perorming:", command)
+        command = 'python3 '+slimmer_script + " -i " + filename + " -o " + output_file
+        print("Perfrming:", command)
         
         #system(command)
         condor_f.write("arguments = " + condor_wrapper + " " + command + "\n")

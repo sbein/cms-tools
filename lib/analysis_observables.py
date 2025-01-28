@@ -158,6 +158,7 @@ tracksObs = {
     "tracks_trackQualityTight" : "bool",
     "tracks_trackQualityUndef" : "bool",
 }
+#tracksObs = {}
 
 tracksCalcObs = {
     "tracks_ei" : "int",

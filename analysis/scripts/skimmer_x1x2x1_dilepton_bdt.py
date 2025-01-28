@@ -21,6 +21,8 @@ from lib import analysis_selections
 gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
 
+supressTracks = True
+
 gSystem.Load('LumiSectMap_C')
 from ROOT import LumiSectMap
 
@@ -129,13 +131,15 @@ def main():
                 
                         for DTypeObs in analysis_observables.commonPostBdtObservablesDTypesList:
                             
-                            analysis_categories = ["", "exTrack_"]
+                            if supressTracks: analysis_categories = [""]
+                            else: analysis_categories = ["", "exTrack_"]
                             if two_leptons:
                                 analysis_categories = [""]
                             if ex_track_only:
                                 analysis_categories = ["exTrack_"]
                             for prefix in analysis_categories:
-                                sameChargeOptions = [False, True] if prefix == "exTrack_" else [False]
+                                if supressTracks: sameChargeOptions = [False]
+                                else: sameChargeOptions = [False, True] if prefix == "exTrack_" else [False]
                             
                                 for sameCharge in sameChargeOptions:
                             
@@ -173,7 +177,8 @@ def main():
                 
                     if not jpsi:
                         
-                        prefixes = ["reco", "exTrack"]
+                        if supressTracks: prefixes = ["reco"]
+                        else: prefixes = ["reco", "exTrack"]
                         if two_leptons:
                             prefixes = ["reco"]
                         elif ex_track_only:
@@ -228,7 +233,8 @@ def main():
                         #    postfixi = [iso + cuts + cat, ""]
                 
                         for postfix in postfixi:
-                            prefixes = ["reco", "exTrack"]
+                            if supressTracks: prefixes = ["reco"]
+                            else: prefixes = ["reco", "exTrack"]
                             if two_leptons:
                                 prefixes = ["reco"]
                             elif ex_track_only:
@@ -317,7 +323,7 @@ def main():
                                             else:
                                                 v[0] = getattr(tree, k)
                                         
-                                        print('we are here', sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix)
+                                        #print('we are here', sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix)
                                         vars[sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix][0] = bdt_readers[prefix + leptonFlavour+ iso + cuts + cat].EvaluateMVA("BDT")
                                         #if vars[sc_prefix + prefixVars + "dilepBDT" + phaseStr + postfix][0] == -1:
                                         #    print("Got a BDT score of -1...", )
@@ -356,7 +362,9 @@ def main():
                                             vars[sc_prefix + "trackParentPdgId" + phaseStr + postfix][0] = -1
                             
                             for DTypeObs in analysis_observables.commonPostBdtObservablesDTypesList:
-                                analysis_categories = ["", "exTrack_"]
+                                
+                                if supressTracks: analysis_categories = [""]
+                                else: analysis_categories = ["", "exTrack_"]
                                 if two_leptons:
                                     analysis_categories = [""]
                                 if ex_track_only:
@@ -367,6 +375,7 @@ def main():
                                     for sameCharge in sameChargeOptions:
                                         sc_prefix = "sc_" if sameCharge else ""
                                         observableStr = sc_prefix + prefix + DTypeObs + phaseStr + postfix
+                                        #print('observableStr', observableStr)                                        
                                         branches[observableStr].Fill()
                             
                             if not two_leptons:
@@ -379,6 +388,7 @@ def main():
     tree.Write("tEvent",TObject.kOverwrite)
         
     print("DONE SKIMMING counting=" + str(counting))
+    print('just updated file', iFile.GetName())
     iFile.Close()
 
 main()

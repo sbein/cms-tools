@@ -161,6 +161,7 @@ def createPlots(rootfiles, type, histograms, weight=1):
         if os.path.basename(f) in plot_par.ignore_bg_files:
             print("File", f, "in ignore list. Skipping...")
             continue
+
         for ignore_file in plot_par.ignore_bg_files:
             print("**Checking " + ignore_file + " against " +  os.path.basename(f))
             if ignore_file in os.path.basename(f):
@@ -217,11 +218,15 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
         if os.path.basename(f) in plot_par.ignore_bg_files:
             print(("File", f, "in ignore list. Skipping..."))
             continue
+        #print('ignore_bg_files', plot_par.ignore_bg_files)
+        #exit(0)#xxx   
+        shouldskip = False         
         for ignore_file in plot_par.ignore_bg_files:
             print("**Checking " + ignore_file + " against " +  os.path.basename(f))
             if ignore_file in os.path.basename(f):
                 print("File", f, "in ignore list. Skipping...")
-                continue
+                shouldskip = True
+        if shouldskip: continue
         print("\n\n\n\n\nopening", f)
         print("=============================================================")
         rootFile = None
@@ -349,8 +354,15 @@ def createPlotsFast(rootfiles, types, histograms, weight, category, conditions, 
                                 drawString = " ( " + conditionStr + " )"
                             else:
                                 print("category=",category)
+                                print('plot_par.weightString', plot_par.weightString)
                                 drawWeight = ((plot_par.weightString[plot_par.plot_kind] + " * ") if (("data" not in category) or  plot_par.applyWeightsToData) else "")
+                                print('drawWeight', drawWeight)                                
                                 drawWeight += ((str(weight) + " * ") if ("data" not in category and plot_par.use_calculated_lumi_weight)  else "")
+                                if category=='signal': 
+                                    sigweights = ''#alternative would be getting the plots from the final hist maker scripts
+                                    drawWeight = drawWeight.replace('tEffhMetMhtRealXMht2016','TrgEffNom*IsrNom*BTagNom*PuNom*ElSfNom*MuSfNom').replace('tEffhMetMhtRealXMht2017','TrgEffNom*IsrNom*BTagNom*PuNom*ElSfNom*MuSfNom').replace('tEffhMetMhtRealXMht2018','TrgEffNom').replace('tEffhMetMhtRealXMht2016','TrgEffNom*IsrNom*BTagNom*PuNom*ElSfNom*MuSfNom')
+                                    print('draw weight', drawWeight)
+                                    exit(0)
                                 if plot_par.object_retag_weights.get(object_retag_name) is not None:
                                     drawWeight += plot_par.object_retag_weights[object_retag_name] + " * "
                                 if special_type == "sc" and cut.get("sc_weights") is not None:
@@ -1206,7 +1218,7 @@ def main():
             t.Draw()
             titlePad.Update()
         pId = 1
-        for hist_def in plot_par.histograms_defs:
+        for ihist_def, hist_def in enumerate(plot_par.histograms_defs):
             
             if plot_single and hist_def["obs"] != req_obs:
                 print("CONITNUE:",hist_def["obs"], req_obs)
@@ -1367,6 +1379,8 @@ def main():
                         sigHistName =  cut["name"] + "_" + hist_def["obs"] + "_" + signalBasename  + ("" if len(object_retag_name) == 0 else ("_" + object_retag_name))
                     
                         #sigHistsNames.append(sigHistName)
+                        print ('trying to ferret out', sigHistName)
+                        print(histograms.keys())
                         sigHist = histograms[sigHistName]
                         if plot_par.normalise:
                             sigHist.Scale(1./sigHist.Integral())
@@ -1547,9 +1561,10 @@ def main():
                             legend.AddEntry(newBgHist, "SM Background", 'p')
                         else:
                             legend.AddEntry(newBgHist, "SM Background", 'F')
-                else:
+                else: 
+                    print('goin into styledStack')
                     newBgHist = plotutils.styledStackFromStack(hs, memory, legend, "", typesInx, True, plot_par.plot_point, plot_par.bgReTaggingNames, plot_par.colorPalette)
-                    
+                    print('goin out of styledStack')                    
                     #Will hang otherwise!
                     ROOT.SetOwnership(newBgHist, False)
                     #newBgHist.SetFillColorAlpha(fillC, 0.35)
@@ -1584,6 +1599,13 @@ def main():
                 #    utils.histoStyler(newBgHist)
                 
                 print((utils.bcolors.BOLD + utils.bcolors.RED + "newBgHist.Draw(" + plotStr + errorStr + ")" + utils.bcolors.ENDC))
+                print(ihist_def, 'this is the thing', newBgHist.GetName(), newBgHist, plotStr + errorStr)
+
+                hams = newBgHist.GetHists()  # Get the list of histograms in the stack
+                for hist in hams:
+                    for ibin in range(1, hist.GetNbinsX() + 1):
+                        if hist.GetBinContent(ibin) == 0:
+                            hist.SetBinError(ibin, 1.8*0.1)
                 newBgHist.Draw(plotStr + errorStr)
                 
                 if plot_par.plot_overflow:
@@ -1618,12 +1640,15 @@ def main():
             else:
                 histToStyle = None
                 if plot_par.plot_data:
+                    print('exhibit A', histToStyle)
                     histToStyle = dataHist
                 elif plot_par.plot_signal:
+                    print('exhibit B', histToStyle)                
                     histToStyle = sigHists[0]
                 
                 #utils.histoStyler(histToStyle)
                 if not plot_par.plot_ratio:
+                    print('apparently not plotting the ratio', hist_def, histToStyle)
                     histToStyle.GetXaxis().SetTitle(hist_def["units"] if hist_def.get("units") is not None else hist_def["obs"])
                     if hist_def.get("Ndivisions") is not None:
                             histToStyle.GetXaxis().SetNdivisions(hist_def["Ndivisions"])
@@ -1685,7 +1710,7 @@ def main():
             if foundBg and plot_par.plot_signal: 
                 for i in range(len(sigHists)):
                     print((utils.bcolors.BOLD + utils.bcolors.RED + "sigHists[i].Draw(HIST SAME " + errorStr + ")" + utils.bcolors.ENDC))
-                    sigHists[i].Draw("HIST SAME " + errorStr)
+                    sigHists[i].Draw("HIST SAME ")# + errorStr)
             elif plot_par.plot_signal:
                 for i in range(len(sigHists)):
                     if i == 0:
@@ -1758,7 +1783,7 @@ def main():
                     #print(histCPad, histRPad,histRPadCopy)
                     #exit(0)
                 if legend is not None:
-                    legend.AddEntry(dataHist, "data", 'p')
+                    legend.AddEntry(dataHist, "Data", 'p')
             
             #dataHist.Draw("P e")
             

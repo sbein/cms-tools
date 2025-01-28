@@ -28,7 +28,9 @@ phase1 = args.phase1
 
 bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/type_sum"
 if phase1:
-    bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"
+    #bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"
+    bg_dir = "/nfs/dust/cms/user/beinsam/x1x2x1/bg/skim_phase1/sum/type_sum"
+    
 
 def main():
     sumTypes = {}

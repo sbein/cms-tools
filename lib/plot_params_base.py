@@ -17,20 +17,40 @@ low_3_signals = [
               #"/afs/desy.de/user/n/nissanuv/nfs/2lx1x2x1/signal/skim_dilepton_signal_bdt_all/single/higgsino_mu100_dm9p73Chi20Chipm.root"
               ]
 
-signals = [
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm1p13Chi20Chipm*.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm1p47Chi20Chipm*.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm1p92Chi20Chipm*.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm3p28Chi20Chipm*.root",
-              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm4p30Chi20Chipm*.root"
-              ]
+#signals = [
+#              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm1p13Chi20Chipm*.root",
+#              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm1p47Chi20Chipm*.root",
+#              "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm1p92Chi20Chipm*.root",
+#              #"/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm3p28Chi20Chipm*.root",
+#              #"/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm4p30Chi20Chipm*.root"
+#              ]
+signals_2016 = [
+              #"/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum/mChipm100GeV_dm0p56GeV_1.root",
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum/mChipm100GeV_dm1p26GeV_1.root",
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_sam/sum/mChipm100GeV_dm1p76GeV_1.root",
+]
 
+signals_phase1 = [
+              #"/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1/sum/mChipm100GeV_dm0p959GeV_1.root",
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1/sum/mChipm100GeV_dm1p259GeV_1.root",
+              "/nfs/dust/cms/user/beinsam/x1x2x1/signal/skim_phase1/sum/mChipm100GeV_dm1p759GeV_1.root",
+              #"/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm3p28Chi20Chipm*.root",
+              #"/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/signal/skim/slim/higgsino_mu100_dm4p30Chi20Chipm*.root"
+              ]              
+
+#signalNames = [
+#    "\Delta_{}M 1.13 Gev",
+#    "\Delta_{}M 1.47 Gev",
+#    "\Delta_{}M 1.9 Gev",
+#    #"\Delta_{}M 3.2 Gev",
+#    #"\Delta_{}M 4.3 Gev",
+#]
 signalNames = [
-    "\Delta_{}M 1.13 Gev",
-    "\Delta_{}M 1.47 Gev",
-    "\Delta_{}M 1.9 Gev",
-    "\Delta_{}M 3.2 Gev",
-    "\Delta_{}M 4.3 Gev",
+    #"\Delta_{}M 0.96 Gev",
+    "\Delta_{}M 1.26 Gev",
+    "\Delta_{}M 1.76 Gev",
+    #"\Delta_{}M 3.2 Gev",
+    #"\Delta_{}M 4.3 Gev",
 ]
 
 def injectJetIsoToCuts(cuts, jetIso):
@@ -103,7 +123,7 @@ def injectJetIsoToMapValues(obsMap, jetIso):
 # binLabels - array with alphanumerical labels for x axis
 
 class BaseParams:
-    signal_dir = signals
+    signal_dir = signals_2016
     #signal_files = signals
     signal_names = signalNames
     bg_dir = None
@@ -179,7 +199,8 @@ class BaseParams:
     choose_bg_categories_list = []
     #choose_bg_files_list = ["WJetsToLNu"]
     choose_bg_files_for_sc = False
-    ignore_bg_files = ["TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root", "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "WZTo3LNu_mllmin01_13TeV-powheg-pythia8.root"]
+    #sb#ignore_bg_files = ["TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root", "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", "WZTo3LNu_mllmin01_13TeV-powheg-pythia8.root"]
+    ignore_bg_files = ["TT_TuneCUETP8M2T4_13TeV-powheg-pythia8", "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","WZTo3LNu_mllmin01_13TeV-powheg-pythia8"]
     #ignore_bg_files = []
     blind_data = False
     plot_log_x = False

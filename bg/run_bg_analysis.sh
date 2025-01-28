@@ -10,6 +10,7 @@ while [[ $# -gt 0 ]]
 do
     key="$1"
 
+
     case $key in
         -skim|--skim)
         SKIM=true
@@ -111,7 +112,7 @@ echo "file output: $FILE_OUTPUT"
 
 #check output directory
 if [ ! -d "$OUTPUT_DIR" ]; then
-  mkdir $OUTPUT_DIR
+  mkdir -p $OUTPUT_DIR
 fi
 
 #check output directory
@@ -148,6 +149,10 @@ if [ -z "$SELECTION" ]; then
             files=("${files[@]}" ${BG_NTUPLES}/$PREFIX.${type}_HT*)
         elif [ "$type" = "TTJets" ]; then
             files=("${files[@]}" ${BG_NTUPLES}/$PREFIX.${type}_TuneCUETP8M1*)
+        elif [ "$type" = "WZTo3LNu_mllmin01_NNPDF31" ]; then
+            files=("${files[@]}" ${BG_NTUPLES}/Fall17.${type}_TuneC*)
+            #echo hey files $files
+            #exit
         else
             files=("${files[@]}" ${BG_NTUPLES}/$PREFIX.${type}_*)
         fi
@@ -187,7 +192,7 @@ priority = 0
 EOM
 
 file_limit=0
-files_per_job=3
+files_per_job=1
 
 # list="${files[@]}"
 # for fullname in $list; do
@@ -241,13 +246,17 @@ for type in reg madHtFilesGt600 madHtFilesLt600; do
             #echo "$name exist. Skipping..."
             continue
         fi
-        input_files="$input_files $fullname"
+        if [ -z "$input_files" ]; then
+            input_files="$fullname"
+        else
+            input_files="$input_files,$fullname"
+        fi
         ((count+=1))
         if [ $(($count % $files_per_job)) == 0 ]; then
-            cmd="$BG_SCRIPTS/run_bg_analysis_single.sh -i \"$input_files\" $extra_params ${POSITIONAL[@]}"
+            cmd="$BG_SCRIPTS/run_bg_analysis_single.sh -i $input_files $extra_params ${POSITIONAL[@]}"
             echo $cmd
 cat << EOM >> $output_file
-arguments = $BG_SCRIPTS/run_bg_analysis_single.sh -i \"$input_files\" $extra_params ${POSITIONAL[@]}
+arguments = $BG_SCRIPTS/run_bg_analysis_single.sh -i $input_files $extra_params ${POSITIONAL[@]}
 error = $ERR_OUTPUT/$(basename $fullname .root).err
 output = $STD_OUTPUT/$(basename $fullname .root).output
 Queue
@@ -265,10 +274,10 @@ EOM
     done
 
     if [ $(($count % $files_per_job)) != 0 ]; then
-        cmd="$BG_SCRIPTS/run_bg_analysis_single.sh -i \"$input_files\" $extra_params ${POSITIONAL[@]}"
+        cmd="$BG_SCRIPTS/run_bg_analysis_single.sh -i $input_files $extra_params ${POSITIONAL[@]}"
         echo $cmd
 cat << EOM >> $output_file
-arguments = $BG_SCRIPTS/run_bg_analysis_single.sh -i \"$input_files\" $extra_params ${POSITIONAL[@]}
+arguments = $BG_SCRIPTS/run_bg_analysis_single.sh -i $input_files $extra_params ${POSITIONAL[@]}
 error = $ERR_OUTPUT/$(basename $fullname .root).err
 output = $STD_OUTPUT/$(basename $fullname .root).output
 Queue
@@ -276,7 +285,7 @@ EOM
     fi
 done
 
-echo SUBMITTING JOBS....
+echo SUBMITTING JOBS.... $output_file
 
 condor_submit $output_file
-rm $output_file
+#rm $output_file

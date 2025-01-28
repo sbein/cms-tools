@@ -656,6 +656,8 @@ def getHistogramFromTree(name, tree, obs, bins, minX, maxX, condition, overflow=
     if tree.GetEntries() == 0:
         return None
     binsStr = None
+    #print('showing', name)
+    #tree.Show(0)
     
     print("Getting", name, "obs:", obs, "cond:", condition, "bins", bins, "minX", minX, "maxX", maxX, "overflow", overflow)
     

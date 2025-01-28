@@ -19,6 +19,8 @@ from lib import analysis_observables
 gSystem.Load('LumiSectMap_C')
 from ROOT import LumiSectMap
 
+suppressTracks = True
+
 gSystem.Load('LeptonCollectionMap_C')
 from ROOT import LeptonCollectionMap
 from ROOT import LeptonCollectionFilesMap
@@ -86,6 +88,15 @@ def getWMuon(c):
 ######## END OF CMDLINE ARGUMENTS ########
 
 commonBranches = {
+
+        "tEffhMetMhtRealXMet2016" :  "float",
+        "tEffhMetMhtRealXMet2017" :  "float",
+        "tEffhMetMhtRealXMet2018" :  "float",
+    
+        "tEffhMetMhtRealXMht2016" :  "float",
+        "tEffhMetMhtRealXMht2017" :  "float",
+        "tEffhMetMhtRealXMht2018" :  "float",
+        
         "passedMhtMet6pack" :  "bool",
         "passedSingleMuPack" :  "bool",
         "passed2016BFilter" : "bool",
@@ -157,7 +168,7 @@ def main():
             print("MUONS")
         else:
             print("ELECTRONS")
-
+    
     if not signal:
         analysis_observables.commonFlatObs.update(analysis_observables.filtersObs)
 
@@ -175,6 +186,7 @@ def main():
         bg = False
 
     replace_lepton_collection = True
+    replace_lepton_collection = False#Sam setting to false for the WZ dedicated samples   
     if signal:
         replace_lepton_collection = False
     
@@ -198,6 +210,10 @@ def main():
     print("Opening trigger file: " + triggerFileName)
     
     triggerFile = TFile(triggerFileName, "read")
+    
+    tEffhMetMhtRealXMet2016 = analysis_ntuples.getTrigEffGraph(triggerFile, 'tEffhMetMhtRealXMet;1')
+    tEffhMetMhtRealXMet2017 = analysis_ntuples.getTrigEffGraph(triggerFile, 'tEffhMetMhtRealXMet;2')
+    tEffhMetMhtRealXMet2018 = analysis_ntuples.getTrigEffGraph(triggerFile, 'tEffhMetMhtRealXMet;3')
     
     if phase1:#SB
         #in this block replacing Yuval's function analysis_ntuples.getTrigEffGraph
@@ -572,7 +588,7 @@ def main():
         print("Checking DY CS for", fileBasename)
         crossSection = utils.dyCrossSections.get(fileBasename)
         print("Got cs", crossSection)
-    elif bg and "Summer16ForYuval.WZTo3LNu_mllmin01" in input_file:
+    elif bg and "WZTo3LNu_mllmin01" in input_file:
         crossSection = 62.78
         replace_lepton_collection = False
         print("It's Summer16ForYuval.WZTo3LNu_mllmin01!!!")
@@ -592,7 +608,7 @@ def main():
         if signal and not sam:
             rightProcess = analysis_ntuples.isX1X2X1Process(c)
         elif bg:
-            if "DYJetsToLL_M-5to50_" not in input_file and "Summer16ForYuval.WZTo3LNu_mllmin01" not in input_file:
+            if "DYJetsToLL_M-5to50_" not in input_file and "WZTo3LNu_mllmin01" not in input_file:
                 crossSection = c.CrossSection
             rightProcess = utils.madHtCheck(baseFileName, c.madHT)
         elif data:
@@ -610,7 +626,8 @@ def main():
             hHtAfterMadHt.Fill(c.madHT)
         
         nL = c.Electrons.size() + c.Muons.size()
-        nT = c.tracks.size()
+        if suppressTracks: nT = 0
+        else: nT = c.tracks.size()
     
         #### GEN LEVEL STUFF ####
         nLGen = 0
@@ -670,6 +687,7 @@ def main():
             vars["passed2016BFilter"][0] = True
         
         for tracksOb in analysis_observables.tracksObs:
+            if suppressTracks: break
             tracksObs[tracksOb] = getattr(c, tracksOb)
         
         for pionsOb in analysis_observables.pionsObs:
@@ -764,7 +782,7 @@ def main():
             for tracksOb in analysis_observables.tracksObs:
                 tracksObs[tracksOb] = cppyy.gbl.std.vector(eval(analysis_observables.tracksObs[tracksOb]))()
         
-            for i in range(c.tracks.size()):
+            for i in range(nT):
                 if all(abs(c.Muons[j].DeltaR(c.tracks[i])) > 0.01 for j in muons):
                     for tracksOb in analysis_observables.tracksObs:
                         if analysis_observables.tracksObs[tracksOb] == "bool":
@@ -980,13 +998,14 @@ def main():
             muonsCalcObs["Muons_deltaRLJ"].push_back(muonsObs["Muons"][i].DeltaR(var_LeadingJet))
             muonsCalcObs["Muons_deltaPhiLJ"].push_back(abs(muonsObs["Muons"][i].DeltaPhi(var_LeadingJet)))
             muonsCalcObs["Muons_deltaEtaLJ"].push_back(abs(muonsObs["Muons"][i].Eta() - var_LeadingJet.Eta()))
-            mini, minCan = analysis_ntuples.minDeltaLepLeps(muonsObs["Muons"][i], tracksObs["tracks"])
+            if suppressTracks: mini, minCan = None, None
+            else: mini, minCan = analysis_ntuples.minDeltaLepLeps(muonsObs["Muons"][i], tracksObs["tracks"])
             if mini is None or mini > 0.01 or tracksObs["tracks_charge"][minCan] * muonsObs["Muons_charge"][i] < 0:
                 muonsCalcObs["Muons_ti"].push_back(-1)
             else:
                 muonsCalcObs["Muons_ti"].push_back(minCan)
         
-        for i in range(tracksObs["tracks"].size()):
+        for i in range(nT):
             tracksCalcObs["tracks_deltaRLJ"].push_back(tracksObs["tracks"][i].DeltaR(var_LeadingJet))
             tracksCalcObs["tracks_deltaPhiLJ"].push_back(abs(tracksObs["tracks"][i].DeltaPhi(var_LeadingJet)))
             tracksCalcObs["tracks_deltaEtaLJ"].push_back(abs(tracksObs["tracks"][i].Eta() - var_LeadingJet.Eta()))
@@ -1010,7 +1029,7 @@ def main():
                     muonsCalcObs["Muons_matchGen"].push_back(False)
                 else:
                     muonsCalcObs["Muons_matchGen"].push_back(True)
-            for i in range(tracksObs["tracks"].size()):
+            for i in range(nT):
                 signedGenElectrons = [ genElectrons[j] for j in range(len(genElectrons)) if var_GenParticles_PdgId[genElectronsIdx[j]] == -11 *  tracksObs["tracks_charge"][i] ]
                 signedGenMuons = [ genMuons[j] for j in range(len(genMuons)) if var_GenParticles_PdgId[genMuonsIdx[j]] == -13 *  tracksObs["tracks_charge"][i] ]
                 mini, minCan = analysis_ntuples.minDeltaLepLeps(tracksObs["tracks"][i], signedGenMuons)
@@ -1039,8 +1058,12 @@ def main():
                         # This is not saved to the root files
                         leptonsCorrJetVars[lep + "_minDr" + CorrJetObs + cuts] = cppyy.gbl.std.vector(double)()
         
-        isoJets = {"electron" : {"obs" : "Electrons"}, "muon" : {"obs" : "Muons"}, "track" : {"obs" : "tracks"}}
-        isoJetsIdx = {"electron" : {"obs" : "Electrons"}, "muon" : {"obs" : "Muons"}, "track" : {"obs" : "tracks"}}
+        if suppressTracks:
+            isoJets = {"electron" : {"obs" : "Electrons"}, "muon" : {"obs" : "Muons"}}
+            isoJetsIdx = {"electron" : {"obs" : "Electrons"}, "muon" : {"obs" : "Muons"}}
+        else:
+            isoJets = {"electron" : {"obs" : "Electrons"}, "muon" : {"obs" : "Muons"}, "track" : {"obs" : "tracks"}}
+            isoJetsIdx = {"electron" : {"obs" : "Electrons"}, "muon" : {"obs" : "Muons"}, "track" : {"obs" : "tracks"}}                    
         for lepIso in utils.leptonIsolationList:
             for lep in isoJets:
                 if lepIso in ["CorrJetIso", "CorrJetNoMultIso"]:
@@ -1613,10 +1636,20 @@ def main():
             else:
                 vars["FastSimWeightPR31285To36122"][0] = 1
             
+
+            tbin = tetrig.FindFixBin(MHT)
+            eff = tetrig.GetEfficiency(tbin)
+            vars["tEffhMetMhtRealXMet2016"][0] = tEffhMetMhtRealXMet2016.GetEfficiency(tbin)
+            vars["tEffhMetMhtRealXMet2017"][0] = tEffhMetMhtRealXMet2017.GetEfficiency(tbin)
+            vars["tEffhMetMhtRealXMet2018"][0] = tEffhMetMhtRealXMet2018.GetEfficiency(tbin)
+            vars["tEffhMetMhtRealXMht2016"][0] = eff
+            vars["tEffhMetMhtRealXMht2017"][0] = eff
+            vars["tEffhMetMhtRealXMht2018"][0] = eff
+            
+                        
             vars["passedMhtMet6pack"][0] = True
             vars["passedSingleMuPack"][0] = True
             vars["passesUniversalSelection"][0] = True
-            tbin = tetrig.FindFixBin(MHT)
             vars["TrgEffNom"][0] = tetrig.GetEfficiency(tbin)
             vars["TrgEffUp"][0] = vars["TrgEffNom"][0]+tetrig.GetEfficiencyErrorUp(tbin)
             vars["TrgEffDown"][0] = vars["TrgEffNom"][0]-tetrig.GetEfficiencyErrorLow(tbin)

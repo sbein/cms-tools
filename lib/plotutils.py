@@ -27,7 +27,9 @@ class Plotting():
         return self.currStyle
     
     def createCanvas(self, name):
-        return TCanvas(name, name, self.W, self.H)
+        can = TCanvas(name, name, self.W, self.H)
+        can.SetBottomMargin(0.15)#1.5*can.GetBottomMargin())
+        return can
 
     def stampPlot(self,canvas, lumiStr, labelText, cmsLocation, showLumi, addLumiUnits = True):
         iPeriod = 0
@@ -86,26 +88,26 @@ defaultOrigColorPalette = [
 
 
 #For solid fill use fillStyle=1001
-# signalCp = [
+signalCp = [
 #     { "name" : "blue", "fillColor" : kBlue+3, "lineColor" : kBlue+3, "fillStyle" : 0, "lineStyle" : 1 },
 #     { "name" : "cyan", "fillColor" : kCyan+3, "lineColor" : kCyan+3, "fillStyle" : 0, "lineStyle" : 2 },
-#     { "name" : "orange", "fillColor" : kOrange, "lineColor" : kOrange, "fillStyle" : 0, "lineStyle" : 5 },
+     { "name" : "orange", "fillColor" : kOrange+1, "lineColor" : kOrange+1, "fillStyle" : 0, "lineStyle" : 5 },
 #     { "name" : "pink", "fillColor" : kPink+3, "lineColor" : kPink+4, "fillStyle" : 0, "lineStyle" : 6 },
-#     { "name" : "grey", "fillColor" : kGray, "lineColor" : kGray, "fillStyle" : 0, "lineStyle" : 4 },
-#     { "name" : "red", "fillColor" : kRed, "lineColor" : kRed, "fillStyle" : 0, "lineStyle" : 3 },
-# ]
-
-# The names are non-sense 
-signalCp = [
-    { "name" : "blue", "fillColor" : kRed-7, "lineColor" : kRed-7, "fillStyle" : 0, "lineStyle" : 1 },
-    { "name" : "blue", "fillColor" : kRed-4, "lineColor" : kRed-4, "fillStyle" : 0, "lineStyle" : 1 },
-    { "name" : "red", "fillColor" : kRed, "lineColor" : kRed, "fillStyle" : 0, "lineStyle" : 1 },
-    { "name" : "cyan", "fillColor" : kRed+1, "lineColor" : kRed+1, "fillStyle" : 0, "lineStyle" : 2 },
-    { "name" : "orange", "fillColor" : kRed+2, "lineColor" : kRed+2, "fillStyle" : 0, "lineStyle" : 5 },
-    { "name" : "pink", "fillColor" : kRed+3, "lineColor" : kRed+3, "fillStyle" : 0, "lineStyle" : 6 },
-    { "name" : "grey", "fillColor" : kRed+4, "lineColor" : kRed+4, "fillStyle" : 0, "lineStyle" : 4 },
-    { "name" : "red", "fillColor" : kRed-1, "lineColor" : kRed-1, "fillStyle" : 0, "lineStyle" : 3 },
+     { "name" : "green", "fillColor" : kCyan+1, "lineColor" : kCyan+1, "fillStyle" : 0, "lineStyle" : 4 },
+     { "name" : "red", "fillColor" : kRed, "lineColor" : kRed, "fillStyle" : 0, "lineStyle" : 3 },
 ]
+
+### The names are non-sense 
+##signalCp = [
+##    { "name" : "blue", "fillColor" : kRed-7, "lineColor" : kRed-7, "fillStyle" : 0, "lineStyle" : 1 },
+##    { "name" : "blue", "fillColor" : kRed-4, "lineColor" : kRed-4, "fillStyle" : 0, "lineStyle" : 1 },
+##    { "name" : "red", "fillColor" : kRed, "lineColor" : kRed, "fillStyle" : 0, "lineStyle" : 1 },
+##    { "name" : "cyan", "fillColor" : kRed+1, "lineColor" : kRed+1, "fillStyle" : 0, "lineStyle" : 2 },
+##    { "name" : "orange", "fillColor" : kRed+2, "lineColor" : kRed+2, "fillStyle" : 0, "lineStyle" : 5 },
+##    { "name" : "pink", "fillColor" : kRed+3, "lineColor" : kRed+3, "fillStyle" : 0, "lineStyle" : 6 },
+##    { "name" : "grey", "fillColor" : kRed+4, "lineColor" : kRed+4, "fillStyle" : 0, "lineStyle" : 4 },
+##    { "name" : "red", "fillColor" : kRed-1, "lineColor" : kRed-1, "fillStyle" : 0, "lineStyle" : 3 },
+##]
 
 categorySignalCp = [
     { "name" : "blue", "fillColor" : kRed, "lineColor" : kRed, "fillStyle" : 0, "lineStyle" : 1 },
@@ -131,7 +133,7 @@ rocCurvesColors = [kBlue, kRed, kYellow, kGreen]
 # For a filled histogram normally alpha is given and noFillStyle=True (so that 1001 is picked)
 
 def setHistColorFillLine(hist, cP, alpha=0.35, lineWidth = 1):
-    #print(cP)
+    print('a color', cP)
     fillC = cP["fillColor"]
     lineC = cP["lineColor"]
     if "fillStyle" in cP:
@@ -172,8 +174,11 @@ def styledStackFromStack(bgHist, memory, legend=None, title="", colorInx=None, n
         newHist.UseCurrentStyle()
         memory.append(newHist)
         colorI = i
+        print('color guard 1', colorI)
         if colorInx is not None:
             colorI = colorInx[i]
+        print('color guard 2', colorI)     
+        print ('spittin pallette', colorPalette)       
         print("-----",colorI, colorInx,colorPalette[colorI])
         alpha = colorPalette[colorI]["alpha"] if colorPalette[colorI].get("alpha") is not None else 0.75
         setHistColorFillLine(newHist, colorPalette[colorI], alpha, noFillStyle)
@@ -181,7 +186,6 @@ def styledStackFromStack(bgHist, memory, legend=None, title="", colorInx=None, n
         #if noStack:
         #    newHist.SetFillStyle(0)
         lineC = TColor.GetColor(colorPalette[colorI]["fillColor"])
-        
         #newHist.SetMarkerColorAlpha(colorPalette[colorI]["markerColor"], 0.9)
         
         if plotPoint:
@@ -334,7 +338,7 @@ def stampFab(lumi,datamc='MC'):
 def mkcanvas(name='canvas'):
     c = TCanvas(name,name, 800, 800)
     c.SetTopMargin(0.07)
-    c.SetBottomMargin(0.16)
+    c.SetBottomMargin(0.56)
     c.SetLeftMargin(0.19)
     return c
     

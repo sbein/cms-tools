@@ -14,7 +14,11 @@ class unblinded_track_muon_sc_comparison(BaseParams):
     #bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim/sum/type_sum"
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim/sum"
     save_histrograms_to_file = True
-    load_histrograms_from_file = False 
+    load_histrograms_from_file = True 
+    
+    transfer_factor = analysis_selections.sfs["tracks"]['2016']['Muons'][0]
+    transfer_factor_error = 0
+    
     baseConditions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "2016", "Muons")
     scConditions = analysis_selections.injectValues(analysis_selections.sc_ex_track_cond, "2016", "Muons")
     cuts = [
@@ -40,10 +44,15 @@ class unblinded_track_muon_sc_comparison(BaseParams):
         'MET' : analysis_selections.luminosities["2016"],
     }
     
+    
     plot_data = True
     plot_sc = True
     plot_ratio = True
+    ###SBCOMMENT OUT plot_signal = False
+    
+    signal_dir = signals_phase1
     plot_signal = False
+    
     plot_bg = False
     plot_error = True
     sc_color = kOrange + 1
@@ -81,7 +90,9 @@ class unblinded_track_muon_sc_comparison_phase1(unblinded_track_muon_sc_comparis
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_track_muon_sc_comparison_phase1.root"
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/sum"
     save_histrograms_to_file = True
-    load_histrograms_from_file = True 
+    
+    transfer_factor = analysis_selections.sfs["tracks"]['phase1']['Muons'][0]
+    transfer_factor_error = 0
     baseConditions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "phase1", "Muons")
     scConditions = analysis_selections.injectValues(analysis_selections.sc_ex_track_cond, "phase1", "Muons")
     cuts = [
@@ -89,7 +100,7 @@ class unblinded_track_muon_sc_comparison_phase1(unblinded_track_muon_sc_comparis
         #{"name":"sr", "title": "sr", "condition" : "(MHT >= 220 &&  MET >= 200 && BTagsDeepMedium == 0 )", "baseline" : "exclusiveTrack == 1 && trackBDT > 0 && exTrack_invMass < 30 && exclusiveTrackLeptonFlavour == \"Muons\" && exTrack_dilepBDT > 0.1", "sc" : "sc_exclusiveTrack == 1 && sc_trackBDT > 0 && sc_exTrack_invMass < 30 && sc_exclusiveTrackLeptonFlavour == \"Muons\"" }
     ]
     calculatedLumi = {
-        'MET' : analysis_selections.luminosities["phase1"] * 0.1,
+        'MET' : analysis_selections.luminosities["phase1"],
     }
     
     histograms_defs = [
@@ -103,7 +114,7 @@ class unblinded_track_muon_sc_comparison_phase1(unblinded_track_muon_sc_comparis
 class partial_unblinded_track_muon_sc_comparison_phase1(unblinded_track_muon_sc_comparison_phase1):
     histrograms_file = BaseParams.histograms_root_files_dir + "/partial_unblinded_track_muon_sc_comparison_phase1.root"
     save_histrograms_to_file = True
-    load_histrograms_from_file = True 
+    load_histrograms_from_file = True     
     baseConditions = analysis_selections.injectValues(analysis_selections.ex_track_cond, "phase1", "Muons") + " && Entry$ % 10==0"
     scConditions = analysis_selections.injectValues(analysis_selections.sc_ex_track_cond, "phase1", "Muons")
     cuts = [
@@ -119,7 +130,11 @@ class unblinded_track_electrons_sc_comparison(unblinded_track_muon_sc_comparison
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_track_electrons_sc_comparison.root"
 
     save_histrograms_to_file = True
-    load_histrograms_from_file = True 
+    
+    signal_dir = signals_2016
+    plot_signal = False    
+    transfer_factor = analysis_selections.sfs["tracks"]['2016']['Electrons'][0]
+    transfer_factor_error = 0
     
     baseConditionsArr = [analysis_selections.ex_track_cond, analysis_selections.ex_track_electrons_filter]
     scConditionsArr = [analysis_selections.sc_ex_track_cond, analysis_selections.sc_ex_track_electrons_filter]
@@ -145,7 +160,6 @@ class partial_unblinded_track_electrons_sc_comparison(unblinded_track_electrons_
     histrograms_file = BaseParams.histograms_root_files_dir + "/partial_unblinded_track_electrons_sc_comparison.root"
 
     save_histrograms_to_file = True
-    load_histrograms_from_file = True 
     
     baseConditionsArr = [analysis_selections.ex_track_cond, analysis_selections.ex_track_electrons_filter, "Entry$ % 10==0"]
     scConditionsArr = [analysis_selections.sc_ex_track_cond, analysis_selections.sc_ex_track_electrons_filter]
@@ -170,7 +184,11 @@ class unblinded_track_electrons_sc_comparison_phase1(unblinded_track_electrons_s
     data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/type_sum"
 
     save_histrograms_to_file = True
-    load_histrograms_from_file = True 
+    
+    signal_dir = signals_2016
+    plot_signal = False    
+    transfer_factor = analysis_selections.sfs["tracks"]['phase1']['Electrons'][0]
+    transfer_factor_error = 0
     
     baseConditionsArr = [analysis_selections.ex_track_cond, analysis_selections.ex_track_electrons_filter]
     scConditionsArr = [analysis_selections.sc_ex_track_cond, analysis_selections.sc_ex_track_electrons_filter]
@@ -200,6 +218,9 @@ class partial_unblinded_track_electrons_sc_comparison_phase1(unblinded_track_ele
 
     save_histrograms_to_file = True
     load_histrograms_from_file = True 
+    
+    signal_dir = signals_phase1
+    plot_signal = False    
     
     baseConditionsArr = [analysis_selections.ex_track_cond, analysis_selections.ex_track_electrons_filter, "Entry$ % 10==0"]
     scConditionsArr = [analysis_selections.sc_ex_track_cond, analysis_selections.sc_ex_track_electrons_filter]
@@ -232,11 +253,22 @@ class unblinded_dimuon(BaseParams):
     plot_ratio = True
     plot_data_for_bg_estimation = True
     
-    plot_signal = False
+    plot_signal = True
     blind_data = False
     bg_retag = True
     
     jetIsoStr = ""
+    signal_dir = signals_2016
+    print('signal_dir', signal_dir)
+    
+    colorPalette = [
+        #{ "name" : "", 'fillColor': kGreen, "lineColor" : kGreen, "markerColor" : kGreen,  "markerStyle" : kOpenCircle},        
+        { "name" : "", 'fillColor': kViolet, "lineColor" : kViolet, "markerColor" : kViolet,  "markerStyle" : kOpenCircle},    
+        { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle},
+        { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },
+    ]    
+    print('colorPalette', colorPalette)  
+    #exit(0)
     
     jetIso = analysis_selections.jetIsos["Muons"]
     
@@ -256,9 +288,10 @@ class unblinded_dimuon(BaseParams):
     
     histograms_defs = [     
         { "obs" : "full_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
-        { "obs" : "final_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,0,0.1,0.2,0.3,0.4,0.5,1] , "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
+        { "obs" : "final_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-0.6,-0.4,-0.2,0,0.2,0.3,0.4,0.5,1] , "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
         { "obs" : "fine_dilepBDTphase1%%%", "formula" : "dilepBDTphase1%%%", "minX" : -1, "maxX" : 1, "bins" : 40, "units" : "BDT phase1", "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}}
     ]
+    
     injectJetIsoToHistograms(histograms_defs, jetIso)
     
     weightString = {
@@ -299,20 +332,12 @@ class unblinded_dimuon(BaseParams):
         "tautau" : "bg",
         "non-iso" : "data"
     }
-    
     #bgReTaggingFactors = {
     #    "tautau" : [1.44864,0.46772],
     #    "non-iso" : [0.4604,0.06955]
     #}
     y_title_offset = 0.8
-    
-    colorPalette = [
-        { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle},
-        { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },
-    ]
-    
     label_text = plotutils.StampStr.PRE
-    
     log_minimum = 0.01
 
 class tautau_unblinded_dimuon_phase0(unblinded_dimuon):
@@ -391,10 +416,21 @@ class unblinded_dimuon_phase1(unblinded_dimuon):
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_phase1_topup.root"
     
     bg_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum_total"
-    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_sum/"
+    data_dir = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/data/skim_phase1/slim_sum"
+    signal_dir = signals_phase1
+    plot_signal = True
+    
+    colorPalette = [
+        #{ "name" : "", 'fillColor': kGreen, "lineColor" : kGreen, "markerColor" : kGreen,  "markerStyle" : kOpenCircle},        
+        { "name" : "", 'fillColor': kViolet, "lineColor" : kViolet, "markerColor" : kViolet,  "markerStyle" : kOpenCircle},    
+        { "name" : "yellow", "fillColor" : TColor.GetColor("#ffd700"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 5,  "markerStyle" : kOpenCircle},
+        { "name" : "blue", "fillColor" : TColor.GetColor("#0057b7"), "lineColor" : kBlack, "fillStyle" : 1001, "markerColor" : 38,  "markerStyle" : kOpenCross },
+    ]    
+    print('colorPalette', colorPalette)  
+    
     
     save_histrograms_to_file = True
-    load_histrograms_from_file = True
+    load_histrograms_from_file = False
     
     jetIso = analysis_selections.jetIsos["Muons"]
     
@@ -428,7 +464,7 @@ class unblinded_dimuon_phase1(unblinded_dimuon):
     
     histograms_defs = [     
         { "obs" : "full_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,1], "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
-        { "obs" : "final_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-1,0,0.1,0.2,0.3,0.4,0.5,1] , "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
+        { "obs" : "final_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "units" : "BDT output", "customBins"  : [-0.6,-0.4,-0.2,0,0.2,0.3,0.4,0.5,1] , "legendCol" : 1, "legendCoor" : {"x1" : .63, "y1" : .63, "x2" : .99, "y2" : .89}, "linearYspace" : 1.6, "logYspace" : 3000 },
         { "obs" : "fine_dilepBDT%%%", "formula" : "dilepBDT%%%", "minX" : -1, "maxX" : 1, "bins" : 40, "units" : "BDT", "legendCol" : 1, "legendCoor" : {"x1" : .72, "y1" : .60, "x2" : .99, "y2" : .89}}
     ]
     injectJetIsoToHistograms(histograms_defs, jetIso)
@@ -445,6 +481,27 @@ class unblinded_dimuon_phase1(unblinded_dimuon):
         'MET' : "hemFailureVetoElectrons * hemFailureVetoJets * hemFailureVetoMuons"
     }
 
+class unblinded_dimuon_phase1_bgmc(unblinded_dimuon_phase1):
+    histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_phase1_bgmc.root"
+    ##bg_dir = '/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum/'
+    bg_dir = '/nfs/dust/cms/user/beinsam/x1x2x1/bg/skim_phase1/sum/slim_sum/type_sum/'
+    load_histrograms_from_file = False 
+    plot_bg = True
+    bgReTaggingUseSources = False
+    bgRetagging = {}
+    bg_retag = False
+    bgRetaggingOrder = {}
+    bgRetaggingSources = {}
+    plot_data_for_bg_estimation = False
+    transfer_factor = 0.450
+    transfer_factor_error = 0.051
+    bgReTaggingFactors = {}
+    colorPalette = plotutils.defaultColorPalette
+    calculatedLumi = {
+        'MET' : analysis_selections.luminosities["phase1"] * 0.45
+    }    
+    
+    
 class unblinded_dimuon_phase1_tautau(unblinded_dimuon_phase1):
     histrograms_file = BaseParams.histograms_root_files_dir + "/unblinded_dimuon_phase1_tautau.root"
     

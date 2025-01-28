@@ -95,9 +95,10 @@ if final_prediction:
     no_track_tf = True
     max_files = -1
 
-partial_unblinding = True
-partial_unblinding = False###
+partial_unblinding = False
+partial_unblinding = True###
 partial_unblinding_portion = 10
+partial_unblinding_portion = 1##
 
 # required_lepton = "Muons"
 # jetiso = "CorrJetNoMultIso10Dr0.6"
@@ -109,7 +110,7 @@ partial_unblinding_portion = 10
 output_file = None
 
 if args.output_file: output_file = args.output_file[0]
-else: output_file = "sig_bg_histograms_data_driven_" + wanted_year + "_" + channel + ("_uniform_binning" if use_uniform_binning else "") + ("_partial_unblinding" if partial_unblinding else "") + ".root"
+else: output_file = "sig_bg_histograms_data_driven_" + wanted_year + "_" + channel + ("_uniform_binning" if use_uniform_binning else "") +  ".root"#("_partial_unblinding" if partial_unblinding else "") +
 
 if jecup: output_file = output_file.replace('.root','_JecUp.root')
 if jecdown: output_file = output_file.replace('.root','_JecDown.root')    
@@ -266,7 +267,7 @@ def main():
                 if lep == "Electrons":
                     conditions = analysis_selections.ex_track_full_range_selections_electrons
                 if partial_unblinding:
-                    conditions = conditions + ["Entry$ % 10==0"]
+                    conditions = conditions + ["Entry$ % "+str(partial_unblinding_portion)+"==0"]
                 
                 weight = analysis_selections.getDataString(wanted_year, lep, conditions)
                 
@@ -406,7 +407,7 @@ def main():
                         conditions = analysis_selections.two_leptons_full_bdt_conditions_outside_mtautau_window_sos
                     
                     if partial_unblinding:
-                        conditions = conditions + ["Entry$ % 10==0"]
+                        conditions = conditions + ["Entry$ % "+str(partial_unblinding_portion)+"==0"]
                     extra_filters = []
                     if use_line_fits_predictions:
                          extra_filters = analysis_selections.extra_filters_2l_main_prediction[wanted_year][lep]

@@ -63,7 +63,8 @@ WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim"
 if sum_2017_lepton_collection:
     WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/lc"
 elif phase1:
-    WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1"
+    #SAMCOMMENTS#WORK_DIR = "/afs/desy.de/user/n/nissanuv/nfs/x1x2x1/bg/skim_phase1"
+    WORK_DIR = "/nfs/dust/cms/user/beinsam/x1x2x1/bg/skim_phase1/"
 
 print("WORK_DIR", WORK_DIR)
 
@@ -151,38 +152,39 @@ file_num_per_type = {
 "ZZ_TuneCUETP8M1_13TeV-pythia8" : 1000,
 "ZZ_TuneCUETP8M1_13TeV-pythia8" : 1000,
 "WW_TuneCUETP8M1_13TeV-pythia8" : 50,
-"WZTo3LNu_mllmin01_13TeV-powheg-pythia8" : 200
+#"WZTo3LNu_mllmin01_13TeV-powheg-pythia8" : 200
 }
 
 file_num_per_type_phase1 = {
-    "DYJetsToLL_M-50_HT-1200to2500" : 30,
-    "DYJetsToLL_M-50_HT-200to400" : 30,
-    "DYJetsToLL_M-50_HT-2500toInf" : 45,
-    "DYJetsToLL_M-50_HT-400to600" : 20,
-    "DYJetsToLL_M-50_HT-600to800" : 20,
-    "DYJetsToLL_M-50_HT-800to1200" : 20,
-    "DYJetsToLL_M-50_TuneCP5" : 400,
-    "QCD_HT1500to2000_TuneCP5" : 30,
-    "QCD_HT2000toInf_TuneCP5" : 30,
-    "QCD_HT200to300_TuneCP5" : 300,
-    "QCD_HT500to700_TuneCP5" : 200,
-    "TTJets_DiLept_TuneCP5" : 20,
-    "TTJets_SingleLeptFromT_TuneCP5" : 30,
-    "TTJets_SingleLeptFromTbar_TuneCP5" : 30,
-    "WJetsToLNu_HT-100To200_TuneCP5" : 30,
-    "WJetsToLNu_HT-1200To2500_TuneCP5" : 10,
-    "WJetsToLNu_HT-200To400_TuneCP5" : 20,
-    "WJetsToLNu_HT-2500ToInf_TuneCP5" : 10,
-    "WJetsToLNu_HT-400To600_TuneCP5" : 10,
-    "WJetsToLNu_HT-600To800_TuneCP5" : 10,
-    "WJetsToLNu_HT-800To1200_TuneCP5" : 10,
-    "WWTo1L1Nu2Q_13TeV_amcatnloFXFX" : 30,
-    "WZTo1L1Nu2Q_13TeV_amcatnloFXFX" : 30,
-    "WZTo1L3Nu_13TeV_amcatnloFXFX" : 30,
-    "ZJetsToNuNu_HT-200To400_13TeV-madgraph" : 30,
-    "ZJetsToNuNu_HT-400To600_13TeV-madgraph" : 20,
-    "ZJetsToNuNu_HT-600To800_13TeV-madgraph" : 20,
-    "ZJetsToNuNu_HT-800To1200_13TeV-madgraph" : 20,
+    ##SAMCOMMENTING#"DYJetsToLL_M-50_HT-1200to2500" : 30,
+    ##SAMCOMMENTING#"DYJetsToLL_M-50_HT-200to400" : 30,
+    ##SAMCOMMENTING#"DYJetsToLL_M-50_HT-2500toInf" : 45,
+    ##SAMCOMMENTING#"DYJetsToLL_M-50_HT-400to600" : 20,
+    ##SAMCOMMENTING#"DYJetsToLL_M-50_HT-600to800" : 20,
+    ##SAMCOMMENTING#"DYJetsToLL_M-50_HT-800to1200" : 20,
+    ##SAMCOMMENTING#"DYJetsToLL_M-50_TuneCP5" : 400,
+    ##SAMCOMMENTING#"QCD_HT1500to2000_TuneCP5" : 30,
+    ##SAMCOMMENTING#"QCD_HT2000toInf_TuneCP5" : 30,
+    ##SAMCOMMENTING#"QCD_HT200to300_TuneCP5" : 300,
+    ##SAMCOMMENTING#"QCD_HT500to700_TuneCP5" : 200,
+    ##SAMCOMMENTING#"TTJets_DiLept_TuneCP5" : 20,
+    ##SAMCOMMENTING#"TTJets_SingleLeptFromT_TuneCP5" : 30,
+    ##SAMCOMMENTING#"TTJets_SingleLeptFromTbar_TuneCP5" : 30,
+    ##SAMCOMMENTING#"WJetsToLNu_HT-100To200_TuneCP5" : 30,
+    ##SAMCOMMENTING#"WJetsToLNu_HT-1200To2500_TuneCP5" : 10,
+    ##SAMCOMMENTING#"WJetsToLNu_HT-200To400_TuneCP5" : 20,
+    ##SAMCOMMENTING#"WJetsToLNu_HT-2500ToInf_TuneCP5" : 10,
+    ##SAMCOMMENTING#"WJetsToLNu_HT-400To600_TuneCP5" : 10,
+    ##SAMCOMMENTING#"WJetsToLNu_HT-600To800_TuneCP5" : 10,
+    ##SAMCOMMENTING#"WJetsToLNu_HT-800To1200_TuneCP5" : 10,
+    ##SAMCOMMENTING#"WWTo1L1Nu2Q_13TeV_amcatnloFXFX" : 30,
+    ##SAMCOMMENTING#"WZTo1L1Nu2Q_13TeV_amcatnloFXFX" : 30,
+    ##SAMCOMMENTING#"WZTo1L3Nu_13TeV_amcatnloFXFX" : 30,
+    ##SAMCOMMENTING#"ZJetsToNuNu_HT-200To400_13TeV-madgraph" : 30,
+    ##SAMCOMMENTING#"ZJetsToNuNu_HT-400To600_13TeV-madgraph" : 20,
+    ##SAMCOMMENTING#"ZJetsToNuNu_HT-600To800_13TeV-madgraph" : 20,
+    ##SAMCOMMENTING#"ZJetsToNuNu_HT-800To1200_13TeV-madgraph" : 20,
+    "WZTo3LNu_mllmin01" : 1463
 }
 
 
@@ -244,7 +246,9 @@ notification = Never
                 if sum_2017_lepton_collection:
                     prefix = "Fall17."
                 elif phase1:
-                    prefix = "RunIIFall17MiniAODv2."
+                    ##SAMCOMMENTprefix = "RunIIFall17MiniAODv2."
+                    prefix = "Fall17."
+                    
                 files = sorted(glob(SINGLE_OUTPUT + "/" + prefix + type + "_" + typeRange + "*.root"))
                 #command = "hadd -f " + file + " " + files
             
